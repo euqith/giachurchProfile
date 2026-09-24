@@ -1,30 +1,30 @@
 <?php
-
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL; // <-- PASTIIN BARIS INI ADA!
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // 1. Force HTTPS untuk semua URL & Asset
         if (config('app.env') === 'production' || request()->server('HTTP_X_FORWARDED_PROTO') == 'https') {
             URL::forceScheme('https');
         }
 
-        // Memaksa root URL aplikasi agar tidak membaca path folder fisik
-        URL::forceRootUrl(config('app.url'));
+        // 2. Potong Subfolder fisik dari request path Symfony/Laravel
+        $baseUrl = config('app.url');
+        URL::forceRootUrl($baseUrl);
+
+        // Paksa Symfony Request untuk tidak membaca prefix /giaswebsite/public
+        request()->server->set('SCRIPT_NAME', '/index.php');
+        request()->server->set('SCRIPT_FILENAME', '/index.php');
     }
 }
