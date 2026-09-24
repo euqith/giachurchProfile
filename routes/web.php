@@ -26,12 +26,14 @@ Route::get('/event', [EventController::class, 'index'])->name('event.index');
 // Jalur Halaman Khusus Buku Warta Jemaat Publik
 Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 
-
 /*
 |--------------------------------------------------------------------------
 | 🔐 2. JALUR GERBANG AUTENTIKASI ADMIN CMS (/adminlogin)
 |--------------------------------------------------------------------------
 */
+// 💡 Redirect otomatis dari /admin atau /admin/ ke /adminlogin
+Route::redirect('/admin', '/adminlogin', 301);
+
 // Tampilkan Halaman Form Login Khusus Admin
 Route::get('/adminlogin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
 
@@ -40,6 +42,7 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login'])->name('admin.l
 
 // Proses Keluar (Logout) Admin
 Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth');
+
 /*
 |--------------------------------------------------------------------------
 | 🏢 3. KELOMPOK RUTE PANEL CMS ADMIN (DILINDUNGI PENUH MIDDLEWARE)
