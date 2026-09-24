@@ -72,7 +72,7 @@
     <div class="container">
       <div class="header__main">
         <a href="{{ url('/') }}" class="logo">
-          <img src="{{ asset('homepage/assets/images/logo/logo.svg') }}" alt="logo">
+          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="logo">
         </a>
         <div class="main-menu">
           <nav>
