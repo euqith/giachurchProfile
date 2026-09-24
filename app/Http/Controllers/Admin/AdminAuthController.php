@@ -65,8 +65,7 @@ public function logout(Request $request)
     $request->session()->invalidate();
     $request->session()->regenerateToken();
 
-    // Gunakan redirect ke URL /admin secara eksplisit agar aman di lokal maupun server
-    return redirect('/admin')->with('success', 'Anda telah berhasil keluar sistem.');
+    return redirect()->route('admin.login')->with('success', 'Anda telah berhasil keluar sistem.');
 }
 
     // Proses Ganti Password Mandiri

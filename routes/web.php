@@ -29,25 +29,17 @@ Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 
 /*
 |--------------------------------------------------------------------------
-| 🔐 2. JALUR GERBANG AUTENTIKASI ADMIN CMS (/admin)
+| 🔐 2. JALUR GERBANG AUTENTIKASI ADMIN CMS (/adminlogin)
 |--------------------------------------------------------------------------
-| Ditempatkan di luar grup 'admin.' agar nama rute dan URL-nya murni.
-| Dilindungi middleware 'guest' agar yang sudah login tidak bisa masuk lagi.
 */
-// 🔐 2. JALUR GERBANG AUTENTIKASI ADMIN CMS (/admin)
-// Kita lepas middleware ['guest'] agar controller bisa mengatur redirect secara pintar
-
 // Tampilkan Halaman Form Login Khusus Admin
-// Tangkap /admin dan /admin/ sekaligus
-Route::get('/admin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-Route::get('/admin/', [AdminAuthController::class, 'showLogin']);
+Route::get('/adminlogin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
+
 // Proses Validasi & Submit Login Admin
-Route::post('/admin', [AdminAuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/adminlogin', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
-// Proses Keluar (Logout) Admin - Wajib sudah login untuk mengaksesnya
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth');
-
-
+// Proses Keluar (Logout) Admin
+Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | 🏢 3. KELOMPOK RUTE PANEL CMS ADMIN (DILINDUNGI PENUH MIDDLEWARE)
