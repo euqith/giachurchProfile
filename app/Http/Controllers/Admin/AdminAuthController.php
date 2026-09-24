@@ -6,20 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Hash; // 👈 Pastikan baris ini di-import di paling atas controller!
+use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller
 {
     // Tampilkan Form Login
     public function showLogin()
     {
-    // 💡 JURUS ANTI-MENTAL: Jika user sudah login DAN dia adalah Admin/Fulltimer, langsung oper ke dashboard admin
-    if (auth()->check() && in_array(auth()->user()->role, ['admin', 'fulltimer'])) {
-        return redirect()->route('admin.dashboard');
-    }
+        // 💡 Ambil slug role user jika sedang login (Handling Object Role / String)
+        if (auth()->check()) {
+            $userRole = auth()->user()->role->slug ?? auth()->user()->role;
+            
+            if (in_array($userRole, ['admin', 'fulltimer', 'pendeta'])) {
+                return redirect()->route('admin.dashboard');
+            }
+        }
 
-    // Jika belum login, tampilkan halaman login seperti biasa
-    return view('admin.auth.login');
+        // Jika belum login, tampilkan halaman login seperti biasa
+        return view('admin.auth.login');
     }
 
     // Proses Autentikasi Login
@@ -34,9 +38,14 @@ class AdminAuthController extends Controller
         if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             $request->session()->regenerate();
 
-            // Cek apakah user memiliki hak akses CMS (bukan jemaat biasa)
-            if (in_array(Auth::user()->role, ['admin', 'fulltimer'])) {
-                return redirect()->intended(route('admin.dashboard')); // 👈 Redirect aman ke /admin/dashboard
+            $user = Auth::user();
+            // 💡 Cek slug role dari relasi Role model
+            $userRole = $user->role->slug ?? $user->role;
+
+            // Cek apakah user memiliki hak akses CMS
+            if (in_array($userRole, ['admin', 'fulltimer', 'pendeta'])) {
+                // Paksa redirect langsung ke route nama tanpa membawa jejak session intended lama
+                return redirect()->route('admin.dashboard');
             }
 
             // Jika jemaat biasa mencoba masuk, logout otomatis
@@ -50,20 +59,19 @@ class AdminAuthController extends Controller
     }
 
     // Proses Logout Admin
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+public function logout(Request $request)
+{
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login')->with('success', 'Anda telah berhasil keluar sistem.');
-    }
+    // Gunakan redirect ke URL /admin secara eksplisit agar aman di lokal maupun server
+    return redirect('/admin')->with('success', 'Anda telah berhasil keluar sistem.');
+}
 
-    // Proses Ganti Password Mandiri oleh User yang Sedang Login
-// Proses Ganti Password Mandiri oleh User yang Sedang Login
+    // Proses Ganti Password Mandiri
     public function updatePassword(Request $request)
     {
-        // 1. Validasi Super Ketat dengan Pesan Kustom
         $request->validate([
             'current_password' => ['required', 'string', 'current_password'], 
             'password'         => ['required', 'string', 'min:8', 'confirmed'], 
@@ -73,13 +81,9 @@ class AdminAuthController extends Controller
             'password.min'                      => 'Password baru minimal harus 8 karakter.',
         ]);
 
-        // 2. Ambil data user yang sedang login saat ini
         $user = Auth::user();
-        
-        // 3. Ubah properti password secara langsung dengan enkripsi Hash baru
         $user->password = Hash::make($request->password);
         
-        // 4. Paksa simpan ke database menggunakan save()
         if ($user->save()) {
             return back()->with('success', 'Password Anda telah berhasil diperbarui!');
         }
