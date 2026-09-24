@@ -10,13 +10,15 @@ class Cabang extends Model
 {
     use HasFactory;
 
-    // Pastikan nama tabelnya sesuai dengan database kamu (biasanya 'cabangs' atau 'cabang')
     protected $table = 'cabangs'; 
 
     protected $fillable = [
         'nama_cabang',
-        'lokasi_cabang',
-        // tambahkan kolom lain milik tabel cabangmu di sini jika ada
+        'lokasi',
+        'createdBy',
+        'updatedBy',
+        'isActive',
+        'isDelete',
     ];
 
     /**

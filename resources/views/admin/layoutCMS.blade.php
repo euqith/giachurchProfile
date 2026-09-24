@@ -65,15 +65,78 @@
             </a>
           </li>
 
+          <!-- 📊 MENU ABSENSI (DI BAWAH KELOLA WARTA & DI ATAS MASTER DATA) -->
           <li class="menu-item">
             <a href="javascript:void(0)" data-fc-type="collapse"
-              class="menu-link {{ request()->routeIs('admin.users.*') ? 'open' : '' }}">
+              class="menu-link {{ request()->routeIs('admin.attendance.*') ? 'open' : '' }}">
+              <span class="menu-icon"><i class="ri-checkbox-circle-line"></i></span>
+              <span class="menu-text"> Absensi </span>
+              <span class="menu-arrow"></span>
+            </a>
+
+            <ul class="sub-menu {{ request()->routeIs('admin.attendance.*') ? '' : 'hidden' }}">
+              <!-- 1. Input Kehadiran -->
+              <li class="menu-item">
+                <a href="{{ route('admin.attendance.input') }}"
+                  class="menu-link {{ request()->routeIs('admin.attendance.input') ? 'active' : '' }}">
+                  <span class="menu-text"> Input Kehadiran </span>
+                </a>
+              </li>
+
+              <!-- 2. Riwayat Sesi Ibadah -->
+              <li class="menu-item">
+                <a href="{{ route('admin.attendance.history') }}"
+                  class="menu-link {{ request()->routeIs('admin.attendance.history') ? 'active' : '' }}">
+                  <span class="menu-text"> Riwayat Sesi Ibadah </span>
+                </a>
+              </li>
+
+              <!-- 3. Laporan -->
+              <li class="menu-item">
+                <a href="{{ route('admin.attendance.report') }}"
+                  class="menu-link {{ request()->routeIs('admin.attendance.report') ? 'active' : '' }}">
+                  <span class="menu-text"> Laporan </span>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- 💾 MENU MASTER DATA -->
+          <li class="menu-item">
+            <a href="javascript:void(0)" data-fc-type="collapse"
+              class="menu-link {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') ? 'open' : '' }}">
               <span class="menu-icon"><i class="ri-database-2-line"></i></span>
               <span class="menu-text"> Master Data </span>
               <span class="menu-arrow"></span>
             </a>
 
-            <ul class="sub-menu {{ request()->routeIs('admin.users.*') ? '' : 'hidden' }}">
+            <ul
+              class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') ? '' : 'hidden' }}">
+              <!-- 🏬 1. Kelola Cabang -->
+              <li class="menu-item">
+                <a href="{{ route('admin.cabang.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.cabang.*') ? 'active' : '' }}">
+                  <span class="menu-text"> Kelola Cabang </span>
+                </a>
+              </li>
+
+              <!-- ⛪ 2. Kelola Ibadah -->
+              <li class="menu-item">
+                <a href="{{ route('admin.ibadah.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.ibadah.*') ? 'active' : '' }}">
+                  <span class="menu-text"> Kelola Ibadah </span>
+                </a>
+              </li>
+
+              <!-- 👤 Kelola Jemaat -->
+              <li class="menu-item">
+                <a href="{{ route('admin.jemaat.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.jemaat.*') ? 'active' : '' }}">
+                  <span class="menu-text"> Kelola Jemaat </span>
+                </a>
+              </li>
+
+              <!-- 👤 3. Kelola Staf / Role -->
               <li class="menu-item">
                 <a href="{{ route('admin.users.index') }}"
                   class="menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">

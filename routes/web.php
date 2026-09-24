@@ -9,8 +9,11 @@ use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminWartaController;
 use App\Http\Controllers\Admin\AdminWartaSlideController;
 use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Admin\AdminAuthController; // 👈 Controller Auth Baru untuk Admin
-
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\CabangController;
+use App\Http\Controllers\Admin\JenisIbadahController;
+use App\Http\Controllers\Admin\JemaatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +28,7 @@ Route::get('/event', [EventController::class, 'index'])->name('event.index');
 
 // Jalur Halaman Khusus Buku Warta Jemaat Publik
 Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +47,7 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login'])->name('admin.l
 // Proses Keluar (Logout) Admin
 Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth');
 
+
 /*
 |--------------------------------------------------------------------------
 | 🏢 3. KELOMPOK RUTE PANEL CMS ADMIN (DILINDUNGI PENUH MIDDLEWARE)
@@ -59,22 +64,33 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     Route::resource('event', AdminEventController::class);
 
     // 📄 C. Manajemen CRUD Warta Jemaat Digital
-    // 1. Rute Utama Induk Warta (Tanpa halaman show mandiri)
     Route::resource('warta', AdminWartaController::class)->except(['show']);
-    
-    // 2. Fitur Saklar Aktif/Nonaktif Warta Utama
     Route::patch('/warta/{id}/toggle', [AdminWartaController::class, 'toggleActive'])->name('warta.toggle');
-    
-    // 3. Manajemen Lembaran Gambar/Slide Anak Warta
     Route::post('/warta/{warta_id}/slides/store', [AdminWartaSlideController::class, 'store'])->name('warta.slides.store');
     Route::delete('/warta/slides/{slide_id}', [AdminWartaSlideController::class, 'destroy'])->name('warta.slides.destroy');
-    
-    // 👥 D. Master Manajemen CRUD Pengguna (Staf Admin & Fulltimer)
-    // Dibatasi membuang rute show, create, dan edit karena semua memakai sistem Pop-up Modal terpadu.
+
+    // 📋 D. Modul Absensi Ibadah
+    Route::prefix('attendance')->name('attendance.')->group(function () {
+        Route::get('/input', [AttendanceController::class, 'input'])->name('input');
+        Route::get('/history', [AttendanceController::class, 'history'])->name('history');
+        Route::get('/report', [AttendanceController::class, 'report'])->name('report');
+    });
+
+    // 🏬 E. Master Data Cabang
+    Route::resource('cabang', CabangController::class)->except(['create', 'edit', 'show']);
+
+    // 👥 F. Master Data Pengguna / Staf Admin
     Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
 
-    // 🔐 Rute Khusus Staf untuk Mengubah Password Sendiri
-Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
+    // 🔐 G. Profile / Change Password
+    Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
+
+    // ⛪ Master Data Jenis Ibadah
+    Route::resource('ibadah', JenisIbadahController::class)->except(['create', 'edit', 'show']);
+
+    // 👥 Master Data Jemaat
+    Route::resource('jemaat', JemaatController::class)->except(['create', 'edit', 'show']);
+
 });
 
 
@@ -82,6 +98,5 @@ Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])
 |--------------------------------------------------------------------------
 | ⛵ 4. AUTENTIKASI BAWAAN LARAVEL BREEZE
 |--------------------------------------------------------------------------
-| Jalur bawaan tetap diletakkan di paling bawah agar tidak mengganggu rute kustom.
 */
 require __DIR__.'/auth.php';
