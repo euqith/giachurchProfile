@@ -38,8 +38,9 @@ Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 // Kita lepas middleware ['guest'] agar controller bisa mengatur redirect secara pintar
 
 // Tampilkan Halaman Form Login Khusus Admin
+// Tangkap /admin dan /admin/ sekaligus
 Route::get('/admin', [AdminAuthController::class, 'showLogin'])->name('admin.login');
-
+Route::get('/admin/', [AdminAuthController::class, 'showLogin']);
 // Proses Validasi & Submit Login Admin
 Route::post('/admin', [AdminAuthController::class, 'login'])->name('admin.login.submit');
 
