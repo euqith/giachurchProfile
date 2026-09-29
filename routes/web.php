@@ -35,7 +35,7 @@ Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 | 🔐 2. JALUR GERBANG AUTENTIKASI ADMIN CMS (/adminlogin)
 |--------------------------------------------------------------------------
 */
-// 💡 Redirect otomatis dari /admin atau /admin/ ke /adminlogin
+// Redirect otomatis dari /admin atau /admin/ ke /adminlogin
 Route::redirect('/admin', '/adminlogin', 301);
 
 // Tampilkan Halaman Form Login Khusus Admin
@@ -52,12 +52,10 @@ Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name(
 |--------------------------------------------------------------------------
 | 🏢 3. KELOMPOK RUTE PANEL CMS ADMIN (DILINDUNGI PENUH MIDDLEWARE)
 |--------------------------------------------------------------------------
-| Semua rute di dalam grup ini otomatis memiliki prefix URL '/admin/...'
-| dan nama rute berawalan 'admin....'
 */
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->group(function () {
     
-    // 📊 A. Main Dashboard Panel (Diakses via /admin/dashboard)
+    // 📊 A. Main Dashboard Panel
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // 📅 B. Manajemen CRUD Event Gereja
@@ -72,24 +70,27 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     // 📋 D. Modul Absensi Ibadah
     Route::prefix('attendance')->name('attendance.')->group(function () {
         Route::get('/input', [AttendanceController::class, 'input'])->name('input');
+        Route::get('/get-draft', [AttendanceController::class, 'getSessionDraft'])->name('get-draft');
+        Route::post('/store', [AttendanceController::class, 'store'])->name('store');
         Route::get('/history', [AttendanceController::class, 'history'])->name('history');
+        Route::get('/history/{id}', [AttendanceController::class, 'show'])->name('show');
         Route::get('/report', [AttendanceController::class, 'report'])->name('report');
     });
 
     // 🏬 E. Master Data Cabang
     Route::resource('cabang', CabangController::class)->except(['create', 'edit', 'show']);
 
-    // 👥 F. Master Data Pengguna / Staf Admin
-    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
-
-    // 🔐 G. Profile / Change Password
-    Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
-
-    // ⛪ Master Data Jenis Ibadah
+    // ⛪ F. Master Data Jenis Ibadah
     Route::resource('ibadah', JenisIbadahController::class)->except(['create', 'edit', 'show']);
 
-    // 👥 Master Data Jemaat
+    // 👥 G. Master Data Jemaat
     Route::resource('jemaat', JemaatController::class)->except(['create', 'edit', 'show']);
+
+    // 👤 H. Master Data Pengguna / Staf Admin
+    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
+
+    // 🔐 I. Profile / Change Password
+    Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
 
 });
 

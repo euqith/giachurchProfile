@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
         CabangSeeder::class,
         EventSeeder::class,
+        AdminUserSeeder::class,
+        JenisIbadahSeeder::class,
     ]);
     }
 }
