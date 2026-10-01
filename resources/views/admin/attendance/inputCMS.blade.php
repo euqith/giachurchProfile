@@ -9,10 +9,11 @@
         <i class="ri-calendar-event-line text-blue-600"></i> Sesi Ibadah
       </h5>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
         <div>
           <label class="block font-semibold text-slate-600 mb-1.5">Tanggal</label>
-          <input type="date" id="session-date" value="{{ date('Y-m-d') }}" onchange="updateSessionInfo()"
+          <input type="date" id="session-date" value="{{ \Carbon\Carbon::now('Asia/Jakarta')->format('Y-m-d') }}"
+            onchange="updateSessionInfo()"
             class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:border-blue-600 bg-white">
         </div>
 
@@ -23,6 +24,17 @@
             <option value="" disabled selected>-- Pilih Jenis Ibadah --</option>
             @foreach ($jenisIbadahs ?? [] as $ibadah)
               <option value="{{ $ibadah->nama_ibadah }}">{{ $ibadah->nama_ibadah }}</option>
+            @endforeach
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-600 mb-1.5">Sesi Waktu</label>
+          <select id="session-waktu" name="nama_sesi" onchange="updateSessionInfo()"
+            class="w-full border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-800 outline-none focus:border-blue-600 bg-white">
+            <option value="" selected>-- Pilih Sesi (Opsional) --</option>
+            @foreach ($sesis ?? [] as $s)
+              <option value="{{ $s->nama_sesi }}">Sesi {{ $s->nama_sesi }}</option>
             @endforeach
           </select>
         </div>
@@ -115,7 +127,7 @@
 
         <!-- Running Session Info Text -->
         <div id="session-info-text" class="text-xs text-slate-400 font-medium text-right">
-          Jumat, 25 Sep 2026 • Ibadah Umum @ Darmo Pagi
+          Selasa, 29 Sep 2026 • Ibadah Umum @ Darmo Pagi
         </div>
       </div>
 
@@ -202,6 +214,7 @@
     // Elemen Form Sesi
     const sessionDateInput = document.getElementById('session-date');
     const sessionIbadahSelect = document.getElementById('session-ibadah');
+    const sessionSesiSelect = document.getElementById('session-waktu');
     const sessionLokasiSelect = document.getElementById('session-lokasi');
     const sessionPetugasInput = document.getElementById('session-petugas');
 
@@ -222,8 +235,9 @@
     function getSessionKey() {
       const date = sessionDateInput.value || 'nodate';
       const ibadah = sessionIbadahSelect.value || 'noibadah';
+      const sesi = sessionSesiSelect ? sessionSesiSelect.value : '';
       const lokasi = sessionLokasiSelect.value || 'nolokasi';
-      return `attendance_draft_${date}_${ibadah}_${lokasi}`;
+      return `attendance_draft_${date}_${ibadah}_${sesi}_${lokasi}`;
     }
 
     function saveSessionState() {
@@ -231,23 +245,25 @@
       const sessionMeta = {
         date: sessionDateInput.value,
         ibadah: sessionIbadahSelect.value,
+        sesi: sessionSesiSelect ? sessionSesiSelect.value : '',
         lokasi: sessionLokasiSelect.value
       };
       localStorage.setItem('active_attendance_session_meta', JSON.stringify(sessionMeta));
 
-      // Simpan daftar jemaat spesifik untuk kombinasi (Tanggal + Jenis Ibadah + Lokasi)
+      // Simpan daftar jemaat spesifik untuk kombinasi (Tanggal + Jenis Ibadah + Sesi + Lokasi)
       const key = getSessionKey();
       localStorage.setItem(key, JSON.stringify(presentList));
     }
 
     function restoreSavedSession() {
-      // A. Load Pilihan Sesi Terakhir (Tanggal, Jenis Ibadah, Lokasi)
+      // A. Load Pilihan Sesi Terakhir
       try {
         const savedMeta = localStorage.getItem('active_attendance_session_meta');
         if (savedMeta) {
           const meta = JSON.parse(savedMeta);
           if (meta.date) sessionDateInput.value = meta.date;
           if (meta.ibadah) sessionIbadahSelect.value = meta.ibadah;
+          if (meta.sesi && sessionSesiSelect) sessionSesiSelect.value = meta.sesi;
           if (meta.lokasi) sessionLokasiSelect.value = meta.lokasi;
         }
       } catch (e) {
@@ -277,15 +293,16 @@
         console.error("Gagal baca LocalStorage:", e);
       }
 
-      // 2. Jika LocalStorage kosong, tarik data dari Database (jika sesi ini sudah pernah disimpan)
+      // 2. Jika LocalStorage kosong, tarik data dari Database MySQL
       const dateVal = sessionDateInput.value;
       const ibadahVal = sessionIbadahSelect.value;
+      const sesiVal = sessionSesiSelect ? sessionSesiSelect.value : '';
       const lokasiVal = sessionLokasiSelect.value;
 
       if (dateVal && ibadahVal && lokasiVal) {
         fetch(
-            `{{ route('admin.attendance.get-draft') }}?date=${dateVal}&ibadah=${encodeURIComponent(ibadahVal)}&lokasi=${encodeURIComponent(lokasiVal)}`
-          )
+            `{{ route('admin.attendance.get-draft') }}?date=${dateVal}&ibadah=${encodeURIComponent(ibadahVal)}&sesi=${encodeURIComponent(sesiVal)}&lokasi=${encodeURIComponent(lokasiVal)}`
+            )
           .then(res => res.json())
           .then(data => {
             if (data.success && data.details && data.details.length > 0) {
@@ -315,6 +332,7 @@
     function updateSessionInfoTextOnly() {
       const dateVal = sessionDateInput.value;
       const ibadahVal = sessionIbadahSelect.value || 'Ibadah Umum';
+      const sesiVal = sessionSesiSelect && sessionSesiSelect.value ? ` (${sessionSesiSelect.value})` : '';
       const lokasiVal = sessionLokasiSelect.value || 'Darmo Pagi';
 
       if (dateVal) {
@@ -326,11 +344,11 @@
           day: 'numeric'
         };
         const formattedDate = dateObj.toLocaleDateString('id-ID', options);
-        sessionInfoText.textContent = `${formattedDate} • ${ibadahVal} @ ${lokasiVal}`;
+        sessionInfoText.textContent = `${formattedDate} • ${ibadahVal}${sesiVal} @ ${lokasiVal}`;
       }
     }
 
-    // Event Listener saat Tanggal, Jenis Ibadah, atau Lokasi diganti
+    // Event Listener saat Tanggal, Jenis Ibadah, Sesi, atau Lokasi diganti
     function updateSessionInfo() {
       updateSessionInfoTextOnly();
       loadAttendanceForCurrentSession();
@@ -351,7 +369,7 @@
         const matchAlias1 = j.alias_1 && j.alias_1.toLowerCase().includes(query);
         const matchAlias2 = j.alias_2 && j.alias_2.toLowerCase().includes(query);
         const matchKeluarga = j.keluarga && j.keluarga.toLowerCase().includes(query);
-        const notAddedYet = !presentList.some(p => p.id === j.id);
+        const notAddedYet = !presentList.some(p => String(p.id) === String(j.id));
         return (matchName || matchAlias1 || matchAlias2 || matchKeluarga) && notAddedYet;
       });
 
@@ -364,7 +382,7 @@
         const query = this.value.trim();
         if (query.length > 0) {
           const firstMatch = masterJemaat.find(j =>
-            !presentList.some(p => p.id === j.id) &&
+            !presentList.some(p => String(p.id) === String(j.id)) &&
             (j.nama_asli.toLowerCase().includes(query.toLowerCase()) ||
               (j.alias_1 && j.alias_1.toLowerCase().includes(query.toLowerCase())))
           );
@@ -437,13 +455,8 @@
     }
 
     function removePerson(id) {
-      // Gunakan perbandingan kendor (== / String(p.id) === String(id)) agar aman untuk tipe Number maupun String
       presentList = presentList.filter(p => String(p.id) !== String(id));
-
-      // Simpan perubahan langsung ke LocalStorage
       saveSessionState();
-
-      // Re-render tampilan UI
       updateAttendanceListUI();
     }
 
@@ -475,12 +488,11 @@
         let aliases = [item.alias_1, item.alias_2].filter(Boolean).join(' / ');
         let subtext = [aliases, item.cabang?.nama_cabang || 'Darmo'].filter(Boolean).join(' · ');
 
-        // Escape ID agar aman dari karakter khusus
         const itemId = String(item.id).replace(/'/g, "\\'");
 
         const row = document.createElement('div');
         row.className =
-        'attendance-row px-5 py-3.5 flex items-center justify-between hover:bg-slate-50/70 transition';
+          'attendance-row px-5 py-3.5 flex items-center justify-between hover:bg-slate-50/70 transition';
         row.innerHTML = `
             <div class="flex items-center gap-4">
                 <span class="text-xs text-slate-400 font-medium w-4">${presentList.length - index}.</span>
@@ -511,11 +523,11 @@
         _token: '{{ csrf_token() }}',
         tanggal: sessionDateInput.value,
         nama_ibadah: sessionIbadahSelect.value || 'Ibadah Umum',
+        nama_sesi: sessionSesiSelect ? sessionSesiSelect.value : '',
         nama_cabang: sessionLokasiSelect.value || 'Darmo Pagi',
         present_list: presentList
       };
 
-      // Kirim data ke Database Laravel via AJAX
       fetch('{{ route('admin.attendance.store') }}', {
           method: 'POST',
           headers: {
@@ -527,10 +539,7 @@
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            // Tetap simpan state lokal agar daftar nama tidak hilang di layar
             saveSessionState();
-
-            // Tampilkan Modal Ringkasan WA
             generateWAText();
             document.getElementById('waReportModal').style.display = 'flex';
           } else {
@@ -550,6 +559,7 @@
     function generateWAText() {
       const dateVal = sessionDateInput.value;
       const ibadahVal = sessionIbadahSelect.value || 'Ibadah Umum';
+      const sesiVal = sessionSesiSelect && sessionSesiSelect.value ? ` (${sessionSesiSelect.value})` : '';
       const lokasiVal = sessionLokasiSelect.value || 'Darmo Pagi';
       const petugasVal = sessionPetugasInput.value || 'Administrator';
       const includeNames = document.getElementById('toggle-include-names').checked;
@@ -571,7 +581,7 @@
 
       let text = `*Laporan Kehadiran - Gereja Isa Almasih Surabaya*\n`;
       text += `Tanggal: ${formattedDate}\n`;
-      text += `Ibadah: ${ibadahVal} - ${lokasiVal}\n`;
+      text += `Ibadah: ${ibadahVal}${sesiVal} - ${lokasiVal}\n`;
       text += `Total Hadir: *${presentList.length} orang* (${anggotaCount} anggota, ${tamuCount} tamu)\n`;
       text += `Petugas: ${petugasVal}`;
 

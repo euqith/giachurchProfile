@@ -12,6 +12,7 @@ class AttendanceSession extends Model
         'tanggal',
         'jenis_ibadah_id',
         'nama_ibadah',
+        'nama_sesi',
         'cabang_id',
         'nama_cabang',
         'nama_petugas',

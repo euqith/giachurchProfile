@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\CabangController;
 use App\Http\Controllers\Admin\JenisIbadahController;
 use App\Http\Controllers\Admin\JemaatController;
+use App\Http\Controllers\Admin\SesiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
 
     // 🔐 I. Profile / Change Password
     Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
+    Route::resource('sesi', SesiController::class)->except(['create', 'edit', 'show']);
+
+    // Masukkan di dalam grup admin:
+    Route::resource('sesi', SesiController::class)->except(['create', 'edit', 'show']);
+    Route::patch('/sesi/{id}/toggle', [SesiController::class, 'toggleActive'])->name('sesi.toggle');
 
 });
 

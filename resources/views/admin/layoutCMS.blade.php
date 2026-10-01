@@ -127,6 +127,13 @@
                   <span class="menu-text"> Kelola Ibadah </span>
                 </a>
               </li>
+              <!-- Submenu Master Sesi -->
+              <li class="menu-item">
+                <a href="{{ route('admin.sesi.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.sesi.*') ? 'active' : '' }}">
+                  <span class="menu-text"> Kelola Sesi </span>
+                </a>
+              </li>
 
               <!-- 👤 Kelola Jemaat -->
               <li class="menu-item">
