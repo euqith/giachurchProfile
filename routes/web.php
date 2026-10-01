@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\JenisIbadahController;
 use App\Http\Controllers\Admin\JemaatController;
 use App\Http\Controllers\Admin\SesiController;
 
+
 /*
 |--------------------------------------------------------------------------
 | 🌐 1. JALUR HALAMAN UTAMA (FRONTEND / PUBLIK)
@@ -97,6 +98,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     // Masukkan di dalam grup admin:
     Route::resource('sesi', SesiController::class)->except(['create', 'edit', 'show']);
     Route::patch('/sesi/{id}/toggle', [SesiController::class, 'toggleActive'])->name('sesi.toggle');
+
+    // Master Jemaat Routes
+    Route::get('/jemaat/export', [JemaatController::class, 'export'])->name('jemaat.export');
+    Route::post('/jemaat/import', [JemaatController::class, 'import'])->name('jemaat.import');
+    Route::get('/jemaat/template', [JemaatController::class, 'downloadTemplate'])->name('jemaat.template');
+    Route::resource('jemaat', JemaatController::class)->except(['create', 'edit', 'show']);
 
 });
 

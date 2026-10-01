@@ -28,6 +28,18 @@
       </script>
     @endif
 
+    <!-- Flash Message Error -->
+    @if (session('error'))
+      <div id="flash-error-alert"
+        class="px-4 py-3 rounded-xl text-sm font-semibold flex items-center justify-between shadow-lg bg-rose-600 text-white border border-rose-700">
+        <div class="flex items-center gap-2">
+          <i class="ri-error-warning-line text-lg"></i>
+          <span>{{ session('error') }}</span>
+        </div>
+        <button type="button" onclick="this.parentElement.remove()" class="text-white font-bold leading-none">✕</button>
+      </div>
+    @endif
+
     <!-- Header Title -->
     <div>
       <h1 class="text-xl font-bold text-slate-800">Kelola Jemaat</h1>
@@ -59,7 +71,7 @@
       <div class="flex flex-wrap items-center gap-2 justify-between xl:justify-end w-full xl:w-auto">
 
         <div class="flex flex-wrap items-center gap-2">
-          <!-- Filter Status (Lebih Lebar & Bebas Bertabrakan) -->
+          <!-- Filter Status -->
           <form method="GET" action="{{ route('admin.jemaat.index') }}" id="filterStatusForm" class="shrink-0">
             <input type="hidden" name="search" value="{{ request('search') }}">
             <select name="status" onchange="document.getElementById('filterStatusForm').submit()"
@@ -70,29 +82,29 @@
             </select>
           </form>
 
-          <!-- Ekspor CSV -->
-          <button type="button"
+          <!-- Ekspor .XLSX -->
+          <a href="{{ route('admin.jemaat.export') }}"
             class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition active:scale-95">
-            <i class="ri-download-2-line text-slate-500 text-sm"></i>
-            <span>Ekspor CSV</span>
-          </button>
+            <i class="ri-download-2-line text-blue-600 text-sm"></i>
+            <span>Export .XLSX</span>
+          </a>
 
-          <!-- Template -->
-          <button type="button"
+          <!-- Download Template .XLSX -->
+          <a href="{{ route('admin.jemaat.template') }}"
             class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition active:scale-95">
-            <i class="ri-file-text-line text-slate-500 text-sm"></i>
+            <i class="ri-file-excel-2-line text-emerald-600 text-sm"></i>
             <span>Template</span>
-          </button>
+          </a>
 
           <!-- Impor Excel/CSV -->
-          <button type="button"
+          <button type="button" onclick="document.getElementById('importJemaatModal').style.display='flex'"
             class="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition active:scale-95">
             <i class="ri-upload-2-line text-slate-500 text-sm"></i>
             <span>Impor Excel/CSV</span>
           </button>
         </div>
 
-        <!-- Tambah Anggota (Warna Biru Menyala di Ujung Kanan) -->
+        <!-- Tambah Anggota -->
         <button type="button" onclick="document.getElementById('addJemaatModal').style.display='flex'"
           style="background-color: #2563eb !important; color: #ffffff !important;"
           class="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl hover:bg-blue-700 text-white text-xs font-bold shadow-md hover:shadow-lg transition active:scale-95 ml-auto xl:ml-0">
@@ -150,11 +162,11 @@
                     <span class="text-slate-400">-</span>
                   @endif
                 </td>
-                <td class="p-3.5 text-slate-600">{{ $item->cabang->nama_cabang ?? '-' }}</td>
+                <td class="p-3.5 text-slate-600">{{ $item->cabang->nama_cabang ?? ($item->wilayah_ibadah ?? '-') }}</td>
                 <td class="p-3.5 text-slate-600 max-w-xs truncate">{{ $item->alamat ?? '-' }}</td>
                 <td class="p-3.5 text-slate-600">{{ $item->tempat_lahir ?? '-' }}</td>
                 <td class="p-3.5 text-slate-600">
-                  {{ $item->tgl_lahir ? $item->tgl_lahir->format('j M Y') : '-' }}
+                  {{ $item->tanggal_lahir ? date('j M Y', strtotime($item->tanggal_lahir)) : ($item->tgl_lahir ? $item->tgl_lahir->format('j M Y') : '-') }}
                 </td>
                 <td class="p-3.5 text-slate-600">{{ $item->telepon ?? '-' }}</td>
                 <td class="p-3.5 text-center">
@@ -185,6 +197,46 @@
 
   </div>
 
+  <!-- MODAL IMPORT EXCEL / CSV -->
+  <div id="importJemaatModal"
+    style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: none; align-items: center; justify-content: center;">
+    <div class="bg-white p-6 rounded-2xl w-full max-w-md shadow-2xl mx-4">
+      <div class="flex justify-between items-center mb-1 pb-2">
+        <h3 class="font-bold text-slate-900 text-lg">Impor Data Jemaat</h3>
+        <button type="button" onclick="document.getElementById('importJemaatModal').style.display='none'"
+          class="text-slate-400 hover:text-slate-600 font-bold text-lg">✕</button>
+      </div>
+      <p class="text-xs text-slate-500 mb-4">Unggah file format .xlsx / .xls / .csv sesuai template.</p>
+
+      <form action="{{ route('admin.jemaat.import') }}" method="POST" enctype="multipart/form-data"
+        class="space-y-4 text-xs">
+        @csrf
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1.5">Pilih File Excel / CSV *</label>
+          <input type="file" name="file" accept=".xlsx, .xls, .csv" required
+            class="w-full border border-slate-300 rounded-xl px-3 py-2 text-slate-700 outline-none focus:border-blue-600 bg-slate-50">
+        </div>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-slate-600 space-y-1">
+          <p class="font-bold text-blue-900">Petunjuk Format:</p>
+          <p>Pastikan nama kolom sesuai template (Nama Asli, Alias 1, Alias 2, Wilayah Ibadah, Alamat, dll).</p>
+          <a href="{{ route('admin.jemaat.template') }}"
+            class="text-blue-700 font-bold underline inline-flex items-center gap-1 mt-1">
+            <i class="ri-download-line"></i> Download Template Excel (.xlsx)
+          </a>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 mt-6">
+          <button type="button" onclick="document.getElementById('importJemaatModal').style.display='none'"
+            class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:bg-slate-50 transition">Batal</button>
+          <button type="submit" style="background-color: #059669 !important; color: #ffffff !important;"
+            class="px-6 py-2.5 rounded-xl hover:bg-emerald-700 text-white font-semibold transition shadow-md">Upload &
+            Import</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL TAMBAH ANGGOTA -->
   <div id="addJemaatModal"
     style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: none; align-items: center; justify-content: center;">
@@ -200,19 +252,19 @@
         @csrf
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Nama Asli *</label>
-          <input type="text" name="nama_asli" placeholder="" required
+          <input type="text" name="nama_asli" required
             class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600 text-sm">
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Alias 1</label>
-            <input type="text" name="alias_1" placeholder=""
+            <input type="text" name="alias_1"
               class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Alias 2</label>
-            <input type="text" name="alias_2" placeholder=""
+            <input type="text" name="alias_2"
               class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
           </div>
         </div>
@@ -240,34 +292,32 @@
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Alamat</label>
-          <input type="text" name="alamat" placeholder=""
+          <input type="text" name="alamat"
             class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Tempat Lahir</label>
-            <input type="text" name="tempat_lahir" placeholder=""
+            <input type="text" name="tempat_lahir"
               class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Tanggal Lahir</label>
-            <input type="date" name="tgl_lahir"
+            <input type="date" name="tanggal_lahir"
               class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
           </div>
         </div>
 
         <div>
           <label class="block font-semibold text-slate-700 mb-1">Telepon</label>
-          <input type="text" name="telepon" placeholder=""
+          <input type="text" name="telepon"
             class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
         </div>
 
-        <!-- Input Keluarga Autocomplete dari Datalist -->
         <div>
           <label class="block font-semibold text-slate-700 mb-1">
-            Keluarga <span class="text-slate-400 font-normal">(mis. "Kel. Augusta" - untuk tap satu keluarga di Mode
-              Sentuh)</span>
+            Keluarga <span class="text-slate-400 font-normal">(mis. "Kel. Augusta")</span>
           </label>
           <input type="text" name="keluarga" list="list-keluarga" placeholder="Ketik atau pilih nama keluarga"
             autocomplete="off" class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
@@ -350,7 +400,7 @@
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Tanggal Lahir</label>
-            <input type="date" id="edit_tgl_lahir" name="tgl_lahir"
+            <input type="date" id="edit_tanggal_lahir" name="tanggal_lahir"
               class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
           </div>
         </div>
@@ -361,11 +411,9 @@
             class="w-full border border-slate-300 rounded-xl p-3 outline-none focus:border-blue-600">
         </div>
 
-        <!-- Input Keluarga Edit Autocomplete -->
         <div>
           <label class="block font-semibold text-slate-700 mb-1">
-            Keluarga <span class="text-slate-400 font-normal">(mis. "Kel. Augusta" - untuk tap satu keluarga di Mode
-              Sentuh)</span>
+            Keluarga <span class="text-slate-400 font-normal">(mis. "Kel. Augusta")</span>
           </label>
           <input type="text" id="edit_keluarga" name="keluarga" list="list-keluarga"
             placeholder="Ketik atau pilih nama keluarga" autocomplete="off"
@@ -382,7 +430,7 @@
     </div>
   </div>
 
-  <!-- Datalist Referensi Nama Keluarga dari Database -->
+  <!-- Datalist Referensi Nama Keluarga -->
   <datalist id="list-keluarga">
     @foreach ($keluargas ?? [] as $kel)
       <option value="{{ $kel }}">
@@ -393,14 +441,17 @@
     function editJemaat(jemaat) {
       document.getElementById('editJemaatForm').action = "/admin/jemaat/" + jemaat.id;
       document.getElementById('edit_nama_asli').value = jemaat.nama_asli;
-      document.getElementById('edit_status').value = jemaat.status;
+      document.getElementById('edit_status').value = jemaat.status || 'Anggota';
       document.getElementById('edit_alias_1').value = jemaat.alias_1 || '';
       document.getElementById('edit_alias_2').value = jemaat.alias_2 || '';
       document.getElementById('edit_keluarga').value = jemaat.keluarga || '';
       document.getElementById('edit_cabang_id').value = jemaat.cabang_id || '';
       document.getElementById('edit_alamat').value = jemaat.alamat || '';
       document.getElementById('edit_tempat_lahir').value = jemaat.tempat_lahir || '';
-      document.getElementById('edit_tgl_lahir').value = jemaat.tgl_lahir ? jemaat.tgl_lahir.split('T')[0] : '';
+
+      const rawDate = jemaat.tanggal_lahir || jemaat.tgl_lahir;
+      document.getElementById('edit_tanggal_lahir').value = rawDate ? rawDate.split('T')[0] : '';
+
       document.getElementById('edit_telepon').value = jemaat.telepon || '';
       document.getElementById('editJemaatModal').style.display = 'flex';
     }

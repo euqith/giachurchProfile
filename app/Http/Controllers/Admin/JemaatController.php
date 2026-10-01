@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Jemaat;
 use App\Models\Cabang;
+use App\Exports\JemaatExport;
+use App\Imports\JemaatImport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JemaatController extends Controller
 {
-   public function index(Request $request)
+    // Halaman Master Jemaat
+    public function index(Request $request)
     {
         $query = Jemaat::with('cabang')->where('isDelete', 0);
 
-        // Filter Pencarian
+        // Filter Search (Nama, Alias, Keluarga, Alamat)
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -26,87 +29,45 @@ class JemaatController extends Controller
             });
         }
 
-        // Filter Status
-        if ($request->filled('status') && $request->status != 'semua') {
+        // Filter Status (Anggota / Tamu)
+        if ($request->filled('status') && $request->status !== 'semua') {
             $query->where('status', $request->status);
         }
 
-        $jemaats = $query->orderBy('id', 'desc')->get();
-        $cabangs = Cabang::where('isDelete', 0)->where('isActive', 1)->get();
+        $jemaats = $query->orderBy('nama_asli', 'asc')->get();
 
-        // 👈 Ambil daftar nama keluarga unik dari database yang tidak null
-        $keluargas = Jemaat::where('isDelete', 0)
-                            ->whereNotNull('keluarga')
-                            ->where('keluarga', '!=', '')
-                            ->distinct()
-                            ->pluck('keluarga');
+        // Ambil Data Cabang & Unique List Keluarga untuk Dropdown & Datalist Modal
+        $cabangs = Cabang::where('isDelete', 0)->where('isActive', 1)->orderBy('nama_cabang', 'asc')->get();
+        $keluargas = Jemaat::where('isDelete', 0)->whereNotNull('keluarga')->where('keluarga', '!=', '')->distinct()->pluck('keluarga');
 
         return view('admin.masterdata.jemaatCMS', compact('jemaats', 'cabangs', 'keluargas'));
     }
 
-    public function store(Request $request)
+    // Export Data Jemaat ke File .xlsx
+    public function export()
     {
-        $request->validate([
-            'nama_asli'    => 'required|string|max:255',
-            'status'       => 'required|string',
-            'cabang_id'    => 'nullable|exists:cabangs,id',
-            'telepon'      => 'nullable|string|max:20',
-        ]);
-
-        Jemaat::create([
-            'nama_asli'    => $request->nama_asli,
-            'status'       => $request->status,
-            'badge_tag'    => $request->badge_tag,
-            'alias_1'      => $request->alias_1,
-            'alias_2'      => $request->alias_2,
-            'keluarga'     => $request->keluarga,
-            'cabang_id'    => $request->cabang_id,
-            'alamat'       => $request->alamat,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tgl_lahir'    => $request->tgl_lahir,
-            'telepon'      => $request->telepon,
-            'createdBy'    => Auth::user()->name ?? 'Admin',
-            'isActive'     => 1,
-            'isDelete'     => 0,
-        ]);
-
-        return redirect()->back()->with('success', 'Data jemaat berhasil ditambahkan!');
+        $fileName = 'daftar-jemaat-' . date('Y-m-d') . '.xlsx';
+        return Excel::download(new JemaatExport, $fileName);
     }
 
-    public function update(Request $request, $id)
+    // Import Data Jemaat dari File .xlsx / .csv
+    public function import(Request $request)
     {
         $request->validate([
-            'nama_asli' => 'required|string|max:255',
-            'status'    => 'required|string',
+            'file' => 'required|mimes:xlsx,xls,csv|max:5120',
         ]);
 
-        $jemaat = Jemaat::findOrFail($id);
-        $jemaat->update([
-            'nama_asli'    => $request->nama_asli,
-            'status'       => $request->status,
-            'badge_tag'    => $request->badge_tag,
-            'alias_1'      => $request->alias_1,
-            'alias_2'      => $request->alias_2,
-            'keluarga'     => $request->keluarga,
-            'cabang_id'    => $request->cabang_id,
-            'alamat'       => $request->alamat,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tgl_lahir'    => $request->tgl_lahir,
-            'telepon'      => $request->telepon,
-            'updatedBy'    => Auth::user()->name ?? 'Admin',
-        ]);
-
-        return redirect()->back()->with('success', 'Data jemaat berhasil diperbarui!');
+        try {
+            Excel::import(new JemaatImport, $request->file('file'));
+            return redirect()->back()->with('success', 'Data jemaat berhasil di-import!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal memproses file: ' . $e->getMessage());
+        }
     }
 
-    public function destroy($id)
+    // Download Template Excel .xlsx
+    public function downloadTemplate()
     {
-        $jemaat = Jemaat::findOrFail($id);
-        $jemaat->update([
-            'isDelete'  => 1,
-            'updatedBy' => Auth::user()->name ?? 'Admin',
-        ]);
-
-        return redirect()->back()->with('success', 'Data jemaat berhasil dihapus!');
+        return Excel::download(new JemaatExport, 'template-jemaat.xlsx');
     }
 }
