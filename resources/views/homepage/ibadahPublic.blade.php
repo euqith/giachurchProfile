@@ -7,7 +7,11 @@
   <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @if (file_exists(public_path('build/manifest.json')))
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @else
+    <script src="https://cdn.tailwindcss.com"></script>
+  @endif
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white"
   x-data="publicScheduleApp({
