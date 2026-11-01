@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Warta;      // Model Induk
 use App\Models\WartaSlide; // Model Anak
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File; // Facade pendukung manajemen file sistem
 
 class AdminWartaSlideController extends Controller
@@ -18,14 +17,14 @@ class AdminWartaSlideController extends Controller
     {
         // Eager Loading: Mengambil warta beserta slide-slide anaknya sekaligus
         $warta = Warta::with('slides')->findOrFail($wartaId);
-        
+
         return view('admin.warta.slides', compact('warta'));
     }
 
     /**
      * Menangani proses multi-upload banyak gambar lembaran warta
      */
-   public function store(Request $request, $wartaId)
+    public function store(Request $request, $wartaId)
     {
         // 1. Validasi: Wajib PDF
         $request->validate([
@@ -37,8 +36,10 @@ class AdminWartaSlideController extends Controller
         // 2. Cek & Hapus file lama jika ada
         $existingSlide = WartaSlide::where('warta_id', $wartaId)->first();
         if ($existingSlide) {
-            $fileLama = public_path('img/admin/wartas/' . $existingSlide->file_gambar);
-            if (File::exists($fileLama)) File::delete($fileLama);
+            $fileLama = public_path('img/admin/wartas/'.$existingSlide->file_gambar);
+            if (File::exists($fileLama)) {
+                File::delete($fileLama);
+            }
             $existingSlide->delete();
         }
 
@@ -46,15 +47,15 @@ class AdminWartaSlideController extends Controller
         if ($request->hasFile('file_pdf')) {
             $file = $request->file('file_pdf');
             // Pastikan ekstensinya .pdf
-            $fileName = 'warta_' . $wartaId . '_' . time() . '.pdf'; 
+            $fileName = 'warta_'.$wartaId.'_'.time().'.pdf';
             $file->move(public_path('img/admin/wartas'), $fileName);
 
             WartaSlide::create([
-                'warta_id'       => $warta->id,
-                'file_gambar'    => $fileName, // Menyimpan nama file PDF
+                'warta_id' => $warta->id,
+                'file_gambar' => $fileName, // Menyimpan nama file PDF
                 'urutan_halaman' => 1,
-                'createdBy'      => auth()->user()->name ?? 'Admin',
-                'isActive'       => true
+                'createdBy' => auth()->user()->name ?? 'Admin',
+                'isActive' => true,
             ]);
         }
 
@@ -68,9 +69,9 @@ class AdminWartaSlideController extends Controller
     {
         $slide = WartaSlide::findOrFail($slideId);
         $wartaIdSimpanan = $slide->warta_id; // Kunci ID induknya sebelum data dihapus
-        
+
         // A. HAPUS FISIK: Lenyapkan file gambar dari folder public agar server tidak bengkak
-        $fileFisik = public_path('img/admin/wartas/' . $slide->file_gambar);
+        $fileFisik = public_path('img/admin/wartas/'.$slide->file_gambar);
         if (File::exists($fileFisik)) {
             File::delete($fileFisik);
         }
@@ -80,9 +81,9 @@ class AdminWartaSlideController extends Controller
 
         // C. RE-ORDER LOGIC: Ambil semua sisa halaman yang tersisa, urutkan dari yang terkecil
         $sisaSlides = WartaSlide::where('warta_id', $wartaIdSimpanan)
-                                 ->orderBy('urutan_halaman', 'asc')
-                                 ->get();
-        
+            ->orderBy('urutan_halaman', 'asc')
+            ->get();
+
         // Susun ulang penomoran halaman agar rapi kembali (1, 2, 3...) tanpa ada nomor melompat bolong
         foreach ($sisaSlides as $index => $sisa) {
             $sisa->update(['urutan_halaman' => $index + 1]);

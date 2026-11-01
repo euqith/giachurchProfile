@@ -13,6 +13,9 @@
   <link href="{{ asset('admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
 
+  {{-- Vite Tailwind CSS & JS Assets --}}
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+
   {{-- Tambahan FontAwesome jika belum ter-load dari app.min.css untuk ikon modal --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -74,27 +77,39 @@
               <span class="menu-arrow"></span>
             </a>
 
-            <ul class="sub-menu {{ request()->routeIs('admin.attendance.*') ? '' : 'hidden' }}">
-              <!-- 1. Input Kehadiran -->
+            <ul class="sub-menu {{ request()->routeIs('admin.attendance.*') ? '' : 'hidden' }} px-2 py-1.5 space-y-1">
+              <!-- 1. Persiapan Ibadah (Image-20: Open Book Icon, Top Priority) -->
+              <li class="menu-item">
+                <a href="{{ route('admin.attendance.persiapan') }}"
+                  class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.persiapan*') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
+                  <i class="ri-book-open-line text-base shrink-0"></i>
+                  <span class="menu-text"> Persiapan Ibadah </span>
+                </a>
+              </li>
+
+              <!-- 2. Input Kehadiran (Image-20: Clipboard Icon) -->
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.input') }}"
-                  class="menu-link {{ request()->routeIs('admin.attendance.input') ? 'active' : '' }}">
+                  class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.input') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
+                  <i class="ri-clipboard-line text-base shrink-0"></i>
                   <span class="menu-text"> Input Kehadiran </span>
                 </a>
               </li>
 
-              <!-- 2. Riwayat Sesi Ibadah -->
+              <!-- 3. Riwayat Sesi (Image-20: History Clock Icon) -->
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.history') }}"
-                  class="menu-link {{ request()->routeIs('admin.attendance.history') ? 'active' : '' }}">
-                  <span class="menu-text"> Riwayat Sesi Ibadah </span>
+                  class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.history*') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
+                  <i class="ri-history-line text-base shrink-0"></i>
+                  <span class="menu-text"> Riwayat Sesi </span>
                 </a>
               </li>
 
-              <!-- 3. Laporan -->
+              <!-- 4. Laporan (Image-20: Bar Chart Icon, Sebelumnya Bernama Dashboard) -->
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.report') }}"
-                  class="menu-link {{ request()->routeIs('admin.attendance.report') ? 'active' : '' }}">
+                  class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.report') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
+                  <i class="ri-bar-chart-2-line text-base shrink-0"></i>
                   <span class="menu-text"> Laporan </span>
                 </a>
               </li>

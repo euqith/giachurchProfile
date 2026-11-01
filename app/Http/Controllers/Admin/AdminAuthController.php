@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AdminAuthController extends Controller
 {
@@ -16,7 +16,7 @@ class AdminAuthController extends Controller
         // 💡 Ambil slug role user jika sedang login (Handling Object Role / String)
         if (auth()->check()) {
             $userRole = auth()->user()->role->slug ?? auth()->user()->role;
-            
+
             if (in_array($userRole, ['admin', 'fulltimer', 'pendeta'])) {
                 return redirect()->route('admin.dashboard');
             }
@@ -50,6 +50,7 @@ class AdminAuthController extends Controller
 
             // Jika jemaat biasa mencoba masuk, logout otomatis
             Auth::logout();
+
             return redirect()->route('admin.login')->with('error', 'Akses ditolak. Akun Anda tidak memiliki otoritas CMS.');
         }
 
@@ -59,30 +60,30 @@ class AdminAuthController extends Controller
     }
 
     // Proses Logout Admin
-public function logout(Request $request)
-{
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return redirect()->route('admin.login')->with('success', 'Anda telah berhasil keluar sistem.');
-}
+        return redirect()->route('admin.login')->with('success', 'Anda telah berhasil keluar sistem.');
+    }
 
     // Proses Ganti Password Mandiri
     public function updatePassword(Request $request)
     {
         $request->validate([
-            'current_password' => ['required', 'string', 'current_password'], 
-            'password'         => ['required', 'string', 'min:8', 'confirmed'], 
+            'current_password' => ['required', 'string', 'current_password'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ], [
             'current_password.current_password' => 'Password lama yang Anda masukkan salah.',
-            'password.confirmed'                => 'Konfirmasi password baru tidak cocok.',
-            'password.min'                      => 'Password baru minimal harus 8 karakter.',
+            'password.confirmed' => 'Konfirmasi password baru tidak cocok.',
+            'password.min' => 'Password baru minimal harus 8 karakter.',
         ]);
 
         $user = Auth::user();
         $user->password = Hash::make($request->password);
-        
+
         if ($user->save()) {
             return back()->with('success', 'Password Anda telah berhasil diperbarui!');
         }

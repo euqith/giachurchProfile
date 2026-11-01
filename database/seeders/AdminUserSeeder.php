@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class AdminUserSeeder extends Seeder
@@ -16,9 +16,9 @@ class AdminUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'chris@mail.com'],
             [
-                'name'     => 'Chris',
+                'name' => 'Chris',
                 'password' => Hash::make('12345678'),
-                'role'     => 'admin', // Sesuaikan jika ada kolom role di tabel users
+                'role' => 'admin', // Sesuaikan jika ada kolom role di tabel users
             ]
         );
     }

@@ -15,7 +15,7 @@ class Warta extends Model
         'createdBy',
         'updatedBy',
         'isActive',
-        'isDelete'
+        'isDelete',
     ];
 
     /**
@@ -24,8 +24,8 @@ class Warta extends Model
     public function slides()
     {
         return $this->hasMany(WartaSlide::class, 'warta_id')
-                    ->where('isDelete', false)
-                    ->where('isActive', true)
-                    ->orderBy('urutan_halaman', 'asc');
+            ->where('isDelete', false)
+            ->where('isActive', true)
+            ->orderBy('urutan_halaman', 'asc');
     }
 }

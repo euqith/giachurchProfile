@@ -10,7 +10,7 @@ class Event extends Model
 {
     use HasFactory;
 
-    protected $table = 'events'; 
+    protected $table = 'events';
 
     protected $fillable = [
         'cabang_id',
@@ -23,7 +23,7 @@ class Event extends Model
         'createdBy',
         'updatedBy',
         'isActive',
-        'isDelete'
+        'isDelete',
     ];
 
     /**

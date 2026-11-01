@@ -11,6 +11,7 @@ class SesiController extends Controller
     public function index()
     {
         $sesis = Sesi::where('isDelete', 0)->orderBy('id', 'asc')->get();
+
         // Mengarahkan view ke folder admin/masterdata/sesiCMS.blade.php
         return view('admin.masterdata.sesiCMS', compact('sesis'));
     }
@@ -23,8 +24,8 @@ class SesiController extends Controller
 
         Sesi::create([
             'nama_sesi' => $request->nama_sesi,
-            'isActive'  => 1,
-            'isDelete'  => 0,
+            'isActive' => 1,
+            'isDelete' => 0,
         ]);
 
         return redirect()->back()->with('success', 'Master Sesi berhasil ditambahkan!');
@@ -35,7 +36,7 @@ class SesiController extends Controller
         $sesi = Sesi::findOrFail($id);
 
         $request->validate([
-            'nama_sesi' => 'required|string|max:100|unique:sesis,nama_sesi,' . $id . ',id,isDelete,0',
+            'nama_sesi' => 'required|string|max:100|unique:sesis,nama_sesi,'.$id.',id,isDelete,0',
         ]);
 
         $sesi->update([
@@ -48,7 +49,7 @@ class SesiController extends Controller
     public function toggleActive($id)
     {
         $sesi = Sesi::findOrFail($id);
-        $sesi->update(['isActive' => !$sesi->isActive]);
+        $sesi->update(['isActive' => ! $sesi->isActive]);
 
         return redirect()->back()->with('success', 'Status keaktifan sesi berhasil diubah!');
     }

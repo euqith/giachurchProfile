@@ -1,21 +1,21 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\WartaController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWartaController;
 use App\Http\Controllers\Admin\AdminWartaSlideController;
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\CabangController;
-use App\Http\Controllers\Admin\JenisIbadahController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JemaatController;
+use App\Http\Controllers\Admin\JenisIbadahController;
 use App\Http\Controllers\Admin\SesiController;
-
+use App\Http\Controllers\Admin\WorshipPreparationController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\WartaController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +31,9 @@ Route::get('/event', [EventController::class, 'index'])->name('event.index');
 // Jalur Halaman Khusus Buku Warta Jemaat Publik
 Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 
+// Jalur Halaman Publik Jadwal & Persiapan Ibadah
+Route::get('/ibadah', [WorshipPreparationController::class, 'publicIndex'])->name('ibadah.public');
+Route::get('/ibadah/{id}', [WorshipPreparationController::class, 'publicDetail'])->name('ibadah.public.detail');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +52,8 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login'])->name('admin.l
 // Proses Keluar (Logout) Admin
 Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout')->middleware('auth');
 
+// Alias untuk route('dashboard') bawaan Laravel Breeze
+Route::get('/dashboard', fn () => redirect()->route('admin.dashboard'))->name('dashboard')->middleware('auth');
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +61,7 @@ Route::post('/adminlogin/logout', [AdminAuthController::class, 'logout'])->name(
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->group(function () {
-    
+
     // 📊 A. Main Dashboard Panel
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -74,9 +79,29 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
         Route::get('/input', [AttendanceController::class, 'input'])->name('input');
         Route::get('/get-draft', [AttendanceController::class, 'getSessionDraft'])->name('get-draft');
         Route::post('/store', [AttendanceController::class, 'store'])->name('store');
+        Route::post('/guest', [AttendanceController::class, 'storeGuest'])->name('storeGuest');
+        Route::get('/jemaat/{id}/detail', [AttendanceController::class, 'jemaatDetail'])->name('jemaatDetail');
         Route::get('/history', [AttendanceController::class, 'history'])->name('history');
         Route::get('/history/{id}', [AttendanceController::class, 'show'])->name('show');
+        Route::put('/history/{id}', [AttendanceController::class, 'update'])->name('update');
+        Route::delete('/history/{id}', [AttendanceController::class, 'destroy'])->name('destroy');
         Route::get('/report', [AttendanceController::class, 'report'])->name('report');
+        Route::get('/report/export-kunjungan', [AttendanceController::class, 'exportKunjungan'])->name('exportKunjungan');
+
+        // Persiapan Ibadah
+        Route::get('/persiapan', [WorshipPreparationController::class, 'index'])->name('persiapan');
+        Route::get('/persiapan/schedule/create', [WorshipPreparationController::class, 'createSchedule'])->name('createSchedule');
+        Route::post('/persiapan/schedule', [WorshipPreparationController::class, 'storeSchedule'])->name('storeSchedule');
+        Route::post('/persiapan/upload-media', [WorshipPreparationController::class, 'uploadMedia'])->name('uploadMedia');
+        Route::get('/persiapan/schedule/{id}', [WorshipPreparationController::class, 'showSchedule'])->name('showSchedule');
+        Route::get('/persiapan/schedule/{id}/edit', [WorshipPreparationController::class, 'editSchedule'])->name('editSchedule');
+        Route::put('/persiapan/schedule/{id}', [WorshipPreparationController::class, 'updateSchedule'])->name('updateSchedule');
+        Route::delete('/persiapan/schedule/{id}', [WorshipPreparationController::class, 'destroySchedule'])->name('destroySchedule');
+
+        // Pustaka Lagu
+        Route::post('/song', [WorshipPreparationController::class, 'storeSong'])->name('storeSong');
+        Route::put('/song/{id}', [WorshipPreparationController::class, 'updateSong'])->name('updateSong');
+        Route::delete('/song/{id}', [WorshipPreparationController::class, 'destroySong'])->name('destroySong');
     });
 
     // 🏬 E. Master Data Cabang
@@ -85,28 +110,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     // ⛪ F. Master Data Jenis Ibadah
     Route::resource('ibadah', JenisIbadahController::class)->except(['create', 'edit', 'show']);
 
-    // 👥 G. Master Data Jemaat
-    Route::resource('jemaat', JemaatController::class)->except(['create', 'edit', 'show']);
-
-    // 👤 H. Master Data Pengguna / Staf Admin
-    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
-
-    // 🔐 I. Profile / Change Password
-    Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
-    Route::resource('sesi', SesiController::class)->except(['create', 'edit', 'show']);
-
-    // Masukkan di dalam grup admin:
+    // 🕒 G. Master Data Sesi
     Route::resource('sesi', SesiController::class)->except(['create', 'edit', 'show']);
     Route::patch('/sesi/{id}/toggle', [SesiController::class, 'toggleActive'])->name('sesi.toggle');
 
-    // Master Jemaat Routes
+    // 👥 H. Master Data Jemaat
     Route::get('/jemaat/export', [JemaatController::class, 'export'])->name('jemaat.export');
     Route::post('/jemaat/import', [JemaatController::class, 'import'])->name('jemaat.import');
     Route::get('/jemaat/template', [JemaatController::class, 'downloadTemplate'])->name('jemaat.template');
     Route::resource('jemaat', JemaatController::class)->except(['create', 'edit', 'show']);
 
-});
+    // 👤 I. Master Data Pengguna / Staf Admin
+    Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
 
+    // 🔐 J. Profile / Change Password
+    Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
+
+});
 
 /*
 |--------------------------------------------------------------------------

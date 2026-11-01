@@ -16,7 +16,7 @@ class WartaSlide extends Model
         'createdBy',
         'updatedBy',
         'isActive',
-        'isDelete'
+        'isDelete',
     ];
 
     public function warta()

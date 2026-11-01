@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\JenisIbadah;
+use Illuminate\Database\Seeder;
 
 class JenisIbadahSeeder extends Seeder
 {
@@ -15,33 +15,33 @@ class JenisIbadahSeeder extends Seeder
         $jenisIbadahs = [
             [
                 'nama_ibadah' => 'Umum Pagi',
-                'deskripsi'   => 'Ibadah Raya Umum sesi pagi',
-                'isActive'    => 1,
-                'isDelete'    => 0,
+                'deskripsi' => 'Ibadah Raya Umum sesi pagi',
+                'isActive' => 1,
+                'isDelete' => 0,
             ],
             [
                 'nama_ibadah' => 'Umum Sore',
-                'deskripsi'   => 'Ibadah Raya Umum sesi sore',
-                'isActive'    => 1,
-                'isDelete'    => 0,
+                'deskripsi' => 'Ibadah Raya Umum sesi sore',
+                'isActive' => 1,
+                'isDelete' => 0,
             ],
             [
                 'nama_ibadah' => 'Pemuda',
-                'deskripsi'   => 'Ibadah persekutuan pemuda / youth',
-                'isActive'    => 1,
-                'isDelete'    => 0,
+                'deskripsi' => 'Ibadah persekutuan pemuda / youth',
+                'isActive' => 1,
+                'isDelete' => 0,
             ],
             [
                 'nama_ibadah' => 'Remaja',
-                'deskripsi'   => 'Ibadah persekutuan remaja / teens',
-                'isActive'    => 1,
-                'isDelete'    => 0,
+                'deskripsi' => 'Ibadah persekutuan remaja / teens',
+                'isActive' => 1,
+                'isDelete' => 0,
             ],
             [
                 'nama_ibadah' => 'Pendalaman Alkitab',
-                'deskripsi'   => 'Sesi pengajaran dan pendalaman Alkitab (PA)',
-                'isActive'    => 1,
-                'isDelete'    => 0,
+                'deskripsi' => 'Sesi pengajaran dan pendalaman Alkitab (PA)',
+                'isActive' => 1,
+                'isDelete' => 0,
             ],
         ];
 

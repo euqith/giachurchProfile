@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Jemaat;
 use App\Models\Cabang;
+use App\Models\Jemaat;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -11,10 +11,6 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class JemaatImport implements ToModel, WithHeadingRow
 {
-    /**
-     * @param array $row
-     * @return Model|array|null
-     */
     public function model(array $row): Model|array|null
     {
         // Abaikan baris jika nama_asli kosong
@@ -26,9 +22,9 @@ class JemaatImport implements ToModel, WithHeadingRow
         $wilayahInput = $row['wilayah_ibadah'] ?? $row['wilayah'] ?? null;
         $cabangId = null;
 
-        if (!empty($wilayahInput)) {
+        if (! empty($wilayahInput)) {
             $cabang = Cabang::where('isDelete', 0)
-                ->where('nama_cabang', 'like', '%' . trim($wilayahInput) . '%')
+                ->where('nama_cabang', 'like', '%'.trim($wilayahInput).'%')
                 ->first();
             $cabangId = $cabang->id ?? null;
         }
@@ -37,11 +33,11 @@ class JemaatImport implements ToModel, WithHeadingRow
         $tanggalLahir = null;
         $rawTgl = $row['tanggal_lahir'] ?? $row['tgl_lahir'] ?? null;
 
-        if (!empty($rawTgl)) {
+        if (! empty($rawTgl)) {
             try {
                 if (is_numeric($rawTgl)) {
                     $tanggalLahir = Date::excelToDateTimeObject($rawTgl)->format('Y-m-d');
-                } else if ($rawTgl instanceof \DateTimeInterface) {
+                } elseif ($rawTgl instanceof \DateTimeInterface) {
                     $tanggalLahir = $rawTgl->format('Y-m-d');
                 } else {
                     $cleanDate = str_replace('/', '-', trim($rawTgl));
@@ -59,19 +55,19 @@ class JemaatImport implements ToModel, WithHeadingRow
         return Jemaat::updateOrCreate(
             ['nama_asli' => trim($row['nama_asli'])],
             [
-                'alias_1'        => $row['alias_1'] ?? null,
-                'alias_2'        => $row['alias_2'] ?? null,
-                'cabang_id'      => $cabangId,
+                'alias_1' => $row['alias_1'] ?? null,
+                'alias_2' => $row['alias_2'] ?? null,
+                'cabang_id' => $cabangId,
                 'wilayah_ibadah' => $wilayahInput,
-                'alamat'         => $row['alamat'] ?? null,
-                'tempat_lahir'   => $row['tempat_lahir'] ?? null,
-                'tanggal_lahir'  => $tanggalLahir,
-                'tgl_lahir'      => $tanggalLahir,
-                'telepon'        => $row['telepon'] ?? null,
-                'status'         => $statusInput ?: 'Anggota',
-                'keluarga'       => $row['keluarga'] ?? null,
-                'isActive'       => 1,
-                'isDelete'       => 0,
+                'alamat' => $row['alamat'] ?? null,
+                'tempat_lahir' => $row['tempat_lahir'] ?? null,
+                'tanggal_lahir' => $tanggalLahir,
+                'tgl_lahir' => $tanggalLahir,
+                'telepon' => $row['telepon'] ?? null,
+                'status' => $statusInput ?: 'Anggota',
+                'keluarga' => $row['keluarga'] ?? null,
+                'isActive' => 1,
+                'isDelete' => 0,
             ]
         );
     }

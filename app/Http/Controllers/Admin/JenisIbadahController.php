@@ -12,6 +12,7 @@ class JenisIbadahController extends Controller
     public function index()
     {
         $ibadahs = JenisIbadah::where('isDelete', 0)->orderBy('id', 'desc')->get();
+
         return view('admin.masterdata.ibadahCMS', compact('ibadahs'));
     }
 
@@ -19,15 +20,15 @@ class JenisIbadahController extends Controller
     {
         $request->validate([
             'nama_ibadah' => 'required|string|max:255',
-            'deskripsi'   => 'nullable|string',
+            'deskripsi' => 'nullable|string',
         ]);
 
         JenisIbadah::create([
             'nama_ibadah' => $request->nama_ibadah,
-            'deskripsi'   => $request->deskripsi,
-            'createdBy'   => Auth::user()->name ?? 'Admin',
-            'isActive'    => 1,
-            'isDelete'    => 0,
+            'deskripsi' => $request->deskripsi,
+            'createdBy' => Auth::user()->name ?? 'Admin',
+            'isActive' => 1,
+            'isDelete' => 0,
         ]);
 
         return redirect()->back()->with('success', 'Jenis ibadah berhasil ditambahkan!');
@@ -37,16 +38,16 @@ class JenisIbadahController extends Controller
     {
         $request->validate([
             'nama_ibadah' => 'required|string|max:255',
-            'deskripsi'   => 'nullable|string',
-            'isActive'    => 'required|boolean',
+            'deskripsi' => 'nullable|string',
+            'isActive' => 'required|boolean',
         ]);
 
         $ibadah = JenisIbadah::findOrFail($id);
         $ibadah->update([
             'nama_ibadah' => $request->nama_ibadah,
-            'deskripsi'   => $request->deskripsi,
-            'isActive'    => $request->isActive,
-            'updatedBy'   => Auth::user()->name ?? 'Admin',
+            'deskripsi' => $request->deskripsi,
+            'isActive' => $request->isActive,
+            'updatedBy' => Auth::user()->name ?? 'Admin',
         ]);
 
         return redirect()->back()->with('success', 'Jenis ibadah berhasil diperbarui!');
@@ -56,7 +57,7 @@ class JenisIbadahController extends Controller
     {
         $ibadah = JenisIbadah::findOrFail($id);
         $ibadah->update([
-            'isDelete'  => 1,
+            'isDelete' => 1,
             'updatedBy' => Auth::user()->name ?? 'Admin',
         ]);
 

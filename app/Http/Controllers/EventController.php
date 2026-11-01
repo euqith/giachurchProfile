@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
+use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\Event;  
-use App\Models\Cabang; 
-use Carbon\Carbon;     
 
 class EventController extends Controller
 {
@@ -19,9 +19,9 @@ class EventController extends Controller
 
         // 🎯 2. QUERY UTAMA: Filter hanya event yang waktu_selesai-nya belum lewat dari batasTanggal
         $query = Event::with('cabang')
-                      ->where('waktu_selesai', '>=', $batasTanggal) // Menggunakan waktu_selesai agar event di hari H tidak langsung hilang
-                      ->where('isDelete', false)
-                      ->where('isActive', true);
+            ->where('waktu_selesai', '>=', $batasTanggal) // Menggunakan waktu_selesai agar event di hari H tidak langsung hilang
+            ->where('isDelete', false)
+            ->where('isActive', true);
 
         // B. LOGIKA FILTER CABANG (Jika jemaat memilih cabang tertentu)
         if ($request->has('cabang_id') && $request->cabang_id != '' && $request->cabang_id != 'Semua') {
@@ -29,7 +29,7 @@ class EventController extends Controller
         }
 
         // C. LOGIKA SORTING DINAMIS (Default: Start Date Descending / Paling Baru di Atas)
-        $sortBy = $request->get('sort_by', 'date_desc'); 
+        $sortBy = $request->get('sort_by', 'date_desc');
 
         switch ($sortBy) {
             case 'date_asc':
@@ -52,8 +52,8 @@ class EventController extends Controller
 
         // E. Tarik data cabang untuk dropdown filter jemaat
         $cabangs = Cabang::where('isDelete', false)
-                         ->where('isActive', true)
-                         ->get();
+            ->where('isActive', true)
+            ->get();
 
         return view('homepage.event', compact('events', 'cabangs', 'sortBy'));
     }

@@ -15,7 +15,7 @@ class IsCMSAccessible
     public function handle(Request $request, Closure $next): Response
     {
         // 1. Cek apakah user sudah login atau belum
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 

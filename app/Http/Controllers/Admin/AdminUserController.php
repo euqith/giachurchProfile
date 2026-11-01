@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\Rule;
 
 class AdminUserController extends Controller
 {
@@ -16,6 +15,7 @@ class AdminUserController extends Controller
     {
         // Ambil data user yang memiliki akses CMS saja (admin & fulltimer)
         $users = User::whereIn('role', ['admin', 'fulltimer'])->orderBy('name', 'asc')->get();
+
         return view('admin.usersCMS', compact('users')); // 👈 Memanggil usersCMS (dengan 's')
     }
 
@@ -77,6 +77,7 @@ class AdminUserController extends Controller
         }
 
         $user->delete();
+
         return redirect()->route('admin.users.index')->with('success', 'Akun staf berhasil dihapus secara permanen!');
     }
 }

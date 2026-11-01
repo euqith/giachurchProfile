@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Sesi;
+use Illuminate\Database\Seeder;
 
 class SesiSeeder extends Seeder
 {
     public function run(): void
     {
-        $sesis = ['Pagi', 'Siang', 'Sore', 'Malam'];
+        $sesis = ['Pagi', 'Siang', 'Sore'];
 
         foreach ($sesis as $nama) {
             Sesi::updateOrCreate(

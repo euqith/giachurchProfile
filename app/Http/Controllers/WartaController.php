@@ -11,8 +11,8 @@ class WartaController extends Controller
     {
         // 1. Ambil Warta Teraktif & Terbaru untuk Edisi Utama
         $wartaUtamaQuery = Warta::with('slides')
-                                ->where('isDelete', false)
-                                ->where('isActive', true);
+            ->where('isDelete', false)
+            ->where('isActive', true);
 
         // Jika user mengklik salah satu arsip dari sidebar (?warta_id=x)
         if ($request->has('warta_id') && $request->warta_id != '') {
@@ -24,9 +24,9 @@ class WartaController extends Controller
 
         // 2. Ambil Semua Daftar Arsip Warta untuk Komponen Sidebar Kanan
         $arsipWartas = Warta::where('isDelete', false)
-                            ->where('isActive', true)
-                            ->orderBy('tanggal_rilis', 'desc')
-                            ->get();
+            ->where('isActive', true)
+            ->orderBy('tanggal_rilis', 'desc')
+            ->get();
 
         return view('homepage.warta', compact('wartaUtama', 'arsipWartas'));
     }

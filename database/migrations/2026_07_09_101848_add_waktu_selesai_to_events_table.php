@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             // Cek aman agar tidak duplikat, diletakkan tepat setelah waktu_mulai
-            if (!Schema::hasColumn('events', 'waktu_selesai')) {
+            if (! Schema::hasColumn('events', 'waktu_selesai')) {
                 $table->dateTime('waktu_selesai')->nullable()->after('waktu_mulai');
             }
         });
