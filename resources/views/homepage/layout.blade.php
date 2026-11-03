@@ -110,6 +110,27 @@
       transition: all 0.2s ease;
     }
 
+    /* Balanced 3-Column Center Nav Layout */
+    .header__main {
+      position: relative;
+    }
+    @media (min-width: 992px) {
+      .header-col-left,
+      .header-col-right {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      .main-menu {
+        flex: 0 0 auto;
+      }
+    }
+    .main-menu ul {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
     .main-menu ul li a {
       color: var(--earth-dark) !important;
       font-weight: 600;
@@ -371,15 +392,17 @@
   <header class="header-area header-area-earth sticky-top">
     <div class="container">
       <div class="header__main d-flex align-items-center justify-content-between py-2">
-        <!-- LOGO BRANDING (DENGAN NAMA GEREJA ISA ALMASIH SURABAYA) -->
-        <a href="{{ url('/') }}" class="logo d-flex align-items-center text-decoration-none py-1">
-          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="header-church-logo">
-        </a>
+        <!-- LOGO BRANDING (KIRI) -->
+        <div class="header-col-left d-flex align-items-center">
+          <a href="{{ url('/') }}" class="logo d-flex align-items-center text-decoration-none py-1">
+            <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="header-church-logo">
+          </a>
+        </div>
 
-        <!-- MAIN NAVBAR -->
-        <div class="main-menu d-none d-lg-block">
+        <!-- MAIN NAVBAR (RATA TENGAH) -->
+        <div class="main-menu d-none d-lg-flex justify-content-center">
           <nav>
-            <ul class="d-flex align-items-center mb-0 list-unstyled">
+            <ul class="d-flex align-items-center justify-content-center mb-0 list-unstyled">
               <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
               <li>
                 <a href="{{ url('/#streaming') }}" class="d-inline-flex align-items-center gap-1.5">
@@ -395,9 +418,12 @@
           </nav>
         </div>
 
-        <!-- MOBILE HAMBURGER TOGGLE -->
-        <div class="bars d-block d-lg-none">
-          <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
+        <!-- RIGHT BALANCER / MOBILE TOGGLE (KANAN) -->
+        <div class="header-col-right d-flex align-items-center justify-content-end">
+          <!-- MOBILE HAMBURGER TOGGLE -->
+          <div class="bars d-block d-lg-none">
+            <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
+          </div>
         </div>
       </div>
     </div>
