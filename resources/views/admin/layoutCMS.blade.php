@@ -73,6 +73,24 @@
             </a>
           </li>
 
+          {{-- 📡 KELOLA LIVE STREAMING --}}
+          <li class="menu-item">
+            <a href="{{ route('admin.stream.index') }}"
+              class="menu-link {{ request()->routeIs('admin.stream.*') ? 'active' : '' }}">
+              <span class="menu-icon"><i class="ri-live-line"></i></span>
+              <span class="menu-text"> Kelola Streaming </span>
+            </a>
+          </li>
+
+          {{-- 🏛️ PROFIL GEREJA & BANNER --}}
+          <li class="menu-item">
+            <a href="{{ route('admin.church.index') }}"
+              class="menu-link {{ request()->routeIs('admin.church.*') ? 'active' : '' }}">
+              <span class="menu-icon"><i class="ri-building-line"></i></span>
+              <span class="menu-text"> Profil Gereja & Banner </span>
+            </a>
+          </li>
+
           <!-- 📊 MENU ABSENSI (DI BAWAH KELOLA WARTA & DI ATAS MASTER DATA) -->
           <li class="menu-item">
             <a href="javascript:void(0)" data-fc-type="collapse"

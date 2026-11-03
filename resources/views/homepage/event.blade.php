@@ -1,29 +1,30 @@
 @extends('homepage.layout')
 
 @section('konten')
+  <!-- BREADCRUMB HEADER BANNER -->
   <section class="breadcrumb-area"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('homepage/assets/images/banner/inner-banner.jpg') }}'); padding: 80px 0; background-size: cover; background-position: center;">
+    style="background-image: linear-gradient(rgba(28, 23, 20, 0.75), rgba(28, 23, 20, 0.85)), url('{{ asset('homepage/assets/images/banner/inner-banner.jpg') }}'); padding: 70px 0; background-size: cover; background-position: center;">
     <div class="container text-center">
-      <h2 class="text-white fw-bold mb-2" style="font-size: 36px; text-shadow: 2px 2px 5px rgba(0,0,0,0.3);">Agenda & Event
-        Gereja</h2>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb justify-content-center mb-0" style="background: transparent;">
-          <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-white-50">Home</a></li>
-          <li class="breadcrumb-item active text-white" aria-current="page">Event</li>
-        </ol>
-      </nav>
+      <span class="badge badge-earth px-3 py-1.5 rounded-pill mb-2 text-uppercase" style="font-size: 11px; letter-spacing: 0.8px;">
+        <i class="ri-calendar-event-line me-1"></i> Agenda & Kegiatan
+      </span>
+      <h1 class="text-white fw-bold font-serif mb-2" style="font-size: 38px;">Event & Kegiatan Gereja</h1>
+      <p class="text-white-50 small mb-0">Kalender seminar, retret, persekutuan doa, dan ibadah gabungan di seluruh cabang GIA Surabaya.</p>
     </div>
   </section>
-  <section class="event-page-area pt-80 pb-120 bg-light">
+
+  <!-- EVENT LIST AREA -->
+  <section class="py-5" style="background-color: var(--earth-bg); padding-top: 60px !important; padding-bottom: 90px !important;">
     <div class="container">
 
-      <div class="bg-white p-4 mb-5" style="border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.03);">
+      <!-- FILTER & SORT BAR -->
+      <div class="card-earth p-4 mb-5 shadow-sm" style="background: #FFFFFF !important;">
         <form action="{{ url('/event') }}" method="GET">
           <div class="row g-3 align-items-center justify-content-between">
 
             <div class="col-lg-3">
-              <h4 class="text-dark fw-bold mb-0" style="font-size: 20px;">
-                <i class="fa-solid fa-calendar-list primary-color pe-2"></i> Kalender Kegiatan
+              <h4 class="font-serif fw-bold mb-0" style="color: var(--earth-dark); font-size: 20px;">
+                <i class="ri-calendar-schedule-line me-1" style="color: var(--earth-primary);"></i> Kalender Kegiatan
               </h4>
             </div>
 
@@ -31,10 +32,9 @@
               <div class="row g-2 justify-content-end">
 
                 <div class="col-md-4">
-                  <label class="small text-muted fw-bold mb-1">Filter Cabang</label>
-                  <select name="cabang_id" class="form-select form-select-md" style="border-radius: 8px;">
-                    <option value="Semua" {{ request('cabang_id') == 'Semua' ? 'selected' : '' }}>Semua Cabang Gereja
-                    </option>
+                  <label class="small fw-bold mb-1" style="color: var(--earth-text-muted);">Filter Cabang</label>
+                  <select name="cabang_id" class="form-select form-select-md" style="border-radius: 10px; border-color: var(--earth-border); background-color: var(--earth-surface-warm); font-size: 13.5px;">
+                    <option value="Semua" {{ request('cabang_id') == 'Semua' ? 'selected' : '' }}>Semua Cabang Gereja</option>
                     @foreach ($cabangs ?? [] as $cabang)
                       <option value="{{ $cabang->id }}" {{ request('cabang_id') == $cabang->id ? 'selected' : '' }}>
                         {{ $cabang->nama_cabang }}
@@ -44,22 +44,18 @@
                 </div>
 
                 <div class="col-md-4">
-                  <label class="small text-muted fw-bold mb-1">Urutkan Berdasarkan</label>
-                  <select name="sort_by" class="form-select form-select-md" style="border-radius: 8px;">
-                    <option value="date_desc" {{ $sortBy == 'date_desc' ? 'selected' : '' }}>Tanggal Start (Terbaru)
-                    </option>
-                    <option value="date_asc" {{ $sortBy == 'date_asc' ? 'selected' : '' }}>Tanggal Start (Terlama)
-                    </option>
+                  <label class="small fw-bold mb-1" style="color: var(--earth-text-muted);">Urutkan Berdasarkan</label>
+                  <select name="sort_by" class="form-select form-select-md" style="border-radius: 10px; border-color: var(--earth-border); background-color: var(--earth-surface-warm); font-size: 13.5px;">
+                    <option value="date_desc" {{ $sortBy == 'date_desc' ? 'selected' : '' }}>Tanggal Mulai (Terbaru)</option>
+                    <option value="date_asc" {{ $sortBy == 'date_asc' ? 'selected' : '' }}>Tanggal Mulai (Terlama)</option>
                     <option value="name_asc" {{ $sortBy == 'name_asc' ? 'selected' : '' }}>Nama Event (A - Z)</option>
                     <option value="name_desc" {{ $sortBy == 'name_desc' ? 'selected' : '' }}>Nama Event (Z - A)</option>
                   </select>
                 </div>
 
-                <div class="col-md-2 align-self-end">
-                  <button type="submit" class="btn w-100 text-white fw-bold"
-                    style="background-color: #ff5e14; border-radius: 8px; height: 40px; border: none; transition: 0.3s;"
-                    onmouseover="this.style.backgroundColor='#d44d0f'" onmouseout="this.style.backgroundColor='#ff5e14'">
-                    <i class="fa-solid fa-arrows-rotate pe-1"></i> Terapkan
+                <div class="col-md-3 align-self-end">
+                  <button type="submit" class="btn btn-earth w-100 fw-bold rounded-3 d-inline-flex align-items-center justify-content-center gap-1.5" style="height: 42px; font-size: 13.5px;">
+                    <i class="ri-refresh-line"></i> Terapkan Filter
                   </button>
                 </div>
 
@@ -70,164 +66,171 @@
         </form>
       </div>
 
+      <!-- EVENT CARDS GRID -->
       <div class="row g-4">
-
         @forelse ($events as $event)
-          <div class="col-xl-4 col-md-6 wow fadeInUp" data-wow-delay="100ms">
-            <div class="bg-white h-100 border-0 card-event-hover"
-              style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column;">
+          @php
+            $sekarang = \Carbon\Carbon::now();
+            $mulai = \Carbon\Carbon::parse($event->waktu_mulai);
+            $selesai = \Carbon\Carbon::parse($event->waktu_selesai);
+          @endphp
 
-              <div class="position-relative"
-                style="width: 100%; height: 220px; background-color: #f1f5f9; overflow: hidden;">
+          <div class="col-xl-4 col-md-6">
+            <div class="card-earth h-100 shadow-sm overflow-hidden d-flex flex-column justify-content-between" style="background: #FFFFFF !important;">
+              <div>
+                <!-- GAMBAR BANNER EVENT -->
+                <div class="position-relative overflow-hidden" style="width: 100%; height: 210px; background-color: var(--earth-surface-warm);">
+                  @if ($event->gambar_banner)
+                    <img src="{{ asset('img/admin/events/' . $event->gambar_banner) }}" alt="{{ $event->nama_acara }}"
+                      class="w-100 h-100 object-cover transition" style="object-fit: cover;">
+                  @else
+                    <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: var(--earth-surface-warm); color: var(--earth-text-muted);">
+                      <i class="ri-image-line fs-2 mb-1" style="color: var(--earth-primary);"></i>
+                      <small>No Banner Available</small>
+                    </div>
+                  @endif
 
-                @php
-                  $sekarang = \Carbon\Carbon::now();
-                  $mulai = \Carbon\Carbon::parse($event->waktu_mulai);
-                  $selesai = \Carbon\Carbon::parse($event->waktu_selesai);
-                @endphp
+                  <!-- STATUS BADGE -->
+                  @if ($sekarang->lt($mulai))
+                    <span class="position-absolute badge rounded-pill fw-bold"
+                      style="top: 14px; right: 14px; z-index: 5; background: rgba(30, 23, 19, 0.85); color: #FAF7F2; backdrop-filter: blur(4px); font-size: 11px;">
+                      <i class="ri-calendar-line me-1" style="color: var(--earth-accent);"></i> Mendatang
+                    </span>
+                  @elseif ($sekarang->between($mulai, $selesai))
+                    <span class="position-absolute badge bg-success text-white rounded-pill fw-bold d-inline-flex align-items-center gap-1.5"
+                      style="top: 14px; right: 14px; z-index: 5; font-size: 11px;">
+                      <span class="live-pulse-dot" style="background: #FFFFFF;"></span> Sedang Berlangsung
+                    </span>
+                  @else
+                    <span class="position-absolute badge bg-secondary text-white rounded-pill fw-bold"
+                      style="top: 14px; right: 14px; z-index: 5; font-size: 11px;">
+                      Selesai
+                    </span>
+                  @endif
 
-                @if ($sekarang->lt($mulai))
-                  <span class="position-absolute badge text-white style-badge-status"
-                    style="top: 15px; right: 15px; z-index: 5; background-color: #3b82f6; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);">
-                    🔮 Soon
+                  <!-- CABANG BADGE -->
+                  <span class="position-absolute badge badge-earth rounded-pill"
+                    style="bottom: 14px; left: 14px; z-index: 5; font-size: 11px; background: rgba(255,255,255,0.92) !important;">
+                    <i class="ri-map-pin-line me-1"></i> {{ $event->cabang ? $event->cabang->nama_cabang : 'Semua Cabang' }}
                   </span>
-                @elseif ($sekarang->between($mulai, $selesai))
-                  <span class="position-absolute badge text-white style-badge-status style-animate-pulse"
-                    style="top: 15px; right: 15px; z-index: 5; background-color: #10b981; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);">
-                    🟢 Ongoing
-                  </span>
-                @else
-                  <span class="position-absolute badge text-white style-badge-status"
-                    style="top: 15px; right: 15px; z-index: 5; background-color: #64748b; box-shadow: 0 4px 10px rgba(100, 116, 139, 0.3);">
-                    ⏰ Expired
-                  </span>
-                @endif
+                </div>
 
-                @if ($event->gambar_banner)
-                  <img src="{{ asset('img/admin/events/' . $event->gambar_banner) }}" alt="{{ $event->nama_acara }}"
-                    class="w-100 h-100" style="object-fit: cover;">
-                @else
-                  <img src="{{ asset('homepage/assets/images/event/event-image1.jpg') }}" alt="Default Poster"
-                    class="w-100 h-100" style="object-fit: cover; filter: grayscale(30%);">
-                @endif
+                <!-- BODY INFO EVENT -->
+                <div class="p-4">
+                  <div class="d-flex align-items-center gap-1.5 mb-2 small" style="color: var(--earth-primary); font-weight: 600;">
+                    <i class="ri-time-line"></i>
+                    <span>{{ $mulai->translatedFormat('d M Y') }} · {{ $mulai->format('H:i') }} WIB</span>
+                  </div>
 
-                <span class="position-absolute badge bg-dark text-white style-badge-branch"
-                  style="top: 15px; left: 15px; z-index: 5; background: rgba(0,0,0,0.7) !important; backdrop-filter: blur(5px);">
-                  📌 {{ $event->cabang ? $event->cabang->nama_cabang : 'Semua Cabang' }}
-                </span>
-              </div>
-
-              <div class="p-4 d-flex flex-column justify-content-between flex-grow-1" style="min-height: 250px;">
-                <div>
-                  <h4 class="text-dark fw-bold mb-2 fs-18"
-                    style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1e293b !important;">
+                  <h4 class="font-serif fw-bold mb-2" style="color: var(--earth-dark); font-size: 19px; line-height: 1.3;">
                     {{ $event->nama_acara }}
                   </h4>
 
-                  <p class="text-muted small mb-0"
-                    style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                    {{ $event->deskripsi_acara ?? 'Mari hadiri persekutuan ibadah bersama untuk menerima siraman rohani yang memberkati.' }}
+                  <p class="small mb-3" style="color: var(--earth-text-muted);">
+                    <i class="ri-map-pin-2-line me-1" style="color: var(--earth-accent);"></i>
+                    {{ $event->lokasi_spesifik ?: 'Gereja Isa Almasih Surabaya' }}
+                  </p>
+
+                  <p class="small leading-relaxed line-clamp-3 mb-0" style="color: #4D423B; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ $event->deskripsi ?: 'Tidak ada deskripsi rinci untuk kegiatan ini. Silakan hubungi sekretariat gereja untuk informasi selengkapnya.' }}
                   </p>
                 </div>
-
-                <div class="border-top pt-3 mt-3 text-muted small space-y-2">
-
-                  <div class="d-flex align-items-start mb-2">
-                    <i class="fa-regular fa-clock primary-color pe-2 mt-0.5" style="width: 20px;"></i>
-                    <span class="lh-sm">
-                      {{ \Carbon\Carbon::parse($event->waktu_mulai)->translatedFormat('d M Y') }} -
-                      {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') }}
-                      @if ($event->waktu_selesai)
-                        s/d {{ \Carbon\Carbon::parse($event->waktu_selesai)->translatedFormat('d M Y') }} -
-                        {{ \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') }}
-                      @endif
-                      WIB
-                    </span>
-                  </div>
-
-                  <div class="d-flex align-items-center bg-light p-2 rounded border border-gray-100">
-                    <i class="fa-regular fa-location-dot primary-color pe-2" style="width: 20px; font-size: 14px;"></i>
-                    <span class="fw-medium text-dark text-truncate" title="{{ $event->lokasi_spesifik }}">
-                      {{ $event->lokasi_spesifik }}
-                    </span>
-                  </div>
-
-                </div>
-
               </div>
+
+              <!-- FOOTER ACTION -->
+              <div class="px-4 py-3 border-top d-flex align-items-center justify-content-between" style="border-color: var(--earth-border) !important; background: var(--earth-surface-warm);">
+                <span class="small" style="color: var(--earth-text-muted);">
+                  <i class="ri-user-voice-line me-1"></i> Terbuka untuk Jemaat
+                </span>
+                <button type="button" class="btn btn-earth-outline btn-sm px-3 py-1 rounded-pill"
+                  onclick="showEventModal('{{ addslashes($event->nama_acara) }}', '{{ addslashes($mulai->translatedFormat('l, d F Y · H:i') . ' WIB') }}', '{{ addslashes($event->lokasi_spesifik ?: 'GIA Surabaya') }}', '{{ addslashes($event->deskripsi) }}', '{{ $event->gambar_banner ? asset('img/admin/events/' . $event->gambar_banner) : '' }}')">
+                  Detail <i class="ri-arrow-right-s-line"></i>
+                </button>
+              </div>
+
             </div>
-        </div> @empty
-          <div class="col-12 text-center py-5">
-            <div class="text-muted mb-3">
-              <i class="fa-regular fa-calendar-xmark" style="font-size: 60px; color: #cbd5e1;"></i>
+          </div>
+        @empty
+          <div class="col-12">
+            <div class="card-earth p-5 text-center shadow-sm" style="background: #FFFFFF !important;">
+              <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+                style="width: 60px; height: 60px; background: var(--earth-surface-warm); color: var(--earth-primary);">
+                <i class="ri-calendar-line fs-24"></i>
+              </div>
+              <h4 class="font-serif fw-bold mb-1" style="color: var(--earth-dark);">Belum Ada Agenda Kegiatan</h4>
+              <p class="small mb-0" style="color: var(--earth-text-muted);">
+                Saat ini belum ada event mendatang yang terdaftar sesuai dengan filter yang dipilih.
+              </p>
             </div>
-            <h5 class="fw-bold text-secondary">Belum Ada Agenda Terdekat</h5>
-            <p class="text-muted small">Silakan kembali berkala untuk melihat jadwal kegiatan jemaat terbaru.</p>
           </div>
         @endforelse
-
       </div>
-      @if ($events->hasPages())
-        <div class="row mt-5">
-          <div class="col-12 d-flex justify-content-center ui-pagination">
-            {{ $events->links() }}
-          </div>
-        </div>
-      @endif
+
+      <!-- PAGINATION -->
+      <div class="mt-5 d-flex justify-content-center">
+        {{ $events->links('pagination::bootstrap-5') }}
+      </div>
 
     </div>
   </section>
 
-  <style>
-    .card-event-hover:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(255, 94, 20, 0.12) !important;
-    }
+  <!-- MODAL DETAIL EVENT -->
+  <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content card-earth overflow-hidden border-0 shadow-lg" style="background: #FFFFFF !important;">
+        <div id="modalBannerWrapper" style="display: none; height: 260px; width: 100%; overflow: hidden;">
+          <img id="modalBannerImg" src="" alt="Banner" class="w-100 h-100 object-cover" style="object-fit: cover;">
+        </div>
+        <div class="modal-body p-4 p-md-5">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="badge badge-earth px-3 py-1 rounded-pill" style="font-size: 11px;">
+              <i class="ri-calendar-check-line me-1"></i> Agenda Kegiatan
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <h3 id="modalEventTitle" class="font-serif fw-bold mb-3" style="color: var(--earth-dark);"></h3>
+          
+          <div class="p-3 rounded-3 mb-4 d-flex flex-wrap gap-4" style="background: var(--earth-surface-warm); border: 1px solid var(--earth-border); font-size: 13.5px;">
+            <div>
+              <i class="ri-time-line me-1" style="color: var(--earth-primary);"></i>
+              <strong id="modalEventTime" style="color: var(--earth-dark);"></strong>
+            </div>
+            <div>
+              <i class="ri-map-pin-2-line me-1" style="color: var(--earth-primary);"></i>
+              <span id="modalEventLocation" style="color: var(--earth-text-muted);"></span>
+            </div>
+          </div>
 
-    .style-badge-branch {
-      font-size: 11px;
-      padding: 6px 12px;
-      border-radius: 50px;
-    }
+          <h6 class="fw-bold mb-2 text-uppercase" style="font-size: 12px; letter-spacing: 0.5px; color: var(--earth-primary);">Deskripsi Kegiatan:</h6>
+          <p id="modalEventDesc" class="leading-relaxed" style="color: #4D423B; font-size: 14.5px; white-space: pre-line;"></p>
+        </div>
+        <div class="modal-footer border-top p-3" style="border-color: var(--earth-border) !important; background: var(--earth-surface-warm);">
+          <button type="button" class="btn btn-earth px-4 py-2 rounded-pill font-weight-bold" data-bs-dismiss="modal">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    .ui-pagination nav svg {
-      height: 20px;
-    }
-
-    .ui-pagination nav p {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .style-badge-status {
-      font-size: 12px;
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .style-animate-pulse {
-      animation: pulse-animation 2s infinite;
-    }
-
-    @keyframes pulse-animation {
-      0% {
-        transform: scale(1);
-        opacity: 1;
+  <script>
+    function showEventModal(title, time, location, desc, bannerUrl) {
+      document.getElementById('modalEventTitle').innerText = title;
+      document.getElementById('modalEventTime').innerText = time;
+      document.getElementById('modalEventLocation').innerText = location;
+      document.getElementById('modalEventDesc').innerText = desc || 'Tidak ada deskripsi rinci.';
+      
+      const bannerWrapper = document.getElementById('modalBannerWrapper');
+      const bannerImg = document.getElementById('modalBannerImg');
+      if (bannerUrl) {
+        bannerImg.src = bannerUrl;
+        bannerWrapper.style.display = 'block';
+      } else {
+        bannerWrapper.style.display = 'none';
       }
 
-      50% {
-        transform: scale(1.05);
-        opacity: 0.85;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      const modal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
+      modal.show();
     }
-  </style>
+  </script>
 @endsection

@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminStreamController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWartaController;
 use App\Http\Controllers\Admin\AdminWartaSlideController;
 use App\Http\Controllers\Admin\AttendanceController;
 use App\Http\Controllers\Admin\CabangController;
+use App\Http\Controllers\Admin\ChurchProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JemaatController;
 use App\Http\Controllers\Admin\JenisIbadahController;
@@ -125,6 +127,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
 
     // 🔐 J. Profile / Change Password
     Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
+
+    // 🏛️ K. Profil Gereja & Banner Foto
+    Route::get('/church-profile', [ChurchProfileController::class, 'index'])->name('church.index');
+    Route::post('/church-profile', [ChurchProfileController::class, 'update'])->name('church.update');
+
+    // 📡 L. Manajemen Live Streaming Cabang
+    Route::get('/streams', [AdminStreamController::class, 'index'])->name('stream.index');
+    Route::put('/streams/{id}', [AdminStreamController::class, 'update'])->name('stream.update');
+    Route::post('/streams/{id}/toggle', [AdminStreamController::class, 'toggleLive'])->name('stream.toggle');
 
 });
 

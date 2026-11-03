@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gereja Isa Almasih Surabaya - Website Profil Gereja</title>
+  <title>Gereja Isa Almasih Surabaya - Website Resmi</title>
   <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/meanmenu.css') }}">
@@ -17,8 +17,200 @@
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/style.css') }}">
 
+  {{-- Google Fonts: Plus Jakarta Sans & Playfair Display --}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   {{-- Vite Tailwind Assets --}}
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+  <style>
+    :root {
+      --earth-bg: #FAF7F2;
+      --earth-surface: #FFFFFF;
+      --earth-surface-warm: #F5EFEB;
+      --earth-primary: #8C5E3C;
+      --earth-primary-hover: #734B2E;
+      --earth-accent: #C27D38;
+      --earth-accent-soft: #EFE5DC;
+      --earth-dark: #1E1713;
+      --earth-dark-soft: #2B231D;
+      --earth-border: #E8DFD5;
+      --earth-text: #2D2520;
+      --earth-text-muted: #786C64;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      background-color: var(--earth-bg) !important;
+      color: var(--earth-text) !important;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .font-serif {
+      font-family: 'Playfair Display', Georgia, serif;
+      letter-spacing: -0.01em;
+    }
+
+    /* Top bar */
+    .header-top-earth {
+      background-color: var(--earth-dark) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 13px;
+    }
+    .header-top-earth a {
+      color: #E6DDD4 !important;
+      transition: color 0.2s;
+    }
+    .header-top-earth a:hover {
+      color: var(--earth-accent) !important;
+    }
+
+    /* Main Header */
+    .header-area-earth {
+      background: rgba(255, 255, 255, 0.96) !important;
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--earth-border);
+      transition: all 0.3s ease;
+    }
+
+    .main-menu ul li a {
+      color: var(--earth-dark) !important;
+      font-weight: 600;
+      font-size: 14.5px;
+      padding: 12px 18px !important;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .main-menu ul li a:hover,
+    .main-menu ul li a.active {
+      color: var(--earth-primary) !important;
+    }
+    .main-menu ul li a::after {
+      content: '';
+      position: absolute;
+      bottom: 6px;
+      left: 18px;
+      right: 18px;
+      height: 2px;
+      background: var(--earth-primary);
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+    .main-menu ul li a:hover::after,
+    .main-menu ul li a.active::after {
+      transform: scaleX(1);
+    }
+
+    /* Soft Earth Buttons */
+    .btn-earth {
+      background: var(--earth-primary) !important;
+      color: #FFFFFF !important;
+      border: 1px solid var(--earth-primary) !important;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(140, 94, 60, 0.2);
+    }
+    .btn-earth:hover {
+      background: var(--earth-primary-hover) !important;
+      border-color: var(--earth-primary-hover) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(140, 94, 60, 0.28);
+    }
+
+    .btn-earth-outline {
+      background: transparent !important;
+      color: var(--earth-primary) !important;
+      border: 1.5px solid var(--earth-primary) !important;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+    .btn-earth-outline:hover {
+      background: var(--earth-primary) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-earth-light {
+      background: var(--earth-surface-warm) !important;
+      color: var(--earth-dark) !important;
+      border: 1px solid var(--earth-border) !important;
+      font-weight: 600;
+      transition: all 0.25s ease;
+    }
+    .btn-earth-light:hover {
+      background: #EFE4DC !important;
+      color: var(--earth-dark) !important;
+    }
+
+    /* Badges */
+    .badge-earth {
+      background-color: var(--earth-accent-soft) !important;
+      color: var(--earth-primary) !important;
+      border: 1px solid rgba(140, 94, 60, 0.25) !important;
+      font-weight: 700;
+    }
+    .badge-earth-dark {
+      background-color: var(--earth-dark) !important;
+      color: #FAF7F2 !important;
+      font-weight: 600;
+    }
+
+    /* Earth Tone Cards */
+    .card-earth {
+      background: var(--earth-surface) !important;
+      border: 1px solid var(--earth-border) !important;
+      border-radius: 20px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-earth:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(43, 35, 29, 0.08);
+      border-color: #D6C8BC !important;
+    }
+
+    /* Footer */
+    .footer-area-earth {
+      background-color: var(--earth-dark) !important;
+      border-top: 3px solid var(--earth-primary);
+      color: #E2D7CE;
+    }
+    .footer-area-earth a {
+      color: #B5A89E;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-area-earth a:hover {
+      color: #FFFFFF;
+    }
+
+    /* Pulsing Live Dot */
+    .live-pulse-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #EF4444;
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      animation: pulseLive 1.8s infinite;
+    }
+    @keyframes pulseLive {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -33,68 +225,72 @@
     </div>
   </div>
 
+  @php
+    $churchProfileGlobal = \App\Models\ChurchProfile::getProfile();
+  @endphp
+
   <!-- TOP HEADER INFO -->
-  <div class="header-top d-none d-lg-block" style="background-color: #0b1727; border-bottom: 1px solid rgba(255,255,255,0.08);">
+  <div class="header-top header-top-earth d-none d-lg-block py-2">
     <div class="container">
-      <div class="header-top-wrp">
-        <ul class="info">
+      <div class="header-top-wrp d-flex align-items-center justify-content-between">
+        <ul class="info d-flex align-items-center mb-0 list-unstyled gap-4">
           <li>
-            <i class="ri-mail-line text-primary me-1"></i>
-            <a href="mailto:sekretariat@giasurabaya.org" class="ms-1">sekretariat@giasurabaya.org</a>
+            <i class="ri-mail-line me-1" style="color: var(--earth-accent);"></i>
+            <a href="mailto:{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}">{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}</a>
           </li>
-          <li class="ms-4">
-            <i class="ri-phone-line text-primary me-1"></i>
-            <a href="tel:+6231567890" class="ms-1">+62-31-567-890 / +62-812-3456-789</a>
+          <li>
+            <i class="ri-phone-line me-1" style="color: var(--earth-accent);"></i>
+            <a href="tel:{{ $churchProfileGlobal->telepon ?: '+6231567890' }}">{{ $churchProfileGlobal->telepon ?: '+62-31-567-890' }}</a>
           </li>
-          <li class="ms-4">
-            <i class="ri-map-pin-line text-primary me-1"></i>
-            <span class="text-white-50 ms-1">Surabaya, Jawa Timur</span>
+          <li>
+            <i class="ri-map-pin-line me-1" style="color: var(--earth-accent);"></i>
+            <span style="color: #C8BCB2;">{{ $churchProfileGlobal->alamat_pusat ?: 'Surabaya, Jawa Timur' }}</span>
           </li>
         </ul>
-        <ul class="link-info d-flex align-items-center gap-3">
-          <li><a href="{{ route('ibadah.public') }}" class="text-white text-decoration-none small"><i class="ri-calendar-check-line me-1 text-primary"></i> Jadwal Ibadah</a></li>
-          <li class="text-white-50">|</li>
-          <li><a href="{{ route('admin.login') }}" class="text-white text-decoration-none small"><i class="ri-lock-line me-1"></i> CMS Login</a></li>
+        <ul class="link-info d-flex align-items-center gap-3 mb-0 list-unstyled">
+          <li>
+            <a href="{{ route('admin.login') }}" class="small d-inline-flex align-items-center gap-1.5" style="color: #D6C8BC;">
+              <i class="ri-lock-line" style="color: var(--earth-accent);"></i> CMS Login
+            </a>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 
   <!-- MAIN HEADER -->
-  <header class="header-area bg-white shadow-sm sticky-top">
+  <header class="header-area header-area-earth sticky-top">
     <div class="container">
       <div class="header__main d-flex align-items-center justify-content-between py-2">
-        <a href="{{ url('/') }}" class="logo d-flex align-items-center gap-2 text-decoration-none">
+        <a href="{{ url('/') }}" class="logo d-flex align-items-center gap-3 text-decoration-none">
           <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 48px; width: auto;">
-          <div class="d-none d-sm-block">
-            <strong class="d-block text-dark fw-bold" style="font-size: 16px; line-height: 1.2;">Gereja Isa Almasih</strong>
-            <span class="text-muted" style="font-size: 11px; letter-spacing: 0.5px;">JEMAAT SURABAYA</span>
+          <div>
+            <strong class="d-block fw-bold" style="font-size: 17px; line-height: 1.2; color: var(--earth-dark);">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih' }}</strong>
+            <span class="text-uppercase" style="font-size: 10.5px; letter-spacing: 1px; color: var(--earth-primary); font-weight: 700;">Jemaat Surabaya</span>
           </div>
         </a>
-        <div class="main-menu">
+
+        <!-- MAIN NAVBAR (No 'Jadwal Ibadah' link as requested) -->
+        <div class="main-menu d-none d-lg-block">
           <nav>
-            <ul>
-              <li><a href="{{ url('/') }}">Home</a></li>
+            <ul class="d-flex align-items-center mb-0 list-unstyled">
+              <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
               <li><a href="{{ url('/#streaming') }}">Live Streaming</a></li>
-              <li><a href="{{ url('/warta') }}">Warta Jemaat</a></li>
-              <li><a href="{{ url('/event') }}">Event</a></li>
-              <li>
-                <a href="{{ route('ibadah.public') }}" class="fw-bold" style="color: #0d6efd !important;">
-                  <i class="ri-book-open-line me-1"></i> Jadwal Ibadah
-                  <span class="badge bg-primary text-white ms-1" style="font-size: 10px; border-radius: 20px; padding: 2px 7px;">Liturgi</span>
-                </a>
-              </li>
+              <li><a href="{{ url('/warta') }}" class="{{ request()->is('warta*') ? 'active' : '' }}">Warta Jemaat</a></li>
+              <li><a href="{{ url('/event') }}" class="{{ request()->is('event*') ? 'active' : '' }}">Event</a></li>
             </ul>
           </nav>
         </div>
-        <div class="d-none d-lg-flex align-items-center gap-2">
-          <a href="{{ route('ibadah.public') }}" class="btn btn-primary btn-sm px-3 py-2 rounded-pill fw-bold d-inline-flex align-items-center gap-2 shadow-sm" style="font-size: 12px;">
-            <i class="ri-calendar-event-line"></i>
-            <span>LIHAT JADWAL & LITURGI</span>
+
+        <div class="d-none d-lg-flex align-items-center gap-3">
+          <a href="{{ url('/#streaming') }}" class="btn btn-earth btn-sm px-3.5 py-2 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
+            <i class="ri-live-line"></i>
+            <span>Live Streaming</span>
           </a>
         </div>
+
         <div class="bars d-block d-lg-none">
-          <i id="openButton" class="fa-solid fa-bars"></i>
+          <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
         </div>
       </div>
     </div>
@@ -103,26 +299,35 @@
   <!-- MOBILE SIDEBAR -->
   <div id="targetElement" class="sidebar-area sidebar__hide">
     <div class="sidebar__overlay"></div>
-    <div class="p-4">
+    <div class="p-4" style="background-color: var(--earth-dark); min-height: 100vh;">
       <a href="{{ url('/') }}" class="logo d-block mb-4 text-decoration-none">
-        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="logo" style="height: 50px;">
-        <span class="text-white d-block fw-bold mt-2">Gereja Isa Almasih Surabaya</span>
+        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="logo" style="height: 46px; filter: brightness(1.2);">
+        <span class="text-white d-block fw-bold mt-2 font-serif" style="font-size: 18px;">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}</span>
       </a>
       <div class="mobile-menu overflow-hidden">
         <ul class="list-unstyled">
-          <li class="py-2 border-bottom border-secondary"><a href="{{ url('/') }}" class="text-white text-decoration-none">Home</a></li>
-          <li class="py-2 border-bottom border-secondary"><a href="{{ url('/#streaming') }}" class="text-white text-decoration-none">Live Streaming</a></li>
-          <li class="py-2 border-bottom border-secondary"><a href="{{ url('/warta') }}" class="text-white text-decoration-none">Warta Jemaat</a></li>
-          <li class="py-2 border-bottom border-secondary"><a href="{{ url('/event') }}" class="text-white text-decoration-none">Event</a></li>
-          <li class="py-2 border-bottom border-secondary">
-            <a href="{{ route('ibadah.public') }}" class="text-warning text-decoration-none fw-bold">
-              ⛪ Jadwal Ibadah & Liturgi
+          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
+            <a href="{{ url('/') }}" class="text-white text-decoration-none d-block">Home</a>
+          </li>
+          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
+            <a href="{{ url('/#streaming') }}" class="text-white text-decoration-none d-block">Live Streaming</a>
+          </li>
+          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
+            <a href="{{ url('/warta') }}" class="text-white text-decoration-none d-block">Warta Jemaat</a>
+          </li>
+          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
+            <a href="{{ url('/event') }}" class="text-white text-decoration-none d-block">Event</a>
+          </li>
+          <li class="py-2.5">
+            <a href="{{ route('admin.login') }}" class="text-decoration-none d-inline-flex align-items-center gap-1.5" style="color: var(--earth-accent);">
+              <i class="ri-lock-line"></i> CMS Login
             </a>
           </li>
-          <li class="py-2"><a href="{{ route('admin.login') }}" class="text-info text-decoration-none">CMS Login</a></li>
         </ul>
       </div>
-      <button id="closeButton" class="text-white mt-4 btn btn-outline-light btn-sm"><i class="fa-solid fa-xmark me-1"></i> Tutup Menu</button>
+      <button id="closeButton" class="text-white mt-4 btn btn-outline-light btn-sm rounded-pill px-3">
+        <i class="fa-solid fa-xmark me-1"></i> Tutup Menu
+      </button>
     </div>
   </div>
 
@@ -131,68 +336,71 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer-area text-white pt-5 pb-3" style="background-color: #0b1727; border-top: 4px solid #0d6efd;">
+  <footer class="footer-area footer-area-earth pt-5 pb-3">
     <div class="container mb-4">
       <div class="row g-4">
         <!-- Col 1: Church Bio -->
         <div class="col-lg-4 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="d-flex align-items-center gap-3 mb-3">
             <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 44px; filter: brightness(1.2);">
             <div>
-              <h5 class="mb-0 fw-bold text-white">Gereja Isa Almasih</h5>
-              <small class="text-white-50">Jemaat Surabaya</small>
+              <h5 class="mb-0 fw-bold text-white font-serif">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih' }}</h5>
+              <small style="color: var(--earth-accent); letter-spacing: 0.5px;">Jemaat Surabaya</small>
             </div>
           </div>
-          <p class="text-white-50 small pe-lg-3 leading-relaxed">
-            Mewujudkan jemaat yang bertumbuh dalam iman kepada Kristus, berakar dalam firman Tuhan, dan berbuah dalam pelayanan kasih kepada sesama.
+          <p class="small pe-lg-3 leading-relaxed" style="color: #C0B4A9;">
+            {{ $churchProfileGlobal->tentang_gereja ?: 'Mewujudkan jemaat yang bertumbuh dalam iman kepada Kristus, berakar dalam firman Tuhan, dan berbuah dalam pelayanan kasih kepada sesama.' }}
           </p>
           <div class="d-flex gap-2 mt-3">
-            <a href="#0" class="btn btn-outline-light btn-sm rounded-circle" style="width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-facebook-f"></i></a>
-            <a href="#0" class="btn btn-outline-light btn-sm rounded-circle" style="width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-instagram"></i></a>
-            <a href="#0" class="btn btn-outline-light btn-sm rounded-circle" style="width: 34px; height: 34px; padding: 0; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-youtube"></i></a>
+            @if($churchProfileGlobal->instagram_url)
+              <a href="{{ $churchProfileGlobal->instagram_url }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="fab fa-instagram"></i></a>
+            @endif
+            @if($churchProfileGlobal->youtube_channel_url)
+              <a href="{{ $churchProfileGlobal->youtube_channel_url }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="fab fa-youtube"></i></a>
+            @endif
+            <a href="mailto:{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="ri-mail-line"></i></a>
           </div>
         </div>
 
-        <!-- Col 2: Jadwal Ibadah Rutin -->
+        <!-- Col 2: Jadwal Ibadah Ringkas -->
         <div class="col-lg-3 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.5px;">Jadwal Ibadah Raya</h6>
-          <ul class="list-unstyled text-white-50 small space-y-2">
-            <li class="mb-2"><strong class="text-white">Ibadah Pagi:</strong> Minggu, 06.30 & 08.30 WIB</li>
-            <li class="mb-2"><strong class="text-white">Ibadah Siang:</strong> Minggu, 10.30 WIB</li>
-            <li class="mb-2"><strong class="text-white">Ibadah Sore:</strong> Minggu, 16.30 WIB</li>
+          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Ibadah Raya Mingguan</h6>
+          <ul class="list-unstyled small space-y-2" style="color: #C0B4A9;">
+            <li class="mb-2"><strong class="text-white">Ibadah Pagi 1:</strong> Minggu, 06.00 WIB</li>
+            <li class="mb-2"><strong class="text-white">Ibadah Pagi 2:</strong> Minggu, 08.00 WIB</li>
+            <li class="mb-2"><strong class="text-white">Ibadah Siang:</strong> Minggu, 10.00 WIB</li>
+            <li class="mb-2"><strong class="text-white">Ibadah Sore:</strong> Minggu, 17.00 WIB</li>
             <li class="mb-2"><strong class="text-white">Doa Tengah Minggu:</strong> Rabu, 18.30 WIB</li>
           </ul>
-          <a href="{{ route('ibadah.public') }}" class="btn btn-sm btn-outline-primary text-white rounded-pill mt-2" style="font-size: 11px;">
-            <i class="ri-book-read-line me-1"></i> Buka Liturgi & Lagu Lengkap
-          </a>
         </div>
 
         <!-- Col 3: Akses Cepat -->
         <div class="col-lg-2 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.5px;">Akses Cepat</h6>
-          <ul class="list-unstyled small">
-            <li class="mb-2"><a href="{{ url('/') }}" class="text-white-50 text-decoration-none hover-white">Beranda</a></li>
-            <li class="mb-2"><a href="{{ route('ibadah.public') }}" class="text-white text-decoration-none hover-white fw-bold"><i class="ri-arrow-right-s-line text-primary"></i> Jadwal Ibadah</a></li>
-            <li class="mb-2"><a href="{{ url('/#streaming') }}" class="text-white-50 text-decoration-none hover-white">Live Streaming</a></li>
-            <li class="mb-2"><a href="{{ url('/warta') }}" class="text-white-50 text-decoration-none hover-white">Warta Jemaat Digital</a></li>
-            <li class="mb-2"><a href="{{ url('/event') }}" class="text-white-50 text-decoration-none hover-white">Agenda Event</a></li>
-            <li class="mb-2"><a href="{{ route('admin.login') }}" class="text-primary text-decoration-none hover-white">CMS Admin Login</a></li>
+          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Navigasi</h6>
+          <ul class="list-unstyled small" style="color: #C0B4A9;">
+            <li class="mb-2"><a href="{{ url('/') }}" class="text-decoration-none">Beranda</a></li>
+            <li class="mb-2"><a href="{{ url('/#tentang') }}" class="text-decoration-none">Tentang Gereja</a></li>
+            <li class="mb-2"><a href="{{ url('/#visimisi') }}" class="text-decoration-none">Visi & Misi</a></li>
+            <li class="mb-2"><a href="{{ url('/#jadwal') }}" class="text-decoration-none">Jadwal Ibadah</a></li>
+            <li class="mb-2"><a href="{{ url('/#streaming') }}" class="text-decoration-none">Live Streaming</a></li>
+            <li class="mb-2"><a href="{{ url('/warta') }}" class="text-decoration-none">Warta Jemaat</a></li>
+            <li class="mb-2"><a href="{{ url('/event') }}" class="text-decoration-none">Event Gereja</a></li>
           </ul>
         </div>
 
         <!-- Col 4: Kontak Sekretariat -->
         <div class="col-lg-3 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.5px;">Sekretariat Gereja</h6>
-          <p class="text-white-50 small mb-2"><i class="ri-map-pin-2-line text-primary me-2"></i> Jl. Darmo Raya / Cabang Surabaya</p>
-          <p class="text-white-50 small mb-2"><i class="ri-phone-line text-primary me-2"></i> (031) 567-890</p>
-          <p class="text-white-50 small mb-2"><i class="ri-whatsapp-line text-emerald-400 me-2"></i> +62 812-3456-789 (Pelayanan Jemaat)</p>
-          <p class="text-white-50 small"><i class="ri-time-line text-primary me-2"></i> Selasa - Minggu, 08.00 - 17.00 WIB</p>
+          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Sekretariat Gereja</h6>
+          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-map-pin-2-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->alamat_pusat ?: 'Jl. Darmo Raya / Cabang Surabaya' }}</p>
+          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-phone-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->telepon ?: '(031) 567-890' }}</p>
+          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-mail-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}</p>
+          <p class="small" style="color: #C0B4A9;"><i class="ri-time-line me-2" style="color: var(--earth-accent);"></i> Selasa - Minggu, 08.00 - 17.00 WIB</p>
         </div>
       </div>
     </div>
 
-    <div class="footer__bottom-wrapper text-center py-3 border-top border-secondary" style="border-color: rgba(255,255,255,0.08) !important;">
-      <p class="text-white-50 small mb-0">&copy; {{ date('Y') }} Gereja Isa Almasih Surabaya. All Rights Reserved.</p>
+    <div class="footer__bottom-wrapper text-center py-3 border-top" style="border-color: rgba(255,255,255,0.08) !important;">
+      <p class="small mb-0" style="color: #9E9286;">&copy; {{ date('Y') }} {{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}. All Rights Reserved.</p>
     </div>
   </footer>
 
