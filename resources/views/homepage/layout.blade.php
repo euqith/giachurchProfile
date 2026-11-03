@@ -6,7 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gereja Isa Almasih Surabaya - Website Resmi</title>
-  <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}">
+  <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
+  <link rel="icon" type="image/png" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
+  <link rel="apple-touch-icon" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/meanmenu.css') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/all.min.css') }}">
@@ -100,10 +102,9 @@
     }
 
     .header-church-logo {
-      height: 46px;
-      max-height: 48px;
+      height: 48px;
+      max-height: 52px;
       width: auto;
-      max-width: 240px;
       object-fit: contain;
       transition: all 0.2s ease;
     }
@@ -283,8 +284,8 @@
     /* =================================================== */
     @media (max-width: 991.98px) {
       .header-church-logo {
-        height: 38px !important;
-        max-width: 185px !important;
+        height: 40px !important;
+        max-width: 100px !important;
       }
       .shortcut-cards-section {
         margin-top: 25px !important;
@@ -302,8 +303,8 @@
 
     @media (max-width: 575.98px) {
       .header-church-logo {
-        height: 34px !important;
-        max-width: 155px !important;
+        height: 36px !important;
+        max-width: 85px !important;
       }
       .shortcut-cards-section {
         margin-top: 20px !important;
@@ -338,7 +339,7 @@
     <div id="loading-center">
       <div id="loading-center-absolute">
         <div class="loading-icon text-center d-flex flex-column align-items-center justify-content-center">
-          <img class="loading-logo mb-3" src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya">
+          <img class="loading-logo mb-3" src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="Gereja Isa Almasih Surabaya">
           <div class="d-flex align-items-center gap-2 mt-1">
             <span class="spinner-grow text-secondary" style="width: 7px; height: 7px; background-color: var(--earth-primary) !important;"></span>
             <span class="spinner-grow text-secondary" style="width: 7px; height: 7px; background-color: var(--earth-accent) !important; animation-delay: 0.15s;"></span>
@@ -371,7 +372,7 @@
       <div class="header__main d-flex align-items-center justify-content-between py-2">
         <!-- LOGO BRANDING (TIDAK ADA TEKS MENUMPUK, BERSIH & RESPONSIF) -->
         <a href="{{ url('/') }}" class="logo d-flex align-items-center text-decoration-none py-1">
-          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="header-church-logo">
+          <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="Gereja Isa Almasih Surabaya" class="header-church-logo">
         </a>
 
         <!-- MAIN NAVBAR -->
@@ -406,7 +407,7 @@
     <div class="sidebar__overlay"></div>
     <div class="p-4" style="background-color: var(--earth-dark); min-height: 100vh;">
       <a href="{{ url('/') }}" class="logo d-block mb-4 text-decoration-none">
-        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Surabaya" style="height: 42px; width: auto; object-fit: contain; filter: brightness(1.2);">
+        <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Surabaya" style="height: 44px; width: auto; object-fit: contain; filter: brightness(1.2);">
       </a>
       <div class="mobile-menu overflow-hidden">
         <ul class="list-unstyled">
@@ -451,7 +452,7 @@
         <!-- Col 1: Church Bio -->
         <div class="col-lg-4 col-md-6">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 44px; width: auto; object-fit: contain; filter: brightness(1.2);">
+            <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Logo" style="height: 46px; width: auto; object-fit: contain; filter: brightness(1.2);">
           </div>
           <p class="small pe-lg-3 leading-relaxed" style="color: #C0B4A9;">
             {{ $churchProfileGlobal->tentang_gereja ?: 'Mewujudkan jemaat yang bertumbuh dalam iman kepada Kristus, berakar dalam firman Tuhan, dan berbuah dalam pelayanan kasih kepada sesama.' }}

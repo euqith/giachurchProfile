@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jadwal Ibadah & Liturgi Pelayanan - Gereja Isa Almasih Surabaya</title>
-  <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}">
+  <link rel="shortcut icon" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
+  <link rel="icon" type="image/png" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   @if (file_exists(public_path('build/manifest.json')))

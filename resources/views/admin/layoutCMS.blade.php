@@ -3,12 +3,15 @@
 
 <head>
   <meta charset="utf-8">
-  <title>CMS Admin Panel - Attex Tailwind</title>
+  <title>CMS Admin Panel - Gereja Isa Almasih Surabaya</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="CMS Admin Theme" name="description">
-  <meta name="author" content="coderthemes">
+  <meta name="author" content="GIA Surabaya">
 
-  <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}?v=3">
+  <link rel="icon" type="image/x-icon" href="{{ asset('admin/assets/images/favicon.ico') }}?v=3">
+  <link rel="icon" type="image/png" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
+  <link rel="apple-touch-icon" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
   <link href="{{ asset('admin/assets/libs/jsvectormap/css/jsvectormap.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('admin/assets/css/app.min.css') }}" rel="stylesheet" type="text/css">
   <link href="{{ asset('admin/assets/css/icons.min.css') }}" rel="stylesheet" type="text/css">
@@ -31,7 +34,7 @@
   <!-- LOADING SCREEN CMS: DENGAN LOGO GEREJA RESMI -->
   <div id="cms-loading" style="position: fixed; inset: 0; background: #ffffff; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.35s ease, visibility 0.35s ease;">
     <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-      <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih" style="max-width: 200px; height: auto; margin-bottom: 16px; animation: pulse 1.6s ease-in-out infinite;">
+      <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="Gereja Isa Almasih" style="height: 60px; width: auto; object-fit: contain; margin-bottom: 16px; animation: pulse 1.6s ease-in-out infinite;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #2563eb; display: inline-block; animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
         <span style="font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.8px; text-transform: uppercase;">Memuat Panel CMS...</span>
@@ -57,7 +60,7 @@
     <div class="app-menu">
       <a href="{{ route('admin.dashboard') }}" class="logo-box">
         <div class="logo-light flex items-center justify-center h-16 bg-white border-b border-slate-100 px-3">
-          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" class="h-8 w-auto object-contain">
+          <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Logo" class="h-9 w-auto object-contain">
         </div>
       </a>
 

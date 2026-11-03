@@ -4,7 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMS Login - Sadaka Admin</title>
+  <title>CMS Login - Gereja Isa Almasih Surabaya</title>
+  <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}?v=3">
+  <link rel="icon" type="image/x-icon" href="{{ asset('admin/assets/images/favicon.ico') }}?v=3">
+  <link rel="icon" type="image/png" href="{{ asset('homepage/assets/images/favicon.png') }}?v=3">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -13,12 +16,11 @@
 
   <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
     <div class="text-center mb-6">
-      <div
-        class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-orange-100 text-orange-600 font-bold text-2xl mb-3 shadow-sm">
-        S
+      <div class="inline-flex items-center justify-center p-2 mb-3">
+        <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Surabaya" class="h-14 w-auto object-contain">
       </div>
       <h4 class="text-xl font-bold text-slate-950">Log In Admin CMS</h4>
-      <p class="text-sm text-slate-400 mt-1">Gunakan akun staf terdaftar untuk mengelola situs.</p>
+      <p class="text-sm text-slate-400 mt-1">Gereja Isa Almasih Surabaya</p>
     </div>
 
     {{-- Notifikasi --}}
