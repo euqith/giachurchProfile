@@ -191,8 +191,8 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">Tautan YouTube Resmi</label>
-          <input type="url" name="youtube_channel_url" value="{{ old('youtube_channel_url', $profile->youtube_channel_url) }}" placeholder="https://youtube.com/@..."
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tautan Instagram Resmi</label>
+          <input type="url" name="instagram_url" value="{{ old('instagram_url', $profile->instagram_url) }}" placeholder="https://www.instagram.com/..."
             class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-amber-600 bg-white">
         </div>
       </div>

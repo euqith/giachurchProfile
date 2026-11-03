@@ -16,8 +16,11 @@ class Stream extends Model
         'cabang_id',
         'judul_streaming',
         'youtube_id',
+        'channel_id',
         'waktu_tayang',
         'is_live',
+        'auto_detect',
+        'last_checked_at',
         'createdBy',
         'updatedBy',
         'isActive',
@@ -26,6 +29,8 @@ class Stream extends Model
 
     protected $casts = [
         'is_live' => 'boolean',
+        'auto_detect' => 'boolean',
+        'last_checked_at' => 'datetime',
         'isActive' => 'boolean',
         'isDelete' => 'boolean',
     ];

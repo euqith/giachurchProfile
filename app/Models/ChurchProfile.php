@@ -23,6 +23,7 @@ class ChurchProfile extends Model
         'telepon',
         'email',
         'youtube_channel_url',
+        'youtube_api_key',
         'instagram_url',
     ];
 

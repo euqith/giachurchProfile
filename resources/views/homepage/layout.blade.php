@@ -319,36 +319,7 @@
     $churchProfileGlobal = \App\Models\ChurchProfile::getProfile();
   @endphp
 
-  <!-- TOP HEADER INFO -->
-  <div class="header-top header-top-earth d-none d-lg-block py-2">
-    <div class="container">
-      <div class="header-top-wrp d-flex align-items-center justify-content-between">
-        <ul class="info d-flex align-items-center mb-0 list-unstyled gap-4">
-          <li>
-            <i class="ri-mail-line me-1" style="color: var(--earth-accent);"></i>
-            <a href="mailto:{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}">{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}</a>
-          </li>
-          <li>
-            <i class="ri-phone-line me-1" style="color: var(--earth-accent);"></i>
-            <a href="tel:{{ $churchProfileGlobal->telepon ?: '+6231567890' }}">{{ $churchProfileGlobal->telepon ?: '+62-31-567-890' }}</a>
-          </li>
-          <li>
-            <i class="ri-map-pin-line me-1" style="color: var(--earth-accent);"></i>
-            <span style="color: #C8BCB2;">{{ $churchProfileGlobal->alamat_pusat ?: 'Surabaya, Jawa Timur' }}</span>
-          </li>
-        </ul>
-        <ul class="link-info d-flex align-items-center gap-3 mb-0 list-unstyled">
-          <li>
-            <a href="{{ route('admin.login') }}" class="small d-inline-flex align-items-center gap-1.5" style="color: #D6C8BC;">
-              <i class="ri-lock-line" style="color: var(--earth-accent);"></i> CMS Login
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- MAIN HEADER -->
+  <!-- MAIN HEADER (STICKY) -->
   <header class="header-area header-area-earth sticky-top">
     <div class="container">
       <div class="header__main d-flex align-items-center justify-content-between py-2">

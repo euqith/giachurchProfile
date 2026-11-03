@@ -118,6 +118,7 @@ test('admin can manage church profile and upload photo', function () {
         'tentang_gereja' => 'Deskripsi tentang gereja kami.',
         'visi' => 'Menjadi garam dan terang dunia.',
         'misi' => "Misi 1\nMisi 2",
+        'instagram_url' => 'https://www.instagram.com/giasurabayaupdate',
         'foto_gereja' => $file,
     ]);
 
@@ -125,6 +126,7 @@ test('admin can manage church profile and upload photo', function () {
     $this->assertDatabaseHas('church_profiles', [
         'nama_gereja' => 'GIA Surabaya Update',
         'tagline' => 'Gereja yang memuliakan Tuhan',
+        'instagram_url' => 'https://www.instagram.com/giasurabayaupdate',
     ]);
 
     // Clean up uploaded test file
@@ -168,4 +170,17 @@ test('admin can manage streams and toggle live status', function () {
 
     $stream->refresh();
     expect($stream->is_live)->toBe(! $currentStatus);
+
+    // Save YouTube API Key
+    $apiKeyResponse = $this->actingAs($admin)->post(route('admin.stream.api-key'), [
+        'youtube_api_key' => 'AIzaSyTestApiKey12345',
+    ]);
+    $apiKeyResponse->assertRedirect();
+    $this->assertDatabaseHas('church_profiles', [
+        'youtube_api_key' => 'AIzaSyTestApiKey12345',
+    ]);
+
+    // Trigger auto-detect all
+    $autoDetectResponse = $this->actingAs($admin)->post(route('admin.stream.auto-detect'));
+    $autoDetectResponse->assertRedirect();
 });

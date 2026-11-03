@@ -136,6 +136,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     Route::get('/streams', [AdminStreamController::class, 'index'])->name('stream.index');
     Route::put('/streams/{id}', [AdminStreamController::class, 'update'])->name('stream.update');
     Route::post('/streams/{id}/toggle', [AdminStreamController::class, 'toggleLive'])->name('stream.toggle');
+    Route::post('/streams/auto-detect', [AdminStreamController::class, 'autoDetectAll'])->name('stream.auto-detect');
+    Route::post('/streams/{id}/auto-detect', [AdminStreamController::class, 'autoDetectSingle'])->name('stream.auto-detect.single');
+    Route::post('/streams/api-key', [AdminStreamController::class, 'updateApiKey'])->name('stream.api-key');
 
 });
 

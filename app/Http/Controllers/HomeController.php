@@ -8,7 +8,10 @@ use App\Models\Event;
 use App\Models\Stream;
 use App\Models\Warta;
 use App\Models\WorshipSchedule;
+use App\Services\YouTubeStreamDetector;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Throwable;
 
 class HomeController extends Controller
 {
@@ -27,6 +30,16 @@ class HomeController extends Controller
             ->where('waktu_selesai', '>=', Carbon::now())
             ->orderBy('waktu_mulai', 'asc')
             ->get();
+
+        // 📡 Auto-detect real-time live streaming berkala (cache 5 menit agar cepat & hemat kuota)
+        if (! Cache::has('streams_auto_checked_recently')) {
+            try {
+                app(YouTubeStreamDetector::class)->checkAllStreams();
+                Cache::put('streams_auto_checked_recently', true, now()->addMinutes(5));
+            } catch (Throwable $e) {
+                // Jangan gagalkan load homepage jika koneksi eksternal timeout
+            }
+        }
 
         // 📡 Streaming 5 Cabang & Deteksi Siaran Langsung (Live Detection)
         $streams = Stream::with('cabang')
