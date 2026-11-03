@@ -244,6 +244,40 @@
       }
     }
 
+    /* Live Streaming Pop-Up Button (High Contrast & Noticed) */
+    .btn-live-stream-pop {
+      background: linear-gradient(135deg, #DC2626, #B91C1C) !important;
+      color: #FFFFFF !important;
+      font-weight: 700 !important;
+      border: none !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      box-shadow: 0 4px 14px rgba(220, 38, 38, 0.38) !important;
+      letter-spacing: 0.2px;
+    }
+    .btn-live-stream-pop:hover {
+      background: linear-gradient(135deg, #B91C1C, #991B1B) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.55) !important;
+    }
+    .btn-live-stream-pop.is-active-live {
+      animation: liveButtonPulse 1.9s infinite !important;
+    }
+    @keyframes liveButtonPulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.65), 0 4px 14px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 9px rgba(220, 38, 38, 0), 0 6px 22px rgba(220, 38, 38, 0.55);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0), 0 4px 14px rgba(220, 38, 38, 0.4);
+      }
+    }
+
     /* =================================================== */
     /* RESPONSIVE OPTIMIZATIONS (TABLET & MOBILE HP)       */
     /* =================================================== */
@@ -317,7 +351,19 @@
 
   @php
     $churchProfileGlobal = \App\Models\ChurchProfile::getProfile();
+    $isAnyLive = \App\Models\Stream::where('isDelete', 0)->where('isActive', 1)->where('is_live', 1)->exists();
   @endphp
+
+  <!-- STRIP PEMBERITAHUAN SIARAN LANGSUNG (MUNCUL OTOMATIS SAAT ADA CABANG LIVE) -->
+  @if($isAnyLive)
+    <div class="py-2 px-3 text-center text-white" style="background: linear-gradient(90deg, #991B1B, #DC2626, #991B1B); font-size: 12.5px; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 2px 10px rgba(220,38,38,0.25);">
+      <a href="{{ url('/#streaming') }}" class="text-white text-decoration-none d-inline-flex align-items-center justify-content-center gap-2 flex-wrap">
+        <span class="live-pulse-dot" style="background: #FFFFFF; width: 8px; height: 8px;"></span>
+        <span>IBADAH RAYA SEDANG BERLANGSUNG (LIVE STREAMING) — KLIK DI SINI UNTUK BERGABUNG</span>
+        <i class="ri-arrow-right-line"></i>
+      </a>
+    </div>
+  @endif
 
   <!-- MAIN HEADER (STICKY) -->
   <header class="header-area header-area-earth sticky-top">
@@ -333,22 +379,47 @@
           <nav>
             <ul class="d-flex align-items-center mb-0 list-unstyled">
               <li><a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active' : '' }}">Home</a></li>
-              <li><a href="{{ url('/#streaming') }}">Live Streaming</a></li>
+              <li>
+                <a href="{{ url('/#streaming') }}" class="d-inline-flex align-items-center gap-1.5">
+                  <i class="ri-live-line text-danger"></i> Live Streaming
+                  @if($isAnyLive)
+                    <span class="badge bg-danger text-white rounded-pill ms-1" style="font-size: 9px; padding: 2px 6px;">LIVE</span>
+                  @endif
+                </a>
+              </li>
               <li><a href="{{ url('/warta') }}" class="{{ request()->is('warta*') ? 'active' : '' }}">Warta Jemaat</a></li>
               <li><a href="{{ url('/event') }}" class="{{ request()->is('event*') ? 'active' : '' }}">Event</a></li>
             </ul>
           </nav>
         </div>
 
+        <!-- TOMBOL LIVE STREAMING MENCOLOK (POP-UP & MUDAH TER-NOTICE) -->
         <div class="d-none d-lg-flex align-items-center gap-3">
-          <a href="{{ url('/#streaming') }}" class="btn btn-earth btn-sm px-3.5 py-2 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
-            <i class="ri-live-line"></i>
-            <span>Live Streaming</span>
+          <a href="{{ url('/#streaming') }}"
+            class="btn btn-live-stream-pop {{ $isAnyLive ? 'is-active-live' : '' }} btn-sm px-4 py-2 rounded-pill d-inline-flex align-items-center gap-2"
+            style="font-size: 13.5px;">
+            <i class="ri-live-line" style="color: #FFFFFF; font-size: 15px;"></i>
+            <span style="color: #FFFFFF !important; font-weight: 700;">Live Streaming</span>
+            @if($isAnyLive)
+              <span class="badge bg-white text-danger fw-bold rounded-pill px-2 py-0.5" style="font-size: 9.5px;">ON AIR</span>
+            @endif
           </a>
         </div>
 
-        <div class="bars d-block d-lg-none">
-          <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
+        <!-- MOBILE ACTION (TOMBOL LIVE CEPAT & HAMBURGER) -->
+        <div class="d-flex d-lg-none align-items-center gap-2.5">
+          <a href="{{ url('/#streaming') }}"
+            class="btn btn-live-stream-pop {{ $isAnyLive ? 'is-active-live' : '' }} btn-sm px-2.5 py-1 rounded-pill d-inline-flex align-items-center gap-1.5"
+            style="font-size: 11.5px;">
+            <i class="ri-live-line" style="color: #FFFFFF;"></i>
+            <span style="color: #FFFFFF !important; font-weight: 700;">Live</span>
+            @if($isAnyLive)
+              <span class="live-pulse-dot" style="background: #FFFFFF; width: 6px; height: 6px;"></span>
+            @endif
+          </a>
+          <div class="bars">
+            <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -367,7 +438,12 @@
             <a href="{{ url('/') }}" class="text-white text-decoration-none d-block">Home</a>
           </li>
           <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
-            <a href="{{ url('/#streaming') }}" class="text-white text-decoration-none d-block">Live Streaming</a>
+            <a href="{{ url('/#streaming') }}" class="text-white text-decoration-none d-flex align-items-center justify-content-between">
+              <span><i class="ri-live-line text-danger me-2"></i>Live Streaming</span>
+              @if($isAnyLive)
+                <span class="badge bg-danger text-white rounded-pill px-2 py-0.5" style="font-size: 10px;">🔴 ON AIR</span>
+              @endif
+            </a>
           </li>
           <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
             <a href="{{ url('/warta') }}" class="text-white text-decoration-none d-block">Warta Jemaat</a>
