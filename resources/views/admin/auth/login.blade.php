@@ -17,7 +17,7 @@
   <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
     <div class="text-center mb-6">
       <div class="inline-flex items-center justify-center p-2 mb-3">
-        <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Surabaya" class="h-14 w-auto object-contain">
+        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="h-12 w-auto object-contain">
       </div>
       <h4 class="text-xl font-bold text-slate-950">Log In Admin CMS</h4>
       <p class="text-sm text-slate-400 mt-1">Gereja Isa Almasih Surabaya</p>

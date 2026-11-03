@@ -34,7 +34,7 @@
   <!-- LOADING SCREEN CMS: DENGAN LOGO GEREJA RESMI -->
   <div id="cms-loading" style="position: fixed; inset: 0; background: #ffffff; z-index: 999999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.35s ease, visibility 0.35s ease;">
     <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-      <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="Gereja Isa Almasih" style="height: 60px; width: auto; object-fit: contain; margin-bottom: 16px; animation: pulse 1.6s ease-in-out infinite;">
+      <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" style="max-width: 220px; height: auto; margin-bottom: 16px; animation: pulse 1.6s ease-in-out infinite;">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="width: 8px; height: 8px; border-radius: 50%; background-color: #2563eb; display: inline-block; animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
         <span style="font-size: 11px; font-weight: 700; color: #64748b; letter-spacing: 0.8px; text-transform: uppercase;">Memuat Panel CMS...</span>
@@ -60,7 +60,7 @@
     <div class="app-menu">
       <a href="{{ route('admin.dashboard') }}" class="logo-box">
         <div class="logo-light flex items-center justify-center h-16 bg-white border-b border-slate-100 px-3">
-          <img src="{{ asset('homepage/assets/images/logo/church-logo-emblem.png') }}" alt="GIA Logo" class="h-9 w-auto object-contain">
+          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="h-9 w-auto object-contain">
         </div>
       </a>
 
