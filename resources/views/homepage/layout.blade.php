@@ -393,33 +393,9 @@
           </nav>
         </div>
 
-        <!-- TOMBOL LIVE STREAMING MENCOLOK (POP-UP & MUDAH TER-NOTICE) -->
-        <div class="d-none d-lg-flex align-items-center gap-3">
-          <a href="{{ url('/#streaming') }}"
-            class="btn btn-live-stream-pop {{ $isAnyLive ? 'is-active-live' : '' }} btn-sm px-4 py-2 rounded-pill d-inline-flex align-items-center gap-2"
-            style="font-size: 13.5px;">
-            <i class="ri-live-line" style="color: #FFFFFF; font-size: 15px;"></i>
-            <span style="color: #FFFFFF !important; font-weight: 700;">Live Streaming</span>
-            @if($isAnyLive)
-              <span class="badge bg-white text-danger fw-bold rounded-pill px-2 py-0.5" style="font-size: 9.5px;">ON AIR</span>
-            @endif
-          </a>
-        </div>
-
-        <!-- MOBILE ACTION (TOMBOL LIVE CEPAT & HAMBURGER) -->
-        <div class="d-flex d-lg-none align-items-center gap-2.5">
-          <a href="{{ url('/#streaming') }}"
-            class="btn btn-live-stream-pop {{ $isAnyLive ? 'is-active-live' : '' }} btn-sm px-2.5 py-1 rounded-pill d-inline-flex align-items-center gap-1.5"
-            style="font-size: 11.5px;">
-            <i class="ri-live-line" style="color: #FFFFFF;"></i>
-            <span style="color: #FFFFFF !important; font-weight: 700;">Live</span>
-            @if($isAnyLive)
-              <span class="live-pulse-dot" style="background: #FFFFFF; width: 6px; height: 6px;"></span>
-            @endif
-          </a>
-          <div class="bars">
-            <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
-          </div>
+        <!-- MOBILE HAMBURGER TOGGLE -->
+        <div class="bars d-block d-lg-none">
+          <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
         </div>
       </div>
     </div>
