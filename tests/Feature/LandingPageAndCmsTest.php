@@ -254,6 +254,8 @@ test('homepage footer displays tulisan-putih logo without description paragraph 
     $response->assertSee('tulisan-putih.png');
     $response->assertSee('Plus Jakarta Sans');
     $response->assertDontSee('Mewujudkan jemaat yang bertumbuh');
+    $response->assertDontSee('Ibadah Raya Mingguan');
+    $response->assertDontSee('Sekretariat Gereja');
 });
 
 test('admin can access and manage role settings and permissions', function () {

@@ -692,64 +692,42 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer-area footer-area-earth pt-5 pb-3">
-    <div class="container mb-4">
-      <div class="row g-4">
-        <!-- Col 1: Church Bio & Logo -->
-        <div class="col-lg-4 col-md-6">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="{{ asset('homepage/assets/images/logo/tulisan-putih.png') }}" alt="Gereja Isa Almasih Surabaya" style="max-height: 85px; width: auto; object-fit: contain;">
-          </div>
-          <div class="d-flex gap-2 mt-2">
-            @if($churchProfileGlobal->instagram_url)
-              <a href="{{ $churchProfileGlobal->instagram_url }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="fab fa-instagram"></i></a>
-            @endif
-            @if($churchProfileGlobal->youtube_channel_url)
-              <a href="{{ $churchProfileGlobal->youtube_channel_url }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="fab fa-youtube"></i></a>
-            @endif
-            <a href="mailto:{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="ri-mail-line"></i></a>
-          </div>
-        </div>
-
-        <!-- Col 2: Jadwal Ibadah Ringkas -->
-        <div class="col-lg-3 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Ibadah Raya Mingguan</h6>
-          <ul class="list-unstyled small space-y-2" style="color: #C0B4A9;">
-            <li class="mb-2"><strong class="text-white">Ibadah Pagi 1:</strong> Minggu, 06.00 WIB</li>
-            <li class="mb-2"><strong class="text-white">Ibadah Pagi 2:</strong> Minggu, 08.00 WIB</li>
-            <li class="mb-2"><strong class="text-white">Ibadah Siang:</strong> Minggu, 10.00 WIB</li>
-            <li class="mb-2"><strong class="text-white">Ibadah Sore:</strong> Minggu, 17.00 WIB</li>
-            <li class="mb-2"><strong class="text-white">Doa Tengah Minggu:</strong> Rabu, 18.30 WIB</li>
-          </ul>
-        </div>
-
-        <!-- Col 3: Navigasi -->
-        <div class="col-lg-2 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Navigasi</h6>
-          <ul class="list-unstyled small" style="color: #C0B4A9;">
-            <li class="mb-2"><a href="{{ url('/') }}" class="text-decoration-none">Beranda</a></li>
-            <li class="mb-2"><a href="{{ url('/#tentang') }}" class="text-decoration-none">Tentang Gereja</a></li>
-            <li class="mb-2"><a href="{{ url('/#visimisi') }}" class="text-decoration-none">Visi & Misi</a></li>
-            <li class="mb-2"><a href="{{ url('/#jadwal') }}" class="text-decoration-none">Jadwal Ibadah</a></li>
-            <li class="mb-2"><a href="{{ url('/#streaming') }}" class="text-decoration-none">Live Streaming</a></li>
-            <li class="mb-2"><a href="{{ url('/warta') }}" class="text-decoration-none">Warta Jemaat</a></li>
-            <li class="mb-2"><a href="{{ url('/event') }}" class="text-decoration-none">Event Gereja</a></li>
-          </ul>
-        </div>
-
-        <!-- Col 4: Kontak Sekretariat -->
-        <div class="col-lg-3 col-md-6">
-          <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Sekretariat Gereja</h6>
-          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-map-pin-2-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->alamat_pusat ?: 'Jl. Darmo Raya / Cabang Surabaya' }}</p>
-          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-phone-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->telepon ?: '(031) 567-890' }}</p>
-          <p class="small mb-2" style="color: #C0B4A9;"><i class="ri-mail-line me-2" style="color: var(--earth-accent);"></i> {{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}</p>
-          <p class="small" style="color: #C0B4A9;"><i class="ri-time-line me-2" style="color: var(--earth-accent);"></i> Selasa - Minggu, 08.00 - 17.00 WIB</p>
-        </div>
+  <footer class="footer-area footer-area-earth py-5" style="background-color: var(--earth-dark);">
+    <div class="container text-center">
+      <!-- Logo Gereja -->
+      <div class="d-flex justify-content-center mb-3">
+        <a href="{{ url('/') }}" class="d-inline-block">
+          <img src="{{ asset('homepage/assets/images/logo/tulisan-putih.png') }}" alt="Gereja Isa Almasih Surabaya" style="max-height: 90px; width: auto; object-fit: contain;">
+        </a>
       </div>
-    </div>
 
-    <div class="footer__bottom-wrapper text-center py-3 border-top" style="border-color: rgba(255,255,255,0.08) !important;">
-      <p class="small mb-0" style="color: #9E9286;">&copy; {{ date('Y') }} {{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}. All Rights Reserved.</p>
+      <!-- Social Media Icons -->
+      <div class="d-flex justify-content-center align-items-center gap-3 mb-4">
+        @if($churchProfileGlobal->instagram_url)
+          <a href="{{ $churchProfileGlobal->instagram_url }}" target="_blank" rel="noopener noreferrer"
+            class="btn btn-outline-light rounded-circle d-inline-flex align-items-center justify-content-center"
+            style="width: 40px; height: 40px; border-color: rgba(255,255,255,0.25); font-size: 16px;" title="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        @endif
+        @if($churchProfileGlobal->youtube_channel_url)
+          <a href="{{ $churchProfileGlobal->youtube_channel_url }}" target="_blank" rel="noopener noreferrer"
+            class="btn btn-outline-light rounded-circle d-inline-flex align-items-center justify-content-center"
+            style="width: 40px; height: 40px; border-color: rgba(255,255,255,0.25); font-size: 16px;" title="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+        @endif
+        <a href="mailto:{{ $churchProfileGlobal->email ?: 'sekretariat@giasurabaya.org' }}"
+          class="btn btn-outline-light rounded-circle d-inline-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px; border-color: rgba(255,255,255,0.25); font-size: 16px;" title="Email Sekretariat">
+          <i class="ri-mail-line"></i>
+        </a>
+      </div>
+
+      <!-- Copyright -->
+      <div class="pt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+        <p class="small mb-0" style="color: #9E9286;">&copy; {{ date('Y') }} {{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}. All Rights Reserved.</p>
+      </div>
     </div>
   </footer>
 
