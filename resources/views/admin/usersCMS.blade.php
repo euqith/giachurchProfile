@@ -9,11 +9,17 @@
       <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Master Manajemen Pengguna & Pekerja</h1>
       <p class="text-xs text-slate-500 mt-0.5">Kelola hak akses admin, fulltimer, dan pembagian tugas situs.</p>
     </div>
-    {{-- Tombol Utama Tambah User --}}
-    <button type="button" onclick="document.getElementById('createUserModal').style.display='flex'"
-      class="btn-cms-primary">
-      <i class="fa-solid fa-user-plus"></i> Tambah User
-    </button>
+    <div class="flex items-center gap-2">
+      <a href="{{ route('admin.roles.index') }}"
+        class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-slate-200 shadow-2xs transition">
+        <i class="ri-shield-keyhole-line text-blue-600"></i> Role Setting
+      </a>
+      {{-- Tombol Utama Tambah User --}}
+      <button type="button" onclick="document.getElementById('createUserModal').style.display='flex'"
+        class="btn-cms-primary">
+        <i class="fa-solid fa-user-plus"></i> Tambah User
+      </button>
+    </div>
   </div>
 
   {{-- Alert Notifikasi Sukses (Warna Hijau Solid) --}}
@@ -69,8 +75,8 @@
             <td class="px-6 py-4 text-slate-600">{{ $u->email }}</td>
             <td class="px-6 py-4 text-center">
               <span
-                class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border {{ $u->role === 'admin' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-sky-50 text-sky-700 border-sky-200' }}">
-                {{ strtoupper($u->role) }}
+                class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border {{ $u->role === 'admin' ? 'bg-rose-50 text-rose-700 border-rose-200' : ($u->role === 'fulltimer' ? 'bg-sky-50 text-sky-700 border-sky-200' : 'bg-violet-50 text-violet-700 border-violet-200') }}">
+                {{ strtoupper($u->getRoleDisplayName()) }}
               </span>
             </td>
             <td class="px-6 py-4">
@@ -138,8 +144,14 @@
         <div>
           <label class="block text-slate-500 text-xs font-bold mb-1">Posisi / Akses Role</label>
           <select name="role" class="w-full text-sm border border-gray-200 rounded px-3 py-2 bg-white" required>
-            <option value="fulltimer">Fulltimer (Editor)</option>
-            <option value="admin">Admin (Akses Penuh)</option>
+            @if(isset($roles) && $roles->isNotEmpty())
+              @foreach($roles as $r)
+                <option value="{{ $r->name }}">{{ $r->display_name }} ({{ $r->name }})</option>
+              @endforeach
+            @else
+              <option value="fulltimer">Fulltimer (Editor)</option>
+              <option value="admin">Admin (Akses Penuh)</option>
+            @endif
           </select>
         </div>
         <div class="flex justify-end gap-2 pt-2">
@@ -186,8 +198,14 @@
           <label class="block text-xs font-bold text-gray-500 mb-1">Role / Akses</label>
           <select name="role" id="edit_user_role" class="w-full border border-gray-200 p-2 text-sm rounded bg-white"
             required>
-            <option value="fulltimer">Fulltimer (Editor)</option>
-            <option value="admin">Admin (Akses Penuh)</option>
+            @if(isset($roles) && $roles->isNotEmpty())
+              @foreach($roles as $r)
+                <option value="{{ $r->name }}">{{ $r->display_name }} ({{ $r->name }})</option>
+              @endforeach
+            @else
+              <option value="fulltimer">Fulltimer (Editor)</option>
+              <option value="admin">Admin (Akses Penuh)</option>
+            @endif
           </select>
         </div>
         <div class="flex justify-end gap-2 pt-2">

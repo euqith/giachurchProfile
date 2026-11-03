@@ -19,10 +19,10 @@
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('homepage/assets/css/style.css') }}">
 
-  {{-- Google Fonts: Plus Jakarta Sans & Playfair Display --}}
+  {{-- Google Fonts: Plus Jakarta Sans --}}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   {{-- Vite Tailwind Assets --}}
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -51,9 +51,10 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, .font-serif {
-      font-family: 'Playfair Display', Georgia, serif;
-      letter-spacing: -0.01em;
+    h1, h2, h3, h4, h5, h6, .font-serif {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      letter-spacing: -0.025em;
+      font-weight: 800;
     }
 
     /* Loading Icon: Logo Gereja Animasi */
@@ -694,15 +695,12 @@
   <footer class="footer-area footer-area-earth pt-5 pb-3">
     <div class="container mb-4">
       <div class="row g-4">
-        <!-- Col 1: Church Bio -->
+        <!-- Col 1: Church Bio & Logo -->
         <div class="col-lg-4 col-md-6">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="{{ asset('homepage/assets/images/logo/giaslogo-white.png') }}" alt="Gereja Isa Almasih Surabaya" style="height: 48px; width: auto; object-fit: contain;">
+            <img src="{{ asset('homepage/assets/images/logo/tulisan-putih.png') }}" alt="Gereja Isa Almasih Surabaya" style="max-height: 85px; width: auto; object-fit: contain;">
           </div>
-          <p class="small pe-lg-3 leading-relaxed" style="color: #C0B4A9;">
-            {{ $churchProfileGlobal->tentang_gereja ?: 'Mewujudkan jemaat yang bertumbuh dalam iman kepada Kristus, berakar dalam firman Tuhan, dan berbuah dalam pelayanan kasih kepada sesama.' }}
-          </p>
-          <div class="d-flex gap-2 mt-3">
+          <div class="d-flex gap-2 mt-2">
             @if($churchProfileGlobal->instagram_url)
               <a href="{{ $churchProfileGlobal->instagram_url }}" target="_blank" class="btn btn-outline-light btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 34px; height: 34px; border-color: rgba(255,255,255,0.2);"><i class="fab fa-instagram"></i></a>
             @endif

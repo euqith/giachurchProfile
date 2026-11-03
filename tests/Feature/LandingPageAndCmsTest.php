@@ -3,6 +3,7 @@
 use App\Models\Cabang;
 use App\Models\ChurchProfile;
 use App\Models\Event;
+use App\Models\Role;
 use App\Models\Stream;
 use App\Models\User;
 use App\Models\Warta;
@@ -244,4 +245,74 @@ test('admin login screen renders with dark luxury theme and cms brand colors', f
     $response->assertSee('Gereja Isa Almasih Surabaya');
     $response->assertSee('Masuk Dashboard');
     $response->assertSee('giaslogo-darkbg.png');
+});
+
+test('homepage footer displays tulisan-putih logo without description paragraph and uses plus jakarta sans headings', function () {
+    $response = $this->get(route('home'));
+
+    $response->assertStatus(200);
+    $response->assertSee('tulisan-putih.png');
+    $response->assertSee('Plus Jakarta Sans');
+    $response->assertDontSee('Mewujudkan jemaat yang bertumbuh');
+});
+
+test('admin can access and manage role settings and permissions', function () {
+    $admin = User::firstOrCreate(
+        ['email' => 'admin_role_tester@giasurabaya.org'],
+        [
+            'name' => 'Admin Role Tester',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+        ]
+    );
+
+    // 1. Index Role Setting
+    $response = $this->actingAs($admin)->get(route('admin.roles.index'));
+    $response->assertStatus(200);
+    $response->assertSee('Role Setting');
+    $response->assertSee('Administrator Utama');
+    $response->assertSee('Staff Fulltimer');
+
+    // 2. Tambah Role Baru
+    $storeResponse = $this->actingAs($admin)->post(route('admin.roles.store'), [
+        'display_name' => 'Operator Multimedia',
+        'name' => 'operator_multimedia',
+        'description' => 'Petugas siaran streaming dan event',
+        'permissions' => ['dashboard', 'stream', 'event'],
+    ]);
+    $storeResponse->assertRedirect();
+
+    $role = Role::where('name', 'operator_multimedia')->first();
+    expect($role)->not->toBeNull()
+        ->and($role->display_name)->toBe('Operator Multimedia')
+        ->and($role->permissions)->toBe(['dashboard', 'stream', 'event']);
+
+    // 3. Update Permissions
+    $updateResponse = $this->actingAs($admin)->put(route('admin.roles.update', $role->id), [
+        'display_name' => 'Operator Multimedia & Warta',
+        'description' => 'Petugas siaran streaming, event, dan warta',
+        'permissions' => ['dashboard', 'stream', 'event', 'warta'],
+    ]);
+    $updateResponse->assertRedirect();
+
+    $role->refresh();
+    expect($role->display_name)->toBe('Operator Multimedia & Warta')
+        ->and($role->permissions)->toContain('warta');
+
+    // 4. Role Assignment Enforcement
+    $operatorUser = User::create([
+        'name' => 'Budi Operator',
+        'email' => 'budi_operator@giasurabaya.org',
+        'password' => bcrypt('password123'),
+        'role' => 'operator_multimedia',
+    ]);
+
+    // Operator can access allowed module (stream)
+    $streamResponse = $this->actingAs($operatorUser)->get(route('admin.stream.index'));
+    $streamResponse->assertStatus(200);
+
+    // Operator is blocked from unauthorized module (e.g. cabang / master data)
+    $blockedResponse = $this->actingAs($operatorUser)->get(route('admin.cabang.index'));
+    $blockedResponse->assertRedirect(route('admin.dashboard'));
+    $blockedResponse->assertSessionHas('error');
 });

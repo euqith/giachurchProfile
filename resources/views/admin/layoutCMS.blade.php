@@ -412,6 +412,7 @@
         <ul class="menu" id="sidenav-menu">
           <li class="menu-title">Navigation</li>
 
+          @if(Auth::user()->canAccess('dashboard'))
           <li class="menu-item">
             <a href="{{ route('admin.dashboard') }}"
               class="menu-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
@@ -419,9 +420,12 @@
               <span class="menu-text"> Dashboard </span>
             </a>
           </li>
+          @endif
 
+          @if(Auth::user()->canAccessGroup(['event', 'warta', 'stream']))
           <li class="menu-title">Apps</li>
 
+          @if(Auth::user()->canAccess('event'))
           <li class="menu-item">
             <a href="{{ route('admin.event.index') }}"
               class="menu-link {{ request()->routeIs('admin.event.*') ? 'active' : '' }}">
@@ -429,7 +433,9 @@
               <span class="menu-text"> Kelola Event </span>
             </a>
           </li>
+          @endif
 
+          @if(Auth::user()->canAccess('warta'))
           <li class="menu-item">
             <a href="{{ route('admin.warta.index') }}"
               class="menu-link {{ request()->routeIs('admin.warta.*') ? 'active' : '' }}">
@@ -437,8 +443,10 @@
               <span class="menu-text"> Kelola Warta </span>
             </a>
           </li>
+          @endif
 
           {{-- 📡 KELOLA LIVE STREAMING --}}
+          @if(Auth::user()->canAccess('stream'))
           <li class="menu-item">
             <a href="{{ route('admin.stream.index') }}"
               class="menu-link {{ request()->routeIs('admin.stream.*') ? 'active' : '' }}">
@@ -446,8 +454,11 @@
               <span class="menu-text"> Kelola Streaming </span>
             </a>
           </li>
+          @endif
+          @endif
 
           <!-- 📊 MENU ABSENSI (DI BAWAH KELOLA WARTA & DI ATAS MASTER DATA) -->
+          @if(Auth::user()->canAccessGroup(['attendance.persiapan', 'attendance.input', 'attendance.history', 'attendance.report']))
           <li class="menu-item">
             <a href="javascript:void(0)" data-fc-type="collapse"
               class="menu-link {{ request()->routeIs('admin.attendance.*') ? 'open' : '' }}">
@@ -457,7 +468,8 @@
             </a>
 
             <ul class="sub-menu {{ request()->routeIs('admin.attendance.*') ? '' : 'hidden' }} px-2 py-1.5 space-y-1">
-              <!-- 1. Persiapan Ibadah (Image-20: Open Book Icon, Top Priority) -->
+              <!-- 1. Persiapan Ibadah -->
+              @if(Auth::user()->canAccess('attendance.persiapan'))
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.persiapan') }}"
                   class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.persiapan*') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
@@ -465,8 +477,10 @@
                   <span class="menu-text"> Persiapan Ibadah </span>
                 </a>
               </li>
+              @endif
 
-              <!-- 2. Input Kehadiran (Image-20: Clipboard Icon) -->
+              <!-- 2. Input Kehadiran -->
+              @if(Auth::user()->canAccess('attendance.input'))
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.input') }}"
                   class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.input') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
@@ -474,8 +488,10 @@
                   <span class="menu-text"> Input Kehadiran </span>
                 </a>
               </li>
+              @endif
 
-              <!-- 3. Riwayat Sesi (Image-20: History Clock Icon) -->
+              <!-- 3. Riwayat Sesi -->
+              @if(Auth::user()->canAccess('attendance.history'))
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.history') }}"
                   class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.history*') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
@@ -483,8 +499,10 @@
                   <span class="menu-text"> Riwayat Sesi </span>
                 </a>
               </li>
+              @endif
 
-              <!-- 4. Laporan (Image-20: Bar Chart Icon, Sebelumnya Bernama Dashboard) -->
+              <!-- 4. Laporan -->
+              @if(Auth::user()->canAccess('attendance.report'))
               <li class="menu-item">
                 <a href="{{ route('admin.attendance.report') }}"
                   class="menu-link flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm transition-all {{ request()->routeIs('admin.attendance.report') ? 'active bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-300 hover:text-white hover:bg-slate-800/60' }}">
@@ -492,21 +510,25 @@
                   <span class="menu-text"> Laporan </span>
                 </a>
               </li>
+              @endif
             </ul>
           </li>
+          @endif
 
           <!-- 💾 MENU MASTER DATA -->
+          @if(Auth::user()->canAccessGroup(['church', 'cabang', 'ibadah', 'sesi', 'jemaat', 'users', 'roles']))
           <li class="menu-item">
             <a href="javascript:void(0)" data-fc-type="collapse"
-              class="menu-link {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') ? 'open' : '' }}">
+              class="menu-link {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') || request()->routeIs('admin.roles.*') ? 'open' : '' }}">
               <span class="menu-icon"><i class="ri-database-2-line"></i></span>
               <span class="menu-text"> Master Data </span>
               <span class="menu-arrow"></span>
             </a>
 
             <ul
-              class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') ? '' : 'hidden' }}">
+              class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') || request()->routeIs('admin.roles.*') ? '' : 'hidden' }}">
               <!-- 🏛️ 1. Profil Gereja -->
+              @if(Auth::user()->canAccess('church'))
               <li class="menu-item">
                 <a href="{{ route('admin.church.index') }}"
                   class="menu-link {{ request()->routeIs('admin.church.*') ? 'active' : '' }}">
@@ -514,8 +536,10 @@
                   <span class="menu-text"> Profil Gereja </span>
                 </a>
               </li>
+              @endif
 
               <!-- 🏬 2. Kelola Wilayah -->
+              @if(Auth::user()->canAccess('cabang'))
               <li class="menu-item">
                 <a href="{{ route('admin.cabang.index') }}"
                   class="menu-link {{ request()->routeIs('admin.cabang.*') ? 'active' : '' }}">
@@ -523,8 +547,10 @@
                   <span class="menu-text"> Kelola Wilayah </span>
                 </a>
               </li>
+              @endif
 
               <!-- ⛪ 3. Kelola Ibadah -->
+              @if(Auth::user()->canAccess('ibadah'))
               <li class="menu-item">
                 <a href="{{ route('admin.ibadah.index') }}"
                   class="menu-link {{ request()->routeIs('admin.ibadah.*') ? 'active' : '' }}">
@@ -532,8 +558,10 @@
                   <span class="menu-text"> Kelola Ibadah </span>
                 </a>
               </li>
+              @endif
 
               <!-- ⏰ 4. Kelola Sesi -->
+              @if(Auth::user()->canAccess('sesi'))
               <li class="menu-item">
                 <a href="{{ route('admin.sesi.index') }}"
                   class="menu-link {{ request()->routeIs('admin.sesi.*') ? 'active' : '' }}">
@@ -541,8 +569,10 @@
                   <span class="menu-text"> Kelola Sesi </span>
                 </a>
               </li>
+              @endif
 
               <!-- 👤 5. Kelola Jemaat -->
+              @if(Auth::user()->canAccess('jemaat'))
               <li class="menu-item">
                 <a href="{{ route('admin.jemaat.index') }}"
                   class="menu-link {{ request()->routeIs('admin.jemaat.*') ? 'active' : '' }}">
@@ -550,8 +580,10 @@
                   <span class="menu-text"> Kelola Jemaat </span>
                 </a>
               </li>
+              @endif
 
-              <!-- 👤 6. Kelola Staf / Role -->
+              <!-- 👤 6. Kelola Staf / Pengguna -->
+              @if(Auth::user()->canAccess('users'))
               <li class="menu-item">
                 <a href="{{ route('admin.users.index') }}"
                   class="menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
@@ -559,8 +591,22 @@
                   <span class="menu-text"> Kelola Staf / Role </span>
                 </a>
               </li>
+              @endif
+
+              <!-- 🛡️ 7. Role Setting -->
+              @if(Auth::user()->canAccess('roles'))
+              <li class="menu-item">
+                <a href="{{ route('admin.roles.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                  <i class="ri-shield-keyhole-line text-sm me-1"></i>
+                  <span class="menu-text"> Role Setting </span>
+                </a>
+              </li>
+              @endif
             </ul>
           </li>
+          @endif
+        </ul>
         </ul>
       </div>
     </div>

@@ -30,4 +30,61 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relasi ke data Role jika ada
+     */
+    public function roleModel(): ?Role
+    {
+        return Role::where('name', $this->role)->first();
+    }
+
+    /**
+     * Dapatkan nama tampilan role
+     */
+    public function getRoleDisplayName(): string
+    {
+        $roleObj = $this->roleModel();
+
+        return $roleObj ? $roleObj->display_name : ucfirst($this->role ?? 'User');
+    }
+
+    /**
+     * Cek apakah pengguna memiliki hak akses ke modul tertentu
+     */
+    public function canAccess(string $permissionKey): bool
+    {
+        // Role 'admin' selalu memiliki hak akses penuh
+        if ($this->role === 'admin') {
+            return true;
+        }
+
+        $roleObj = $this->roleModel();
+        if (! $roleObj) {
+            // Default fallback
+            return $this->role === 'fulltimer';
+        }
+
+        return $roleObj->hasPermission($permissionKey);
+    }
+
+    /**
+     * Cek apakah pengguna dapat mengakses minimal salah satu modul dalam kelompok
+     *
+     * @param  array<string>  $permissionKeys
+     */
+    public function canAccessGroup(array $permissionKeys): bool
+    {
+        if ($this->role === 'admin') {
+            return true;
+        }
+
+        foreach ($permissionKeys as $key) {
+            if ($this->canAccess($key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

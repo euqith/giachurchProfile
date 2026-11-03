@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,13 +11,15 @@ use Illuminate\Validation\Rules;
 
 class AdminUserController extends Controller
 {
-    // Tampilkan Daftar Staf Admin & Fulltimer
+    // Tampilkan Daftar Staf Admin & Pengguna
     public function index()
     {
-        // Ambil data user yang memiliki akses CMS saja (admin & fulltimer)
-        $users = User::whereIn('role', ['admin', 'fulltimer'])->orderBy('name', 'asc')->get();
+        Role::ensureDefaultRoles();
 
-        return view('admin.usersCMS', compact('users')); // 👈 Memanggil usersCMS (dengan 's')
+        $users = User::orderBy('name', 'asc')->get();
+        $roles = Role::orderBy('id', 'asc')->get();
+
+        return view('admin.usersCMS', compact('users', 'roles'));
     }
 
     // Proses Simpan Staf Baru ke Database
@@ -26,7 +29,7 @@ class AdminUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:admin,fulltimer'], // Validasi pilihan role
+            'role' => ['required', 'string', 'exists:roles,name'],
         ]);
 
         User::create([
@@ -48,7 +51,7 @@ class AdminUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
             'password' => ['nullable', Rules\Password::defaults()], // Password opsional saat edit
-            'role' => ['required', 'in:admin,fulltimer'],
+            'role' => ['required', 'string', 'exists:roles,name'],
         ]);
 
         $userData = [

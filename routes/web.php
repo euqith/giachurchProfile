@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminEventController;
+use App\Http\Controllers\Admin\AdminRoleController;
 use App\Http\Controllers\Admin\AdminStreamController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminWartaController;
@@ -124,6 +125,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
 
     // 👤 I. Master Data Pengguna / Staf Admin
     Route::resource('users', AdminUserController::class)->except(['show', 'create', 'edit']);
+
+    // 🛡️ M. Role Setting & Manajemen Hak Akses
+    Route::resource('roles', AdminRoleController::class)->except(['create', 'show', 'edit']);
 
     // 🔐 J. Profile / Change Password
     Route::patch('/update-password', [AdminAuthController::class, 'updatePassword'])->name('profile.password.update');
