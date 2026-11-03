@@ -72,8 +72,8 @@
           <label class="block text-xs font-bold text-slate-700 mb-1">Google YouTube Data API Key</label>
           <input type="password" name="youtube_api_key" value="{{ old('youtube_api_key', $profile->youtube_api_key) }}" placeholder="AIzaSy..."
             class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 focus:outline-none focus:border-blue-600 bg-white">
-          <p class="text-[10px] text-slate-400 mt-1">
-            Jika dikosongkan, sistem akan otomatis menggunakan metode <strong>Web Probe URL Channel</strong> (dapat mendeteksi live tanpa API key).
+          <p class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">
+            <span class="font-bold text-slate-700">💡 Cukup 1 API Key untuk semua cabang:</span> 1 API Key Google berfungsi sebagai pembaca data publik dan dapat memeriksa kelima akun YouTube cabang yang berbeda sekaligus. Yang membedakan tiap cabang adalah kolom <strong>"Akun / Channel YouTube Cabang"</strong> pada kartu masing-masing di bawah. Jika dikosongkan, sistem tetap berjalan otomatis menggunakan mode <strong>Web Probe URL</strong>.
           </p>
         </div>
         <div class="flex items-end">
