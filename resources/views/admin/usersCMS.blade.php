@@ -1,14 +1,17 @@
 @extends('admin.layoutCMS')
 
 @section('content')
-  <div class="flex justify-between items-center mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <div>
-      <h4 class="text-slate-900 dark:text-slate-200 text-lg font-bold mb-1">Master Manajemen Pengguna & Pekerja</h4>
-      <p class="text-slate-400 text-sm">Kelola hak akses admin, fulltimer, dan pembagian tugas situs.</p>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1.5 border border-amber-200/80">
+        <i class="ri-user-settings-line"></i> Manajemen Pengguna
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Master Manajemen Pengguna & Pekerja</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Kelola hak akses admin, fulltimer, dan pembagian tugas situs.</p>
     </div>
     {{-- Tombol Utama Tambah User --}}
     <button type="button" onclick="document.getElementById('createUserModal').style.display='flex'"
-      class="bg-primary hover:bg-primary-dark text-white text-sm font-bold px-4 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+      class="btn-cms-primary">
       <i class="fa-solid fa-user-plus"></i> Tambah User
     </button>
   </div>
@@ -49,9 +52,9 @@
   @endif
 
   {{-- 📊 GRID TABLE DATA USER (FULL WIDTH) --}}
-  <div class="w-full bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100">
+  <div class="table-modern-wrapper">
     <table class="w-full text-sm text-left">
-      <thead class="bg-gray-50 text-gray-500 uppercase text-xs font-bold">
+      <thead>
         <tr>
           <th class="px-6 py-3.5">Nama Lengkap</th>
           <th class="px-6 py-3.5">Alamat Email</th>
@@ -59,43 +62,37 @@
           <th class="px-6 py-3.5 text-center">Aksi Manajemen</th>
         </tr>
       </thead>
-      <tbody class="divide-y divide-gray-200">
+      <tbody class="divide-y divide-slate-100">
         @forelse($users as $u)
-          <tr class="hover:bg-gray-50 transition-colors">
-            <td class="px-6 py-4 font-bold text-slate-800">{{ $u->name }}</td>
+          <tr class="hover:bg-slate-50/70 transition-colors">
+            <td class="px-6 py-4 font-semibold text-slate-800">{{ $u->name }}</td>
             <td class="px-6 py-4 text-slate-600">{{ $u->email }}</td>
             <td class="px-6 py-4 text-center">
               <span
-                style="padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: bold; color: white;
-              background-color: {{ $u->role === 'admin' ? '#ef4444' : '#3b82f6' }};">
+                class="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider border {{ $u->role === 'admin' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-sky-50 text-sky-700 border-sky-200' }}">
                 {{ strtoupper($u->role) }}
               </span>
             </td>
             <td class="px-6 py-4">
-              <div style="display: flex; gap: 4px; justify-content: center; align-items: center;">
+              <div class="flex items-center justify-center gap-2">
                 <!-- Tombol Edit -->
                 <button type="button"
                   onclick="openEditUserModal('{{ $u->id }}', '{{ $u->name }}', '{{ $u->email }}', '{{ $u->role }}')"
-                  style="background-color: #f59e0b; color: white !important; padding: 5px 0; border-radius: 4px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; width: 55px; text-align: center;">
-                  EDIT
+                  class="btn-action-edit">
+                  <i class="ri-edit-line"></i> Edit
                 </button>
 
-                <!-- Tombol Hapus -->
-                <form action="{{ route('admin.users.destroy', $u->id) }}" method="POST"
-                  onsubmit="return confirm('Hapus staf ini?')" style="margin: 0; padding: 0;">
-                  @csrf @method('DELETE')
-                  <!-- Tombol Hapus (Pemicu Modal) -->
-                  <button type="button" onclick="openDeleteUserModal('{{ $u->id }}', '{{ $u->name }}')"
-                    style="background-color: #ef4444; color: white !important; padding: 5px 0; border-radius: 4px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; width: 55px; text-align: center;">
-                    HAPUS
-                  </button>
-                </form>
+                <!-- Tombol Hapus (Pemicu Modal) -->
+                <button type="button" onclick="openDeleteUserModal('{{ $u->id }}', '{{ $u->name }}')"
+                  class="btn-action-delete">
+                  <i class="ri-delete-bin-line"></i> Hapus
+                </button>
               </div>
             </td>
           </tr>
         @empty
           <tr>
-            <td colspan="4" class="text-center p-6 text-gray-400 italic">Belum ada data staf terdaftar di database.
+            <td colspan="4" class="text-center py-10 text-slate-400 italic">Belum ada data staf terdaftar di database.
             </td>
           </tr>
         @endforelse

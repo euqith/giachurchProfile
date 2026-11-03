@@ -19,7 +19,7 @@
       <form action="{{ route('admin.stream.auto-detect') }}" method="POST">
         @csrf
         <button type="submit"
-          class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/20 inline-flex items-center gap-2 transition cursor-pointer">
+          class="btn-cms-primary text-xs">
           <i class="ri-refresh-line text-sm"></i> Cek Status Streaming Sekarang
         </button>
       </form>

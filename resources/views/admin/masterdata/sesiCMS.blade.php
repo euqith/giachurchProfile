@@ -41,22 +41,24 @@
     @endif
 
     <!-- Header Title & Action Button -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-xl font-bold text-slate-800">Master Data Sesi Waktu</h1>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1.5 border border-amber-200/80">
+          <i class="ri-time-line"></i> Master Sesi Waktu
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Master Data Sesi Waktu</h1>
         <p class="text-xs text-slate-500 mt-0.5">Kelola sesi waktu ibadah (misal: Pagi, Siang, Sore, Malam).</p>
       </div>
       <button type="button" onclick="document.getElementById('addSesiModal').style.display='flex'"
-        style="background-color: #1e3a8a !important; color: #ffffff !important;"
-        class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl hover:bg-blue-900 text-white text-xs font-bold shadow-sm transition active:scale-95">
-        <i class="ri-add-line text-sm font-bold"></i>
+        class="btn-cms-primary">
+        <i class="ri-add-line text-base"></i>
         <span>Tambah Sesi Baru</span>
       </button>
     </div>
 
     <!-- Container Utama Tabel Seamless -->
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 w-full">
-      <div class="border border-slate-200/80 rounded-xl overflow-hidden w-full">
+    <div class="table-modern-wrapper">
+      <div class="overflow-x-auto w-full">
         <table class="w-full text-left border-collapse table-fixed">
           <thead>
             <tr
@@ -94,19 +96,19 @@
 
                 <!-- Aksi -->
                 <td class="py-3.5 px-4 text-center align-middle">
-                  <div class="flex items-center justify-center gap-2">
+                  <div class="flex items-center justify-center gap-1.5">
                     <button onclick="editSesi({{ json_encode($item) }})"
-                      class="p-1.5 text-slate-500 hover:text-slate-800 transition rounded-lg hover:bg-slate-100"
+                      class="btn-action-edit"
                       title="Edit">
-                      <i class="ri-pencil-line text-base"></i>
+                      <i class="ri-pencil-line"></i> Edit
                     </button>
                     <form action="{{ route('admin.sesi.destroy', $item->id) }}" method="POST"
-                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus sesi ini?')" class="inline">
+                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus sesi ini?')" class="inline m-0 p-0">
                       @csrf @method('DELETE')
                       <button type="submit"
-                        class="p-1.5 text-rose-500 hover:text-rose-700 transition rounded-lg hover:bg-rose-50"
+                        class="btn-action-delete"
                         title="Hapus">
-                        <i class="ri-delete-bin-line text-base"></i>
+                        <i class="ri-delete-bin-line"></i> Hapus
                       </button>
                     </form>
                   </div>

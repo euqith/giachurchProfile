@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mode="light" data-menu-color="dark">
 
 <head>
   <meta charset="utf-8">
@@ -28,6 +28,346 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <script src="{{ asset('admin/assets/js/config.js') }}"></script>
+
+  <style>
+    /* ======================================================== */
+    /* MODERN EXECUTIVE CMS THEME & SIDEBAR STYLING            */
+    /* ======================================================== */
+    :root {
+      --tw-sidenav-width: 265px !important;
+      --cms-primary: #8C5E3C;
+      --cms-primary-hover: #734B2E;
+      --cms-accent: #C27D38;
+      --cms-sidebar-bg: #111827;
+      --cms-sidebar-hover: rgba(255, 255, 255, 0.07);
+    }
+
+    body {
+      background-color: #F8FAFC !important;
+      color: #1E293B !important;
+      font-family: 'Figtree', system-ui, -apple-system, sans-serif !important;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page-content {
+      background-color: #F8FAFC !important;
+      min-height: 100vh;
+    }
+
+    @media (min-width: 1024px) {
+      .page-content {
+        margin-left: 265px !important;
+      }
+    }
+
+    /* 1. SIDEBAR MODERNIZATION & SCROLLABLE EXPAND */
+    .app-menu {
+      width: 265px !important;
+      min-width: 265px !important;
+      max-width: 265px !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      background-color: var(--cms-sidebar-bg) !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 4px 0 25px rgba(0, 0, 0, 0.28) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow: hidden !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 40 !important;
+    }
+
+    .app-menu [data-simplebar],
+    .app-menu .sidebar-scroll-wrapper,
+    .app-menu .simplebar-content-wrapper {
+      height: calc(100vh - 82px) !important;
+      max-height: calc(100vh - 82px) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      flex: 1 1 auto !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+    }
+
+    /* Sleek Custom Scrollbar for Sidebar */
+    .app-menu ::-webkit-scrollbar {
+      width: 5px !important;
+    }
+    .app-menu ::-webkit-scrollbar-track {
+      background: transparent !important;
+    }
+    .app-menu ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.18) !important;
+      border-radius: 999px !important;
+    }
+    .app-menu ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.35) !important;
+    }
+
+    .app-menu .logo-box {
+      background: transparent !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      padding: 16px 14px !important;
+      display: block !important;
+      text-decoration: none !important;
+      flex-shrink: 0 !important;
+    }
+
+    .app-menu .logo-box img {
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+      transition: transform 0.2s ease;
+    }
+
+    .app-menu .logo-box:hover img {
+      transform: scale(1.02);
+    }
+
+    .app-menu .menu-title {
+      color: #94A3B8 !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.08em !important;
+      text-transform: uppercase !important;
+      padding: 16px 18px 6px !important;
+    }
+
+    .app-menu .menu-item {
+      margin: 3px 10px !important;
+    }
+
+    .app-menu .menu-link {
+      color: #CBD5E1 !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      border-radius: 12px !important;
+      padding: 10px 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      transition: all 0.2s ease !important;
+      text-decoration: none !important;
+      white-space: nowrap !important;
+    }
+
+    .app-menu .menu-link .menu-text {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 1 auto !important;
+    }
+
+    .app-menu .menu-link:hover {
+      background-color: var(--cms-sidebar-hover) !important;
+      color: #FFFFFF !important;
+      transform: translateX(2px);
+    }
+
+    .app-menu .menu-link .menu-icon {
+      font-size: 18px !important;
+      color: #94A3B8 !important;
+      transition: color 0.2s ease;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+
+    .app-menu .menu-link:hover .menu-icon {
+      color: #FFFFFF !important;
+    }
+
+    /* Parent Menu Item when Open / Expanded (Clean soft container, no solid competing block) */
+    .app-menu .menu-link.open {
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      box-shadow: none !important;
+    }
+
+    .app-menu .menu-link.open .menu-icon {
+      color: #60A5FA !important;
+    }
+
+    /* Active Menu Item: Bright Modern Royal Blue / Vivid Azure (High contrast on dark navy) */
+    .app-menu .menu-link.active {
+      background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.45) !important;
+    }
+
+    .app-menu .menu-link.active .menu-icon {
+      color: #FFFFFF !important;
+    }
+
+    /* Submenu tree */
+    .app-menu .sub-menu {
+      background: transparent !important;
+      padding: 4px 0 6px 10px !important;
+      margin-left: 14px !important;
+      border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+    }
+
+    .app-menu .sub-menu .menu-item {
+      margin: 2px 4px !important;
+    }
+
+    .app-menu .sub-menu .menu-link {
+      padding: 8px 12px !important;
+      font-size: 12.5px !important;
+      border-radius: 8px !important;
+      color: #94A3B8 !important;
+      white-space: nowrap !important;
+    }
+
+    .app-menu .sub-menu .menu-link .menu-text {
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+
+    .app-menu .sub-menu .menu-link:hover {
+      color: #FFFFFF !important;
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .app-menu .sub-menu .menu-link.active {
+      background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+      border: none !important;
+    }
+
+    /* 2. HEADER TOPBAR */
+    .app-header {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px) !important;
+      -webkit-backdrop-filter: blur(10px) !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+      height: 64px !important;
+    }
+
+    /* 3. MODERN CARD & DATA GRID / TABLE STYLING */
+    .table-modern-wrapper {
+      background: #FFFFFF !important;
+      border-radius: 16px !important;
+      border: 1px solid #E2E8F0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.02) !important;
+      overflow: hidden !important;
+    }
+
+    .page-content table {
+      width: 100% !important;
+      background-color: #FFFFFF !important;
+      border-collapse: separate !important;
+      border-spacing: 0 !important;
+    }
+
+    .page-content table thead {
+      background-color: #F8FAFC !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+    }
+
+    .page-content table thead th {
+      color: #475569 !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase !important;
+      padding: 13px 18px !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+      background-color: #F8FAFC !important;
+    }
+
+    .page-content table tbody tr {
+      background-color: #FFFFFF !important;
+      border-bottom: 1px solid #F1F5F9 !important;
+      transition: background-color 0.15s ease !important;
+    }
+
+    .page-content table tbody tr:hover {
+      background-color: #F8FAFC !important;
+    }
+
+    .page-content table tbody td {
+      padding: 14px 18px !important;
+      color: #334155 !important;
+      border-bottom: 1px solid #F1F5F9 !important;
+      vertical-align: middle !important;
+    }
+
+    /* 4. MODERN BUTTONS */
+    .btn-cms-primary {
+      background: linear-gradient(135deg, #8C5E3C 0%, #704729 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      padding: 9px 18px !important;
+      border-radius: 12px !important;
+      border: none !important;
+      box-shadow: 0 4px 14px rgba(140, 94, 60, 0.25) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 7px !important;
+      transition: all 0.2s ease !important;
+      cursor: pointer !important;
+      text-decoration: none !important;
+    }
+
+    .btn-cms-primary:hover {
+      background: linear-gradient(135deg, #7A4F30 0%, #5E391E 100%) !important;
+      box-shadow: 0 6px 20px rgba(140, 94, 60, 0.35) !important;
+      transform: translateY(-1px) !important;
+      color: #FFFFFF !important;
+    }
+
+    .btn-action-edit {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      padding: 5px 11px !important;
+      border-radius: 8px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      background-color: #FEF3C7 !important;
+      color: #92400E !important;
+      border: 1px solid #FDE68A !important;
+      transition: all 0.15s ease !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+    }
+
+    .btn-action-edit:hover {
+      background-color: #FDE68A !important;
+      color: #78350F !important;
+      transform: translateY(-1px);
+    }
+
+    .btn-action-delete {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      padding: 5px 11px !important;
+      border-radius: 8px !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      background-color: #FEE2E2 !important;
+      color: #B91C1C !important;
+      border: 1px solid #FECACA !important;
+      transition: all 0.15s ease !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
+    }
+
+    .btn-action-delete:hover {
+      background-color: #FECACA !important;
+      color: #991B1B !important;
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
 
 <body>
@@ -58,13 +398,13 @@
 
     {{-- SIDEBAR MENU --}}
     <div class="app-menu">
-      <a href="{{ route('admin.dashboard') }}" class="logo-box">
-        <div class="logo-light flex items-center justify-center h-16 bg-white border-b border-slate-100 px-3">
-          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="h-9 w-auto object-contain">
+      <a href="{{ route('admin.dashboard') }}" class="logo-box block py-4 px-3 hover:opacity-95 transition" style="background: transparent;">
+        <div class="flex items-center justify-center">
+          <img src="{{ asset('admin/assets/images/giaslogo-darkbg.png') }}" alt="Gereja Isa Almasih Surabaya" class="h-12 w-auto object-contain" style="max-height: 48px;">
         </div>
       </a>
 
-      <div data-simplebar>
+      <div data-simplebar class="sidebar-scroll-wrapper" style="height: calc(100vh - 82px); max-height: calc(100vh - 82px); overflow-y: auto; overflow-x: hidden;">
         <ul class="menu" id="sidenav-menu">
           <li class="menu-title">Navigation</li>
 
@@ -100,15 +440,6 @@
               class="menu-link {{ request()->routeIs('admin.stream.*') ? 'active' : '' }}">
               <span class="menu-icon"><i class="ri-live-line"></i></span>
               <span class="menu-text"> Kelola Streaming </span>
-            </a>
-          </li>
-
-          {{-- 🏛️ PROFIL GEREJA & BANNER --}}
-          <li class="menu-item">
-            <a href="{{ route('admin.church.index') }}"
-              class="menu-link {{ request()->routeIs('admin.church.*') ? 'active' : '' }}">
-              <span class="menu-icon"><i class="ri-building-line"></i></span>
-              <span class="menu-text"> Profil Gereja & Banner </span>
             </a>
           </li>
 
@@ -163,49 +494,64 @@
           <!-- 💾 MENU MASTER DATA -->
           <li class="menu-item">
             <a href="javascript:void(0)" data-fc-type="collapse"
-              class="menu-link {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') ? 'open' : '' }}">
+              class="menu-link {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') ? 'open' : '' }}">
               <span class="menu-icon"><i class="ri-database-2-line"></i></span>
               <span class="menu-text"> Master Data </span>
               <span class="menu-arrow"></span>
             </a>
 
             <ul
-              class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') ? '' : 'hidden' }}">
-              <!-- 🏬 1. Kelola Wilayah -->
+              class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') || request()->routeIs('admin.sesi.*') || request()->routeIs('admin.jemaat.*') || request()->routeIs('admin.church.*') ? '' : 'hidden' }}">
+              <!-- 🏛️ 1. Profil Gereja -->
+              <li class="menu-item">
+                <a href="{{ route('admin.church.index') }}"
+                  class="menu-link {{ request()->routeIs('admin.church.*') ? 'active' : '' }}">
+                  <i class="ri-building-line text-sm me-1"></i>
+                  <span class="menu-text"> Profil Gereja </span>
+                </a>
+              </li>
+
+              <!-- 🏬 2. Kelola Wilayah -->
               <li class="menu-item">
                 <a href="{{ route('admin.cabang.index') }}"
                   class="menu-link {{ request()->routeIs('admin.cabang.*') ? 'active' : '' }}">
+                  <i class="ri-map-pin-line text-sm me-1"></i>
                   <span class="menu-text"> Kelola Wilayah </span>
                 </a>
               </li>
 
-              <!-- ⛪ 2. Kelola Ibadah -->
+              <!-- ⛪ 3. Kelola Ibadah -->
               <li class="menu-item">
                 <a href="{{ route('admin.ibadah.index') }}"
                   class="menu-link {{ request()->routeIs('admin.ibadah.*') ? 'active' : '' }}">
+                  <i class="ri-service-line text-sm me-1"></i>
                   <span class="menu-text"> Kelola Ibadah </span>
                 </a>
               </li>
-              <!-- Submenu Master Sesi -->
+
+              <!-- ⏰ 4. Kelola Sesi -->
               <li class="menu-item">
                 <a href="{{ route('admin.sesi.index') }}"
                   class="menu-link {{ request()->routeIs('admin.sesi.*') ? 'active' : '' }}">
+                  <i class="ri-time-line text-sm me-1"></i>
                   <span class="menu-text"> Kelola Sesi </span>
                 </a>
               </li>
 
-              <!-- 👤 Kelola Jemaat -->
+              <!-- 👤 5. Kelola Jemaat -->
               <li class="menu-item">
                 <a href="{{ route('admin.jemaat.index') }}"
                   class="menu-link {{ request()->routeIs('admin.jemaat.*') ? 'active' : '' }}">
+                  <i class="ri-user-shared-line text-sm me-1"></i>
                   <span class="menu-text"> Kelola Jemaat </span>
                 </a>
               </li>
 
-              <!-- 👤 3. Kelola Staf / Role -->
+              <!-- 👤 6. Kelola Staf / Role -->
               <li class="menu-item">
                 <a href="{{ route('admin.users.index') }}"
                   class="menu-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                  <i class="ri-shield-user-line text-sm me-1"></i>
                   <span class="menu-text"> Kelola Staf / Role </span>
                 </a>
               </li>
@@ -218,29 +564,37 @@
     {{-- KONTEN HALAMAN UTAMA --}}
     <div class="page-content">
 
-      <header class="app-header flex items-center px-4 gap-3 bg-white shadow">
-        <button id="button-toggle-menu" class="nav-link p-2">
+      <header class="app-header flex items-center px-5 gap-3 bg-white">
+        <button id="button-toggle-menu" class="nav-link p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
           <span class="sr-only">Toggle Menu</span>
-          <span class="ri-menu-fold-line text-2xl"></span>
+          <span class="ri-menu-fold-line text-xl"></span>
         </button>
 
-        <div class="ms-auto flex items-center gap-5">
-          <span class="text-gray-600 font-semibold text-sm">
-            Selamat Datang, <b>{{ Auth::user()->name }}</b> ({{ ucfirst(Auth::user()->role) }})
-          </span>
+        <div class="ms-auto flex items-center gap-3">
+          <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100/80 border border-slate-200/60 text-xs font-semibold text-slate-700">
+            <span class="w-6 h-6 rounded-full bg-amber-600/15 text-amber-800 flex items-center justify-center font-bold text-[11px]">
+              {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+            </span>
+            <span>Selamat Datang, <b>{{ Auth::user()->name }}</b></span>
+            <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
+              {{ Auth::user()->role }}
+            </span>
+          </div>
 
-          {{-- 🔑 Tombol Pemicu Modal Ganti Password (Ditaruh rapi di Header sebelah Logout) --}}
+          {{-- 🔑 Tombol Pemicu Modal Ganti Password --}}
           <button type="button" onclick="document.getElementById('changePasswordModal').style.display='flex'"
-            class="flex items-center gap-1.5 text-slate-600 hover:text-primary transition text-sm font-semibold bg-transparent border-none cursor-pointer">
-            <i class="fa-solid fa-key"></i> Ganti Password
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-semibold transition border border-slate-200 shadow-2xs cursor-pointer">
+            <i class="fa-solid fa-key text-[11px] text-amber-600"></i>
+            <span class="hidden md:inline">Ganti Password</span>
           </button>
 
           {{-- 🚪 Form Tombol Keluar --}}
           <form action="{{ route('admin.logout') }}" method="POST" style="margin: 0; padding: 0;">
             @csrf
             <button type="submit"
-              class="flex items-center gap-1.5 text-slate-600 hover:text-red-600 transition text-sm font-semibold bg-transparent border-none cursor-pointer">
-              <i class="fa-solid fa-right-from-bracket"></i> Keluar
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold transition border border-rose-200/80 shadow-2xs cursor-pointer">
+              <i class="fa-solid fa-right-from-bracket text-[11px]"></i>
+              <span>Keluar</span>
             </button>
           </form>
         </div>

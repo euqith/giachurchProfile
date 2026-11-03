@@ -33,17 +33,20 @@
     <!-- Header & Action Button -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-xl font-bold text-slate-800">Master Data Wilayah</h1>
-        <p class="text-xs text-slate-500 mt-1">Kelola daftar wilayah dan lokasi operasional gereja.</p>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1.5 border border-amber-200/80">
+          <i class="ri-map-pin-line"></i> Master Wilayah & Lokasi
+        </div>
+        <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Master Data Wilayah</h1>
+        <p class="text-xs text-slate-500 mt-0.5">Kelola daftar wilayah dan lokasi operasional gereja.</p>
       </div>
       <button onclick="document.getElementById('addCabangModal').style.display='flex'"
-        class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-sm transition">
+        class="btn-cms-primary">
         <i class="ri-add-line text-base"></i> Tambah Wilayah
       </button>
     </div>
 
     <!-- Tabel Data Wilayah -->
-    <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
+    <div class="table-modern-wrapper">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -95,20 +98,20 @@
                   @endif
                 </td>
                 <td class="p-4 text-center">
-                  <div class="flex items-center justify-center gap-2">
+                  <div class="flex items-center justify-center gap-1.5">
                     <!-- Edit Button -->
                     <button onclick="editCabang({{ json_encode($item) }})"
-                      class="p-1.5 text-amber-600 hover:bg-amber-50 rounded-lg transition" title="Edit">
-                      <i class="ri-pencil-line text-base"></i>
+                      class="btn-action-edit" title="Edit">
+                      <i class="ri-pencil-line"></i> Edit
                     </button>
 
                     <!-- Delete Button (Red Color) -->
                     <form action="{{ route('admin.cabang.destroy', $item->id) }}" method="POST"
-                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus wilayah ini?')" class="inline">
+                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus wilayah ini?')" class="inline m-0 p-0">
                       @csrf @method('DELETE')
-                      <button type="submit" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition"
+                      <button type="submit" class="btn-action-delete"
                         title="Hapus">
-                        <i class="ri-delete-bin-line text-base"></i>
+                        <i class="ri-delete-bin-line"></i> Hapus
                       </button>
                     </form>
                   </div>

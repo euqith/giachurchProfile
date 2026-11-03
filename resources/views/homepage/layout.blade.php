@@ -159,45 +159,103 @@
       transform: scaleX(1);
     }
 
+    /* Enforce button text & span contrast inheritance across template */
+    .btn,
+    .btn * {
+      text-shadow: none;
+    }
+    .btn span {
+      color: inherit !important;
+    }
+
     /* Soft Earth Buttons */
-    .btn-earth {
+    .btn-earth,
+    .btn-earth span,
+    .btn-earth i {
       background: var(--earth-primary) !important;
       color: #FFFFFF !important;
       border: 1px solid var(--earth-primary) !important;
       font-weight: 600;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 14px rgba(140, 94, 60, 0.2);
+      box-shadow: 0 4px 14px rgba(140, 94, 60, 0.25);
     }
-    .btn-earth:hover {
+    .btn-earth:hover,
+    .btn-earth:hover span,
+    .btn-earth:hover i {
       background: var(--earth-primary-hover) !important;
       border-color: var(--earth-primary-hover) !important;
       color: #FFFFFF !important;
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(140, 94, 60, 0.28);
+      box-shadow: 0 6px 20px rgba(140, 94, 60, 0.35);
     }
 
-    .btn-earth-outline {
+    .btn-earth-outline,
+    .btn-earth-outline span {
       background: transparent !important;
       color: var(--earth-primary) !important;
       border: 1.5px solid var(--earth-primary) !important;
       font-weight: 600;
       transition: all 0.25s ease;
     }
-    .btn-earth-outline:hover {
+    .btn-earth-outline:hover,
+    .btn-earth-outline:hover span,
+    .btn-earth-outline:hover i {
       background: var(--earth-primary) !important;
       color: #FFFFFF !important;
       transform: translateY(-1px);
     }
 
-    .btn-earth-light {
+    .btn-earth-light,
+    .btn-earth-light span {
+      background: #FFFFFF !important;
+      color: var(--earth-dark) !important;
+      border: 1px solid rgba(255, 255, 255, 0.7) !important;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+    }
+    .btn-earth-light:hover,
+    .btn-earth-light:hover span {
       background: var(--earth-surface-warm) !important;
       color: var(--earth-dark) !important;
-      border: 1px solid var(--earth-border) !important;
+      transform: translateY(-1px);
+    }
+
+    /* High-contrast Hero Live Streaming Button */
+    .btn-hero-stream {
+      background: rgba(255, 255, 255, 0.18) !important;
+      color: #FFFFFF !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       font-weight: 600;
       transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
     }
-    .btn-earth-light:hover {
-      background: #EFE4DC !important;
+    .btn-hero-stream span {
+      color: #FFFFFF !important;
+    }
+    .btn-hero-stream:hover {
+      background: rgba(220, 38, 38, 0.25) !important;
+      border-color: #EF4444 !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+    }
+    .btn-hero-stream:hover span {
+      color: #FFFFFF !important;
+    }
+
+    /* Outline Light button in banner/dark sections */
+    .btn-outline-light,
+    .btn-outline-light span {
+      color: #FFFFFF !important;
+      border-color: rgba(255, 255, 255, 0.55) !important;
+      font-weight: 600;
+    }
+    .btn-outline-light:hover,
+    .btn-outline-light:hover span {
+      background-color: #FFFFFF !important;
       color: var(--earth-dark) !important;
     }
 

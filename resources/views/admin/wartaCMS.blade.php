@@ -3,8 +3,11 @@
 @section('content')
   <div class="flex justify-between items-center mb-6">
     <div>
-      <h4 class="text-slate-900 dark:text-slate-200 text-lg font-bold mb-1">Master Kontrol Warta Jemaat</h4>
-      <p class="text-slate-400 text-sm">Kelola edisi mingguan dan unggah dokumen presentasi warta digital.</p>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1.5 border border-amber-200/80">
+        <i class="ri-article-line"></i> Publikasi Digital
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Master Kontrol Warta Jemaat</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Kelola edisi mingguan dan unggah dokumen presentasi warta digital.</p>
     </div>
   </div>
 
@@ -41,49 +44,49 @@
             <input type="date" name="tanggal_rilis" class="w-full text-sm border-gray-200 rounded px-3 py-2" required>
           </div>
           <button type="submit"
-            class="bg-primary text-white text-sm px-4 py-2 rounded shadow hover:bg-primary-dark transition">Daftarkan</button>
+            class="btn-cms-primary text-xs">Daftarkan</button>
         </form>
       </div>
 
-      <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100">
+      <div class="table-modern-wrapper">
         <table class="w-full text-sm text-left">
-          <thead class="bg-gray-50 text-gray-500 uppercase text-xs font-bold">
+          <thead>
             <tr>
               <th class="px-4 py-3">Edisi</th>
               <th class="px-4 py-3">Status</th>
-              <th class="px-4 py-3">Aksi</th>
+              <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
+          <tbody class="divide-y divide-slate-100">
             @forelse($wartas as $w)
-              <tr class="{{ isset($warta) && $warta->id == $w->id ? 'bg-blue-50' : '' }}">
-                <td class="px-4 py-3 font-bold text-dark">{{ $w->judul_edisi }}</td>
+              <tr class="{{ isset($warta) && $warta->id == $w->id ? 'bg-amber-50/50' : '' }}">
+                <td class="px-4 py-3 font-semibold text-slate-900">{{ $w->judul_edisi }}</td>
 
                 {{-- Kolom Status --}}
                 <td class="px-4 py-3">
                   <form action="{{ route('admin.warta.toggle', $w->id) }}" method="POST">
                     @csrf @method('PATCH')
                     <button type="submit"
-                      style="background-color: {{ $w->isActive ? '#10b981' : '#9ca3af' }}; color: white !important; padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: bold; border: none; cursor: pointer;">
-                      {{ $w->isActive ? 'AKTIF' : 'NON-AKTIF' }}
+                      class="px-3 py-1 rounded-full text-[11px] font-bold border transition cursor-pointer {{ $w->isActive ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-slate-100 text-slate-500 border-slate-200' }}">
+                      {{ $w->isActive ? '🟢 AKTIF' : '⚪ NON-AKTIF' }}
                     </button>
                   </form>
                 </td>
 
                 {{-- Kolom Aksi --}}
                 <td class="px-4 py-3">
-                  <div style="display: flex; gap: 4px; align-items: center;">
+                  <div class="flex items-center justify-center gap-1.5">
                     <!-- Tombol Edit -->
                     <button type="button"
                       onclick="openEditModal('{{ $w->id }}', '{{ $w->judul_edisi }}', '{{ $w->tanggal_rilis }}')"
-                      style="background-color: #f59e0b; color: white !important; padding: 5px 0; border-radius: 4px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; width: 55px; text-align: center;">
-                      EDIT
+                      class="btn-action-edit">
+                      <i class="ri-edit-line"></i> Edit
                     </button>
 
                     <!-- Tombol Slide -->
                     <a href="{{ url('admin/warta?warta_id=' . $w->id) }}"
-                      style="background-color: #3b82f6; color: white !important; padding: 5px 0; border-radius: 4px; font-size: 10px; font-weight: bold; text-decoration: none; width: 55px; text-align: center; display: inline-block;">
-                      SLIDE
+                      class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 transition">
+                      <i class="ri-slideshow-line"></i> Slide
                     </a>
 
                     <!-- Tombol Hapus -->
@@ -91,8 +94,8 @@
                       onsubmit="return confirm('Hapus edisi ini?')" style="margin: 0; padding: 0;">
                       @csrf @method('DELETE')
                       <button type="submit"
-                        style="background-color: #ef4444; color: white !important; padding: 5px 0; border-radius: 4px; font-size: 10px; font-weight: bold; border: none; cursor: pointer; width: 55px; text-align: center;">
-                        HAPUS
+                        class="btn-action-delete">
+                        <i class="ri-delete-bin-line"></i> Hapus
                       </button>
                     </form>
                   </div>

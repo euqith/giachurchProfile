@@ -48,13 +48,25 @@
                   <span>Tentang Gereja</span>
                 </a>
                 <a href="#jadwal" class="btn btn-earth-light px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
-                  <i class="ri-calendar-schedule-line"></i>
+                  <i class="ri-calendar-schedule-line" style="color: var(--earth-primary);"></i>
                   <span>Jadwal Ibadah</span>
                 </a>
-                <a href="#streaming" class="btn btn-outline-light px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px; border-color: rgba(255,255,255,0.4);">
-                  <i class="ri-live-line" style="color: #F87171;"></i>
-                  <span>Live Streaming</span>
-                </a>
+                @php
+                  $isCurrentlyLive = isset($activeLiveStreams) && $activeLiveStreams->count() > 0;
+                @endphp
+                @if($isCurrentlyLive)
+                  <a href="#streaming" class="btn btn-live-stream-pop is-active-live px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
+                    <span class="live-pulse-dot" style="background: #FFFFFF;"></span>
+                    <i class="ri-live-line"></i>
+                    <span>Live Streaming</span>
+                    <span class="badge bg-white text-danger fw-bold rounded-pill px-1.5 py-0.5" style="font-size: 9.5px;">ON AIR</span>
+                  </a>
+                @else
+                  <a href="#streaming" class="btn btn-hero-stream px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
+                    <i class="ri-live-line" style="color: #EF4444; font-size: 15px;"></i>
+                    <span>Live Streaming</span>
+                  </a>
+                @endif
               </div>
 
             </div>
@@ -118,7 +130,7 @@
                     <i class="ri-calendar-todo-line"></i>
                     <span>Lihat Agenda</span>
                   </a>
-                  <a href="{{ url('/event') }}" class="btn btn-outline-light px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px; border-color: rgba(255,255,255,0.4);">
+                  <a href="{{ url('/event') }}" class="btn btn-hero-stream px-3.5 py-2.5 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
                     <i class="ri-calendar-line"></i>
                     <span>Semua Event</span>
                   </a>

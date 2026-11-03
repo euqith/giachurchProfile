@@ -1,20 +1,23 @@
 @extends('admin.layoutCMS')
 
 @section('content')
-  <div class="flex justify-between items-center mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <div>
-      <h4 class="text-slate-900 dark:text-slate-200 text-lg font-bold mb-1">Manajemen Event</h4>
-      <p class="text-slate-400 text-sm">Kelola seluruh agenda, KKR, dan kegiatan ibadah di semua cabang.</p>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold mb-1.5 border border-amber-200/80">
+        <i class="ri-calendar-event-line"></i> Agenda & Kegiatan Gereja
+      </div>
+      <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Manajemen Event</h1>
+      <p class="text-xs text-slate-500 mt-0.5">Kelola seluruh agenda, KKR, dan kegiatan ibadah di semua wilayah.</p>
     </div>
     <button onclick="document.getElementById('addEventModal').classList.remove('hidden')"
-      class="btn bg-primary text-white font-medium text-sm px-4 py-2 rounded shadow hover:bg-primary-dark transition">
-      <i class="ri-add-line pe-1"></i> Tambah Event
+      class="btn-cms-primary">
+      <i class="ri-add-line text-base"></i> Tambah Event
     </button>
   </div>
 
   @if (Session::has('success') || session('success'))
     <div id="success-alert"
-      class="bg-success p-4 rounded-lg mb-6 text-sm font-semibold text-white shadow-md transition-opacity duration-500">
+      class="bg-emerald-500 p-4 rounded-xl mb-6 text-sm font-semibold text-white shadow-md transition-opacity duration-500">
       <span class="flex items-center gap-2">
         <span>✅</span>
         <span>{{ Session::get('success') ?? session('success') }}</span>
@@ -22,47 +25,56 @@
     </div>
   @endif
 
-  <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+  <div class="table-modern-wrapper mb-6">
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-700">
+      <table class="min-w-full">
+        <thead>
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Nama Event</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Wilayah</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Event Start</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Event Finish</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
-            <th class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase">Aksi</th>
+            <th>Nama Event</th>
+            <th>Wilayah</th>
+            <th>Event Start</th>
+            <th>Event Finish</th>
+            <th>Status</th>
+            <th class="text-center">Aksi</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody class="divide-y divide-slate-100">
           @forelse($events as $event)
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-900/50">
-              <td class="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-gray-200">
+            <tr class="hover:bg-slate-50/70 transition-colors">
+              <td class="px-6 py-4 text-sm font-semibold text-slate-900">
                 <div class="flex items-center gap-3">
                   <img
                     src="{{ $event->gambar_banner ? asset('img/admin/events/' . $event->gambar_banner) . '?t=' . time() : asset('images/default-banner.jpg') }}"
-                    class="w-14 h-10 object-cover rounded border border-gray-200 shadow-sm bg-slate-100" alt="Banner"
+                    class="w-14 h-10 object-cover rounded-xl border border-slate-200 shadow-2xs bg-slate-100" alt="Banner"
                     onerror="this.onerror=null;this.src='{{ asset('images/default-banner.jpg') }}';">
-                  <span>{{ $event->nama_acara }}</span>
+                  <span class="font-semibold text-slate-900">{{ $event->nama_acara }}</span>
                 </div>
               </td>
 
-              <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                {{ $event->cabang ? $event->cabang->nama_cabang : 'Pusat / Semua Wilayah' }}</td>
-
-              <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                <div class="font-medium text-slate-800 dark:text-slate-200">
-                  {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('d M Y') }}</div>
-                <div class="text-xs text-slate-400 mt-0.5">⏰
-                  {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') }} WIB</div>
+              <td class="px-6 py-4 text-sm text-slate-600">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200/60">
+                  {{ $event->cabang ? $event->cabang->nama_cabang : 'Pusat / Semua Wilayah' }}
+                </span>
               </td>
 
-              <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                <div class="font-medium text-slate-800 dark:text-slate-200">
-                  {{ \Carbon\Carbon::parse($event->waktu_selesai)->format('d M Y') }}</div>
-                <div class="text-xs text-slate-400 mt-0.5">⏰
-                  {{ \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') }} WIB</div>
+              <td class="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
+                <div class="font-semibold text-slate-800">
+                  {{ \Carbon\Carbon::parse($event->waktu_mulai)->format('d M Y') }}
+                </div>
+                <div class="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                  <i class="ri-time-line text-amber-600"></i>
+                  <span>{{ \Carbon\Carbon::parse($event->waktu_mulai)->format('H:i') }} WIB</span>
+                </div>
+              </td>
+
+              <td class="px-6 py-4 text-sm text-slate-600 whitespace-nowrap">
+                <div class="font-semibold text-slate-800">
+                  {{ \Carbon\Carbon::parse($event->waktu_selesai)->format('d M Y') }}
+                </div>
+                <div class="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                  <i class="ri-time-line text-slate-400"></i>
+                  <span>{{ \Carbon\Carbon::parse($event->waktu_selesai)->format('H:i') }} WIB</span>
+                </div>
               </td>
 
               <td class="px-6 py-4 text-sm align-middle whitespace-nowrap">
@@ -72,38 +84,42 @@
                   $selesai = \Carbon\Carbon::parse($event->waktu_selesai);
                 @endphp
                 @if ($sekarang->lt($mulai))
-                  <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wider gap-1.5">🔮
-                    <span class="ms-0.5">Future</span></span>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-sky-50 text-sky-700 border border-sky-200 uppercase tracking-wider gap-1.5 shadow-2xs">
+                    <span>🔮 Future</span>
+                  </span>
                 @elseif ($sekarang->between($mulai, $selesai))
-                  <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase tracking-wider animate-pulse gap-1.5">🟢
-                    <span class="ms-0.5">Ongoing</span></span>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase tracking-wider gap-1.5 shadow-2xs">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span>🟢 Ongoing</span>
+                  </span>
                 @else
-                  <span
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-600 border border-gray-200 uppercase tracking-wider gap-1.5">⏰
-                    <span class="ms-0.5">Expired</span></span>
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-500 border border-slate-200 uppercase tracking-wider gap-1.5">
+                    <span>⏰ Expired</span>
+                  </span>
                 @endif
               </td>
 
               <td class="px-6 py-4 text-sm text-center align-middle whitespace-nowrap space-x-2">
                 <button type="button"
-                  class="btn-edit-event text-sm text-primary hover:underline font-semibold inline-flex items-center gap-0.5"
+                  class="btn-action-edit btn-edit-event"
                   data-id="{{ $event->id }}" data-nama="{{ $event->nama_acara }}"
                   data-cabang="{{ $event->cabang_id }}" data-lokasi="{{ $event->lokasi_spesifik }}"
                   data-mulai="{{ $event->waktu_mulai }}" data-selesai="{{ $event->waktu_selesai }}"
                   data-banner="{{ $event->gambar_banner }}" data-deskripsi="{{ $event->deskripsi_acara }}">
-                  <i class="ri-edit-box-line"></i> Edit
+                  <i class="ri-edit-line"></i> Edit
                 </button>
                 <button type="button" onclick="openDeleteModal({{ $event->id }}, '{{ $event->nama_acara }}')"
-                  class="text-sm text-danger hover:underline font-semibold inline-flex items-center gap-0.5"><i
-                    class="ri-delete-bin-line"></i> Hapus</button>
+                  class="btn-action-delete">
+                  <i class="ri-delete-bin-line"></i> Hapus
+                </button>
               </td>
             </tr>
           @empty
             <tr>
-              <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500 italic">Belum ada data event yang
-                terdaftar.</td>
+              <td colspan="6" class="px-6 py-12 text-center text-sm text-slate-400 italic">
+                <i class="ri-calendar-line text-3xl text-slate-300 block mb-2"></i>
+                Belum ada data event yang terdaftar.
+              </td>
             </tr>
           @endforelse
         </tbody>
@@ -174,12 +190,11 @@
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0">{{ old('deskripsi_acara') }}</textarea>
             </div>
           </div>
-          <div class="flex justify-end gap-2 pt-4 border-t border-gray-100 dark:border-gray-700 mt-2">
+          <div class="flex justify-end gap-2 pt-4 border-t border-slate-100 mt-2">
             <button type="button" onclick="document.getElementById('addEventModal').classList.add('hidden')"
-              class="btn bg-gray-100 text-gray-700 font-medium text-sm px-4 py-2 rounded hover:bg-gray-200 transition">Batal</button>
+              class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 cursor-pointer">Batal</button>
             <button type="submit"
-              class="btn bg-primary text-white font-medium text-sm px-4 py-2 rounded shadow hover:bg-primary-dark transition">Simpan
-              & Publikasikan</button>
+              class="btn-cms-primary text-xs">Simpan & Publikasikan</button>
           </div>
         </form>
       </div>
@@ -257,12 +272,11 @@
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0"></textarea>
             </div>
           </div>
-          <div class="flex justify-end gap-2 pt-4 border-t border-gray-100 dark:border-gray-700 mt-2">
+          <div class="flex justify-end gap-2 pt-4 border-t border-slate-100 mt-2">
             <button type="button" onclick="document.getElementById('editEventModal').classList.add('hidden')"
-              class="btn bg-gray-100 text-gray-700 font-medium text-sm px-4 py-2 rounded hover:bg-gray-200 transition">Batal</button>
+              class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 cursor-pointer">Batal</button>
             <button type="submit"
-              class="btn bg-primary text-white font-medium text-sm px-4 py-2 rounded shadow hover:bg-primary-dark transition">Simpan
-              Perubahan</button>
+              class="btn-cms-primary text-xs">Simpan Perubahan</button>
           </div>
         </form>
       </div>
@@ -294,9 +308,9 @@
 
           <div class="flex justify-center gap-2 pb-6 px-6">
             <button type="button" onclick="document.getElementById('deleteEventModal').classList.add('hidden')"
-              class="btn bg-gray-100 text-gray-700 font-medium text-sm px-4 py-2 rounded hover:bg-gray-200 transition w-24">Batal</button>
+              class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition border border-slate-200 w-24 cursor-pointer">Batal</button>
             <button type="submit"
-              class="btn bg-danger text-white font-medium text-sm px-4 py-2 rounded shadow hover:bg-danger-dark transition w-24">Hapus</button>
+              class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs transition shadow-sm w-24 cursor-pointer">Hapus</button>
           </div>
         </form>
       </div>
