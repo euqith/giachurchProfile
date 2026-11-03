@@ -52,12 +52,16 @@
     .page-content {
       background-color: #F8FAFC !important;
       min-height: 100vh;
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      margin-left: 0 !important;
     }
 
-    @media (min-width: 1024px) {
-      .page-content {
-        margin-left: 265px !important;
-      }
+    html[data-sidenav-view=mobile] .app-menu {
+      position: fixed !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      left: 0 !important;
     }
 
     /* 1. SIDEBAR MODERNIZATION & SCROLLABLE EXPAND */
