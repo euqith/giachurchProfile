@@ -235,3 +235,13 @@ test('admin can manage cabang maps and schedule and homepage reflects it', funct
     $homeResponse->assertSee('https://maps.google.com/?q=DarmoUpdated');
     $homeResponse->assertSee('Ibadah Pagi: 07.00 WIB');
 });
+
+test('admin login screen renders with dark luxury theme and cms brand colors', function () {
+    $response = $this->get(route('admin.login'));
+
+    $response->assertStatus(200);
+    $response->assertSee('Log In Admin CMS');
+    $response->assertSee('Gereja Isa Almasih Surabaya');
+    $response->assertSee('Masuk Dashboard');
+    $response->assertSee('giaslogo-darkbg.png');
+});
