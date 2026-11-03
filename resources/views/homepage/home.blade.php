@@ -427,7 +427,7 @@
       </div>
 
       <!-- KARTU JADWAL PER WILAYAH (DYNAMIC DENGAN GOOGLE MAPS) -->
-      <div class="row g-4 justify-content-center mb-4">
+      <div class="row g-4 justify-content-center mb-5">
         @forelse($cabangs as $index => $cs)
           <div class="col-lg-4 col-md-6">
             <div class="card-earth p-4 h-100 shadow-sm d-flex flex-column justify-content-between" style="background: #FFFFFF !important;">
@@ -496,12 +496,6 @@
         @endforelse
       </div>
 
-      <div class="text-center mb-5">
-        <a href="{{ route('ibadah.public') }}" class="btn btn-earth-outline btn-sm px-4 py-2 rounded-pill d-inline-flex align-items-center gap-2" style="font-size: 13px;">
-          <i class="ri-book-open-line"></i>
-          <span>Buka Arsip & Detail Liturgi Pelayanan</span>
-        </a>
-      </div>
 
       <!-- HIGHLIGHT UPCOMING SCHEDULE JIKA ADA -->
       @if($upcomingSchedules->isNotEmpty())
