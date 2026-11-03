@@ -184,3 +184,54 @@ test('admin can manage streams and toggle live status', function () {
     $autoDetectResponse = $this->actingAs($admin)->post(route('admin.stream.auto-detect'));
     $autoDetectResponse->assertRedirect();
 });
+
+test('admin can manage cabang maps and schedule and homepage reflects it', function () {
+    $admin = User::firstOrCreate(
+        ['email' => 'admin_cabang_test@giasurabaya.org'],
+        [
+            'name' => 'Admin Cabang Test',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+        ]
+    );
+
+    $cabang = Cabang::create([
+        'nama_cabang' => 'Darmo Pusat Maps Test',
+        'lokasi' => 'Jl. Raya Darmo Harapan No.PF-1, Surabaya',
+        'maps_url' => 'https://maps.app.goo.gl/sampleDarmoLink',
+        'maps_embed' => 'https://www.google.com/maps/embed?pb=sampleDarmoEmbed',
+        'jadwal_ibadah' => "Ibadah 1: Minggu 06.00 WIB\nIbadah 2: Minggu 08.00 WIB",
+        'isActive' => 1,
+        'isDelete' => 0,
+    ]);
+
+    // 1. Admin Index Cabang sees maps
+    $indexResponse = $this->actingAs($admin)->get(route('admin.cabang.index'));
+    $indexResponse->assertStatus(200);
+    $indexResponse->assertSee('Darmo Pusat Maps Test');
+    $indexResponse->assertSee('Buka Maps');
+
+    // 2. Admin Update Cabang
+    $updateResponse = $this->actingAs($admin)->put(route('admin.cabang.update', $cabang->id), [
+        'nama_cabang' => 'Darmo Pusat Maps Updated',
+        'lokasi' => 'Jl. Raya Darmo Harapan No.PF-1 Baru',
+        'maps_url' => 'https://maps.google.com/?q=DarmoUpdated',
+        'maps_embed' => '<iframe src="https://www.google.com/maps/embed?pb=updatedEmbed"></iframe>',
+        'jadwal_ibadah' => "Ibadah Pagi: 07.00 WIB\nDoa Malam: 19.00 WIB",
+        'isActive' => 1,
+    ]);
+    $updateResponse->assertRedirect();
+
+    $cabang->refresh();
+    expect($cabang->nama_cabang)->toBe('Darmo Pusat Maps Updated')
+        ->and($cabang->maps_url)->toBe('https://maps.google.com/?q=DarmoUpdated')
+        ->and($cabang->google_maps_embed_url)->toBe('https://www.google.com/maps/embed?pb=updatedEmbed')
+        ->and($cabang->jadwal_lines)->toContain('Ibadah Pagi: 07.00 WIB');
+
+    // 3. Homepage reflects the updated branch, maps, and schedules
+    $homeResponse = $this->get(route('home'));
+    $homeResponse->assertStatus(200);
+    $homeResponse->assertSee('Darmo Pusat Maps Updated');
+    $homeResponse->assertSee('https://maps.google.com/?q=DarmoUpdated');
+    $homeResponse->assertSee('Ibadah Pagi: 07.00 WIB');
+});

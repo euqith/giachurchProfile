@@ -22,11 +22,17 @@ class CabangController extends Controller
         $request->validate([
             'nama_cabang' => 'required|string|max:255',
             'lokasi' => 'nullable|string|max:255',
+            'maps_url' => 'nullable|string|max:1000',
+            'maps_embed' => 'nullable|string',
+            'jadwal_ibadah' => 'nullable|string',
         ]);
 
         Cabang::create([
             'nama_cabang' => $request->nama_cabang,
             'lokasi' => $request->lokasi,
+            'maps_url' => $request->maps_url,
+            'maps_embed' => $request->maps_embed,
+            'jadwal_ibadah' => $request->jadwal_ibadah,
             'createdBy' => Auth::user()->name ?? 'Admin',
             'isActive' => 1,
             'isDelete' => 0,
@@ -40,6 +46,9 @@ class CabangController extends Controller
         $request->validate([
             'nama_cabang' => 'required|string|max:255',
             'lokasi' => 'nullable|string|max:255',
+            'maps_url' => 'nullable|string|max:1000',
+            'maps_embed' => 'nullable|string',
+            'jadwal_ibadah' => 'nullable|string',
             'isActive' => 'required|boolean',
         ]);
 
@@ -47,6 +56,9 @@ class CabangController extends Controller
         $cabang->update([
             'nama_cabang' => $request->nama_cabang,
             'lokasi' => $request->lokasi,
+            'maps_url' => $request->maps_url,
+            'maps_embed' => $request->maps_embed,
+            'jadwal_ibadah' => $request->jadwal_ibadah,
             'isActive' => $request->isActive,
             'updatedBy' => Auth::user()->name ?? 'Admin',
         ]);

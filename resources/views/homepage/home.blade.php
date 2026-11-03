@@ -414,50 +414,74 @@
         </p>
       </div>
 
-      <!-- KARTU JADWAL PER CABANG (GRID 5 CABANG) -->
-      <div class="row g-4 mb-4">
-        @php
-          $cabangSchedules = [
-            ['nama' => 'Cabang Darmo (Pusat)', 'alamat' => 'Jl. Darmo No. 45, Surabaya', 'sesi1' => 'Ibadah 1: Minggu 06.00 WIB', 'sesi2' => 'Ibadah 2: Minggu 08.00 WIB', 'sesi3' => 'Ibadah 3: Minggu 10.00 WIB', 'doa' => 'Doa Malam: Rabu 19.00 WIB'],
-            ['nama' => 'Cabang Bromo', 'alamat' => 'Jl. Bromo No. 12, Surabaya', 'sesi1' => 'Ibadah Pagi: Minggu 07.00 WIB', 'sesi2' => 'Ibadah Siang: Minggu 09.30 WIB', 'sesi3' => 'Ibadah Sore: Minggu 17.00 WIB', 'doa' => 'Doa Syafaat: Kamis 18.30 WIB'],
-            ['nama' => 'Cabang Koblen', 'alamat' => 'Jl. Koblen Kidul No. 8, Surabaya', 'sesi1' => 'Ibadah Pagi: Minggu 06.30 WIB', 'sesi2' => 'Ibadah Siang: Minggu 09.00 WIB', 'sesi3' => 'Ibadah Remaja: Minggu 16.00 WIB', 'doa' => 'Doa Tengah Minggu: Rabu 18.30 WIB'],
-            ['nama' => 'Cabang Gateway', 'alamat' => 'Kompleks Gateway Waru, Sidoarjo - Surabaya', 'sesi1' => 'Ibadah 1: Minggu 08.00 WIB', 'sesi2' => 'Ibadah 2: Minggu 10.30 WIB', 'sesi3' => 'Ibadah Pemuda: Sabtu 18.00 WIB', 'doa' => 'Doa Bersama: Rabu 19.00 WIB'],
-            ['nama' => 'Cabang Tengger', 'alamat' => 'Jl. Raya Tengger Kandangan No. 20, Surabaya', 'sesi1' => 'Ibadah Pagi: Minggu 07.30 WIB', 'sesi2' => 'Ibadah Siang: Minggu 10.00 WIB', 'sesi3' => 'Ibadah Sore: Minggu 16.30 WIB', 'doa' => 'Doa Semalam: Jumat 19.00 WIB'],
-          ];
-        @endphp
-
-        @foreach($cabangSchedules as $index => $cs)
+      <!-- KARTU JADWAL PER CABANG (DYNAMIC DENGAN GOOGLE MAPS) -->
+      <div class="row g-4 justify-content-center mb-4">
+        @forelse($cabangs as $index => $cs)
           <div class="col-lg-4 col-md-6">
             <div class="card-earth p-4 h-100 shadow-sm d-flex flex-column justify-content-between" style="background: #FFFFFF !important;">
               <div>
-                <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="d-flex align-items-center justify-content-between mb-2">
                   <span class="badge badge-earth px-2.5 py-0.5 rounded-pill" style="font-size: 10.5px;">
                     Cabang {{ $index + 1 }}
                   </span>
-                  <i class="ri-map-pin-2-line" style="color: var(--earth-primary); font-size: 18px;"></i>
+                  <a href="{{ $cs->google_maps_link }}" target="_blank" class="text-decoration-none small d-inline-flex align-items-center gap-1 text-primary fw-semibold" title="Buka di Google Maps" style="font-size: 11.5px;">
+                    <i class="ri-map-pin-2-fill text-danger"></i>
+                    <span>Maps</span>
+                    <i class="ri-arrow-right-up-line" style="font-size: 11px;"></i>
+                  </a>
                 </div>
 
-                <h5 class="fw-bold mb-1 font-serif" style="color: var(--earth-dark); font-size: 18px;">{{ $cs['nama'] }}</h5>
-                <p class="small mb-3" style="color: var(--earth-text-muted); font-size: 12.5px;"><i class="ri-direction-line me-1"></i>{{ $cs['alamat'] }}</p>
+                <h5 class="fw-bold mb-1 font-serif" style="color: var(--earth-dark); font-size: 18px;">Cabang {{ $cs->nama_cabang }}</h5>
+                <p class="small mb-2.5" style="color: var(--earth-text-muted); font-size: 12.5px; min-height: 36px;">
+                  <i class="ri-direction-line me-1 text-primary"></i>{{ $cs->lokasi ?: 'Surabaya' }}
+                </p>
 
+                <!-- INTERACTIVE GOOGLE MAPS EMBED -->
+                <div class="rounded-3 overflow-hidden border mb-2.5 shadow-2xs position-relative" style="height: 140px; background: #EFE9E2;">
+                  <iframe 
+                    src="{{ $cs->google_maps_embed_url }}" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                  </iframe>
+                </div>
+
+                <!-- TOMBOL BUKA GOOGLE MAPS / RUTE -->
+                <div class="mb-3">
+                  <a href="{{ $cs->google_maps_link }}" target="_blank" class="btn btn-earth-light btn-sm rounded-pill w-100 d-inline-flex align-items-center justify-content-center gap-1.5" style="font-size: 12px; padding: 7px 12px;">
+                    <i class="ri-navigation-fill text-danger"></i>
+                    <span>Petunjuk Arah Google Maps</span>
+                    <i class="ri-arrow-right-up-line small opacity-75"></i>
+                  </a>
+                </div>
+
+                <!-- WAKTU & JADWAL IBADAH CABANG -->
                 <div class="p-3 rounded-3 mb-2" style="background: var(--earth-surface-warm); border: 1px solid var(--earth-border); font-size: 13px;">
                   <div class="fw-bold mb-1.5" style="color: var(--earth-primary);"><i class="ri-time-line me-1"></i> Waktu Ibadah:</div>
-                  <div class="mb-1" style="color: var(--earth-text);"><i class="ri-check-line text-success me-1"></i>{{ $cs['sesi1'] }}</div>
-                  <div class="mb-1" style="color: var(--earth-text);"><i class="ri-check-line text-success me-1"></i>{{ $cs['sesi2'] }}</div>
-                  <div class="mb-1" style="color: var(--earth-text);"><i class="ri-check-line text-success me-1"></i>{{ $cs['sesi3'] }}</div>
-                  <div style="color: var(--earth-text);"><i class="ri-heart-pulse-line me-1" style="color: var(--earth-accent);"></i>{{ $cs['doa'] }}</div>
+                  @foreach($cs->jadwal_lines as $line)
+                    <div class="mb-1" style="color: var(--earth-text);">
+                      <i class="ri-check-line text-success me-1"></i>{{ $line }}
+                    </div>
+                  @endforeach
                 </div>
               </div>
 
               <div class="mt-3 pt-2 border-top d-flex align-items-center justify-content-between small" style="border-color: var(--earth-border) !important;">
                 <span class="text-muted" style="font-size: 12px;"><i class="ri-map-pin-user-line me-1"></i> Tatap Muka</span>
                 <a href="#streaming" class="text-decoration-none fw-bold" style="color: var(--earth-primary); font-size: 12.5px;">
-                  Streaming <i class="ri-arrow-right-s-line"></i>
+                  Live Streaming <i class="ri-arrow-right-s-line"></i>
                 </a>
               </div>
             </div>
           </div>
-        @endforeach
+        @empty
+          <div class="col-12 text-center text-muted small py-4">
+            Informasi cabang sedang diperbarui oleh sekretariat gereja.
+          </div>
+        @endforelse
       </div>
 
       <div class="text-center mb-5">
