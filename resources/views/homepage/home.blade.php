@@ -27,7 +27,7 @@
           </div>
 
           <div class="container h-100 d-flex align-items-center" style="position: relative; z-index: 2;">
-            <div class="banner-two__content banner-content-box max-w-2xl text-white py-5">
+            <div class="banner-two__content banner-content-box max-w-3xl lg:max-w-4xl text-white py-5">
 
               <span class="badge px-3 py-1.5 mb-3 rounded-pill text-uppercase d-inline-flex align-items-center gap-2"
                 style="background: rgba(212, 163, 115, 0.22); color: #F5EFEB; border: 1px solid rgba(212, 163, 115, 0.45); font-size: 11.5px; letter-spacing: 0.8px;">
@@ -38,7 +38,7 @@
                 {{ $churchProfile->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}
               </h1>
 
-              <p class="mb-4 fw-normal leading-relaxed" style="color: #E6DDD4; font-size: clamp(14px, 2vw, 17px); max-width: 580px;">
+              <p class="mb-4 fw-normal leading-relaxed" style="color: #E6DDD4; font-size: clamp(14px, 2vw, 17px); max-width: 780px;">
                 {{ $churchProfile->tagline ?: 'Bertumbuh dalam Kristus, Berakar dalam Firman, dan Berbuah bagi Sesama.' }}
               </p>
 
@@ -96,7 +96,7 @@
             </div>
 
             <div class="container h-100 d-flex align-items-center" style="position: relative; z-index: 2;">
-              <div class="banner-two__content banner-content-box max-w-2xl text-white py-5">
+              <div class="banner-two__content banner-content-box max-w-3xl lg:max-w-4xl text-white py-5">
 
                 <span class="badge px-3 py-1.5 mb-3 rounded-pill d-inline-flex align-items-center gap-2"
                   style="background: {{ $isOngoing ? 'rgba(34, 197, 94, 0.25)' : 'rgba(212, 163, 115, 0.25)' }}; 
