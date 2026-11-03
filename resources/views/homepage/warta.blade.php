@@ -68,7 +68,7 @@
 
                 {{-- INTERACTIVE LOCAL PDF PREVIEW --}}
                 <div class="w-100 rounded-3 shadow-sm overflow-hidden"
-                  style="height: 750px; background-color: #F8F5F2; border: 1px solid var(--earth-border);">
+                  style="height: clamp(420px, 70vh, 750px); background-color: #F8F5F2; border: 1px solid var(--earth-border);">
                   <object data="{{ asset('img/admin/wartas/' . $document->file_gambar) }}" type="application/pdf"
                     class="w-100 h-100">
                     <iframe src="{{ asset('img/admin/wartas/' . $document->file_gambar) }}" class="w-100 h-100"

@@ -46,11 +46,35 @@
       background-color: var(--earth-bg) !important;
       color: var(--earth-text) !important;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     h1, h2, h3, .font-serif {
       font-family: 'Playfair Display', Georgia, serif;
       letter-spacing: -0.01em;
+    }
+
+    /* Loading Icon: Logo Gereja Animasi */
+    #loading {
+      background-color: #FAF7F2 !important;
+    }
+    #loading .loading-icon .loading-logo {
+      max-width: 230px !important;
+      width: auto !important;
+      height: auto !important;
+      max-height: 80px !important;
+      object-fit: contain !important;
+      animation: logoPulse 1.8s ease-in-out infinite alternate !important;
+    }
+    @keyframes logoPulse {
+      0% {
+        transform: scale(0.96);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.02);
+        opacity: 1;
+      }
     }
 
     /* Top bar */
@@ -69,10 +93,19 @@
 
     /* Main Header */
     .header-area-earth {
-      background: rgba(255, 255, 255, 0.96) !important;
+      background: rgba(255, 255, 255, 0.98) !important;
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--earth-border);
       transition: all 0.3s ease;
+    }
+
+    .header-church-logo {
+      height: 46px;
+      max-height: 48px;
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+      transition: all 0.2s ease;
     }
 
     .main-menu ul li a {
@@ -210,16 +243,73 @@
         box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
       }
     }
+
+    /* =================================================== */
+    /* RESPONSIVE OPTIMIZATIONS (TABLET & MOBILE HP)       */
+    /* =================================================== */
+    @media (max-width: 991.98px) {
+      .header-church-logo {
+        height: 38px !important;
+        max-width: 185px !important;
+      }
+      .shortcut-cards-section {
+        margin-top: 25px !important;
+      }
+      .banner-two-area .swiper-slide {
+        min-height: 480px !important;
+      }
+      .banner-content-box {
+        padding: 60px 15px 70px !important;
+      }
+      .banner-content-box h1 {
+        font-size: 32px !important;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .header-church-logo {
+        height: 34px !important;
+        max-width: 155px !important;
+      }
+      .shortcut-cards-section {
+        margin-top: 20px !important;
+      }
+      .banner-two-area .swiper-slide {
+        min-height: 440px !important;
+      }
+      .banner-content-box {
+        padding: 50px 15px 60px !important;
+      }
+      .banner-content-box h1 {
+        font-size: 24px !important;
+      }
+      .banner-content-box p {
+        font-size: 14px !important;
+      }
+      .btn-earth, .btn-earth-light, .btn-earth-outline {
+        padding: 9px 18px !important;
+        font-size: 12.5px !important;
+      }
+      .card-earth {
+        border-radius: 16px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- LOADING SCREEN: DENGAN LOGO GEREJA RESMI -->
   <div id="loading">
     <div id="loading-center">
       <div id="loading-center-absolute">
         <div class="loading-icon text-center d-flex flex-column align-items-center justify-content-center">
-          <img class="loading-logo" src="{{ asset('homepage/assets/images/preloader.svg') }}" alt="icon">
+          <img class="loading-logo mb-3" src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya">
+          <div class="d-flex align-items-center gap-2 mt-1">
+            <span class="spinner-grow text-secondary" style="width: 7px; height: 7px; background-color: var(--earth-primary) !important;"></span>
+            <span class="spinner-grow text-secondary" style="width: 7px; height: 7px; background-color: var(--earth-accent) !important; animation-delay: 0.15s;"></span>
+            <span class="spinner-grow text-secondary" style="width: 7px; height: 7px; background-color: var(--earth-primary) !important; animation-delay: 0.3s;"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -262,15 +352,12 @@
   <header class="header-area header-area-earth sticky-top">
     <div class="container">
       <div class="header__main d-flex align-items-center justify-content-between py-2">
-        <a href="{{ url('/') }}" class="logo d-flex align-items-center gap-3 text-decoration-none">
-          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 48px; width: auto;">
-          <div>
-            <strong class="d-block fw-bold" style="font-size: 17px; line-height: 1.2; color: var(--earth-dark);">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih' }}</strong>
-            <span class="text-uppercase" style="font-size: 10.5px; letter-spacing: 1px; color: var(--earth-primary); font-weight: 700;">Jemaat Surabaya</span>
-          </div>
+        <!-- LOGO BRANDING (TIDAK ADA TEKS MENUMPUK, BERSIH & RESPONSIF) -->
+        <a href="{{ url('/') }}" class="logo d-flex align-items-center text-decoration-none py-1">
+          <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="Gereja Isa Almasih Surabaya" class="header-church-logo">
         </a>
 
-        <!-- MAIN NAVBAR (No 'Jadwal Ibadah' link as requested) -->
+        <!-- MAIN NAVBAR -->
         <div class="main-menu d-none d-lg-block">
           <nav>
             <ul class="d-flex align-items-center mb-0 list-unstyled">
@@ -301,8 +388,7 @@
     <div class="sidebar__overlay"></div>
     <div class="p-4" style="background-color: var(--earth-dark); min-height: 100vh;">
       <a href="{{ url('/') }}" class="logo d-block mb-4 text-decoration-none">
-        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="logo" style="height: 46px; filter: brightness(1.2);">
-        <span class="text-white d-block fw-bold mt-2 font-serif" style="font-size: 18px;">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih Surabaya' }}</span>
+        <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Surabaya" style="height: 42px; width: auto; object-fit: contain; filter: brightness(1.2);">
       </a>
       <div class="mobile-menu overflow-hidden">
         <ul class="list-unstyled">
@@ -342,11 +428,7 @@
         <!-- Col 1: Church Bio -->
         <div class="col-lg-4 col-md-6">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 44px; filter: brightness(1.2);">
-            <div>
-              <h5 class="mb-0 fw-bold text-white font-serif">{{ $churchProfileGlobal->nama_gereja ?: 'Gereja Isa Almasih' }}</h5>
-              <small style="color: var(--earth-accent); letter-spacing: 0.5px;">Jemaat Surabaya</small>
-            </div>
+            <img src="{{ asset('homepage/assets/images/logo/giaslogosmall.png') }}" alt="GIA Logo" style="height: 44px; width: auto; object-fit: contain; filter: brightness(1.2);">
           </div>
           <p class="small pe-lg-3 leading-relaxed" style="color: #C0B4A9;">
             {{ $churchProfileGlobal->tentang_gereja ?: 'Mewujudkan jemaat yang bertumbuh dalam iman kepada Kristus, berakar dalam firman Tuhan, dan berbuah dalam pelayanan kasih kepada sesama.' }}
@@ -374,7 +456,7 @@
           </ul>
         </div>
 
-        <!-- Col 3: Akses Cepat -->
+        <!-- Col 3: Navigasi -->
         <div class="col-lg-2 col-md-6">
           <h6 class="fw-bold text-white mb-3 text-uppercase" style="letter-spacing: 0.8px; font-size: 13px;">Navigasi</h6>
           <ul class="list-unstyled small" style="color: #C0B4A9;">
