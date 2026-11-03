@@ -40,8 +40,8 @@ CSS TABLE OF CONTENTS
 	// Preloader area end here ***
 
 	// Header area start here ***
-	// Mobile menu
-	$(".header-area nav").meanmenu();
+	// Mobile menu (disabled to prevent meanmenu from injecting duplicate elements)
+	// $(".header-area nav").meanmenu();
 	// Menu Fixed
 	var fixed_top = $(".header-area");
 	$(window).on("scroll", function () {
@@ -236,11 +236,14 @@ CSS TABLE OF CONTENTS
 	// Brand slider area end here ***
 
 	// Hide & show by clicks js area start here ***
-	$(document).on("click", "#openButton", function () {
+	$(document).on("click", "#openButton", function (e) {
+		e.preventDefault();
 		$("#targetElement").removeClass("sidebar__hide");
+		$("body").addClass("sidebar-open");
 	});
-	$(document).on("click", "#closeButton", function () {
+	$(document).on("click", "#closeButton, .sidebar__overlay, .church-mobile-drawer-nav a", function () {
 		$("#targetElement").addClass("sidebar__hide");
+		$("body").removeClass("sidebar-open");
 	});
 	// Hide & show by clicks js area end here ***
 

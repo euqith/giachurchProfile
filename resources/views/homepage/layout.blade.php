@@ -351,6 +351,109 @@
         border-radius: 16px;
       }
     }
+
+    /* =================================================== */
+    /* MODERN CHURCH MOBILE DRAWER NAVIGATION              */
+    /* =================================================== */
+    body.sidebar-open {
+      overflow: hidden !important;
+    }
+
+    .sidebar-area {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      width: min(330px, 85vw) !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      background-color: var(--earth-dark) !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      z-index: 999999 !important;
+      box-shadow: -8px 0 35px rgba(0, 0, 0, 0.5) !important;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+      transform: translateX(0) !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: flex !important;
+      flex-direction: column !important;
+      overflow-y: auto !important;
+    }
+
+    .sidebar-area.sidebar__hide {
+      transform: translateX(100%) !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .sidebar-area .sidebar__overlay {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: rgba(18, 14, 12, 0.65) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      z-index: -1 !important;
+      cursor: pointer !important;
+    }
+
+    /* Reset global .sidebar-area button styles from style.css */
+    .sidebar-area button {
+      position: static !important;
+      width: auto !important;
+      height: auto !important;
+      line-height: normal !important;
+      border-radius: 0 !important;
+      background: none !important;
+      transform: none !important;
+    }
+
+    .sidebar-close-btn {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #FFFFFF !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 16px !important;
+      cursor: pointer !important;
+      padding: 0 !important;
+      transition: all 0.2s ease !important;
+    }
+
+    .sidebar-close-btn:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #FFFFFF !important;
+      transform: scale(1.05) !important;
+    }
+
+    .church-mobile-drawer-nav .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      color: #F1ECE6 !important;
+      text-decoration: none !important;
+      font-size: 14.5px;
+      font-weight: 500;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      margin-bottom: 4px;
+    }
+
+    .church-mobile-drawer-nav .drawer-nav-item:hover,
+    .church-mobile-drawer-nav .drawer-nav-item.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--earth-accent) !important;
+    }
   </style>
 </head>
 
@@ -422,49 +525,106 @@
         <div class="header-col-right d-flex align-items-center justify-content-end">
           <!-- MOBILE HAMBURGER TOGGLE -->
           <div class="bars d-block d-lg-none">
-            <i id="openButton" class="fa-solid fa-bars" style="font-size: 22px; color: var(--earth-dark); cursor: pointer;"></i>
+            <button id="openButton" type="button" class="btn p-1.5 border-0 shadow-none d-flex align-items-center justify-content-center" aria-label="Buka Menu" style="background: transparent; color: var(--earth-dark);">
+              <i class="fa-solid fa-bars" style="font-size: 22px;"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- MOBILE SIDEBAR -->
+  <!-- MOBILE SIDEBAR DRAWER -->
   <div id="targetElement" class="sidebar-area sidebar__hide">
     <div class="sidebar__overlay"></div>
-    <div class="p-4" style="background-color: var(--earth-dark); min-height: 100vh;">
-      <a href="{{ url('/') }}" class="logo d-block mb-4 text-decoration-none">
-        <img src="{{ asset('homepage/assets/images/logo/giaslogo-white.png') }}" alt="Gereja Isa Almasih Surabaya" style="height: 44px; width: auto; object-fit: contain;">
-      </a>
-      <div class="mobile-menu overflow-hidden">
-        <ul class="list-unstyled">
-          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
-            <a href="{{ url('/') }}" class="text-white text-decoration-none d-block">Home</a>
+    <div class="d-flex flex-column h-100 p-4" style="background-color: var(--earth-dark); min-height: 100vh;">
+      
+      <!-- Drawer Header: Brand Logo & Close Button -->
+      <div class="d-flex align-items-center justify-content-between pb-3 mb-3 border-bottom" style="border-color: rgba(255,255,255,0.1) !important;">
+        <a href="{{ url('/') }}" class="d-inline-flex align-items-center text-decoration-none">
+          <img src="{{ asset('homepage/assets/images/logo/giaslogo-white.png') }}" alt="Gereja Isa Almasih Surabaya" style="height: 38px; width: auto; object-fit: contain;">
+        </a>
+        <button id="closeButton" type="button" class="sidebar-close-btn" aria-label="Tutup Menu">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Nav List -->
+      <div class="church-mobile-drawer-nav flex-grow-1 overflow-y-auto">
+        <ul class="list-unstyled mb-0">
+          <li>
+            <a href="{{ url('/') }}" class="drawer-nav-item {{ request()->is('/') ? 'active' : '' }}">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-home-4-line text-white-50" style="font-size: 18px;"></i>
+                <span>Home</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
+            </a>
           </li>
-          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
-            <a href="{{ url('/#streaming') }}" class="text-white text-decoration-none d-flex align-items-center justify-content-between">
-              <span><i class="ri-live-line text-danger me-2"></i>Live Streaming</span>
+          <li>
+            <a href="{{ url('/#streaming') }}" class="drawer-nav-item">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-live-line text-danger" style="font-size: 18px;"></i>
+                <span>Live Streaming</span>
+              </span>
               @if($isAnyLive)
-                <span class="badge bg-danger text-white rounded-pill px-2 py-0.5" style="font-size: 10px;">🔴 ON AIR</span>
+                <span class="badge bg-danger text-white rounded-pill px-2 py-0.5" style="font-size: 10px;">🔴 LIVE</span>
+              @else
+                <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
               @endif
             </a>
           </li>
-          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
-            <a href="{{ url('/warta') }}" class="text-white text-decoration-none d-block">Warta Jemaat</a>
+          <li>
+            <a href="{{ url('/#jadwal') }}" class="drawer-nav-item">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-calendar-event-line text-white-50" style="font-size: 18px;"></i>
+                <span>Jadwal Ibadah</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
+            </a>
           </li>
-          <li class="py-2.5 border-bottom" style="border-color: rgba(255,255,255,0.08) !important;">
-            <a href="{{ url('/event') }}" class="text-white text-decoration-none d-block">Event</a>
+          <li>
+            <a href="{{ url('/warta') }}" class="drawer-nav-item {{ request()->is('warta*') ? 'active' : '' }}">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-newspaper-line text-white-50" style="font-size: 18px;"></i>
+                <span>Warta Jemaat</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
+            </a>
           </li>
-          <li class="py-2.5">
-            <a href="{{ route('admin.login') }}" class="text-decoration-none d-inline-flex align-items-center gap-1.5" style="color: var(--earth-accent);">
-              <i class="ri-lock-line"></i> CMS Login
+          <li>
+            <a href="{{ url('/event') }}" class="drawer-nav-item {{ request()->is('event*') ? 'active' : '' }}">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-sparkling-line text-white-50" style="font-size: 18px;"></i>
+                <span>Event Gereja</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url('/#tentang') }}" class="drawer-nav-item">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-information-line text-white-50" style="font-size: 18px;"></i>
+                <span>Tentang Kami</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
             </a>
           </li>
         </ul>
       </div>
-      <button id="closeButton" class="text-white mt-4 btn btn-outline-light btn-sm rounded-pill px-3">
-        <i class="fa-solid fa-xmark me-1"></i> Tutup Menu
-      </button>
+
+      <!-- Drawer Bottom: CMS Login & Info -->
+      <div class="pt-3 mt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+        <div class="d-flex align-items-center justify-content-between mb-3 text-white-50" style="font-size: 11.5px;">
+          <span>Gereja Isa Almasih Surabaya</span>
+          <span class="badge" style="background: rgba(255,255,255,0.08); color: var(--earth-accent);">GIAS</span>
+        </div>
+        <a href="{{ route('admin.login') }}" class="btn btn-sm w-100 py-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #E6DDD4; border-radius: 10px; font-size: 13px; transition: all 0.2s ease;">
+          <i class="ri-lock-line" style="color: var(--earth-accent);"></i>
+          <span>CMS Admin Login</span>
+        </a>
+      </div>
+
     </div>
   </div>
 
