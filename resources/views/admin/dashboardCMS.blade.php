@@ -26,7 +26,7 @@
     <div
       class="bg-white rounded-lg shadow p-6 flex justify-between items-center border border-gray-100">
       <div>
-        <p class="text-gray-400 font-semibold text-xs uppercase tracking-wider mb-1">Cabang Terdaftar</p>
+        <p class="text-gray-400 font-semibold text-xs uppercase tracking-wider mb-1">Wilayah Terdaftar</p>
         <h3 class="text-2xl font-bold text-gray-800 mb-0">{{ $totalCabang }}</h3>
       </div>
       <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center text-primary text-xl">

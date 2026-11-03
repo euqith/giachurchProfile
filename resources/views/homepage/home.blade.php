@@ -96,7 +96,7 @@
                   @else
                     <i class="ri-calendar-event-line" style="color: var(--earth-accent);"></i> AGENDA KEGIATAN
                   @endif
-                  · {{ $event->cabang ? strtoupper($event->cabang->nama_cabang) : 'SEMUA CABANG' }}
+                  · {{ $event->cabang ? strtoupper($event->cabang->nama_cabang) : 'SEMUA WILAYAH' }}
                 </span>
 
                 <div class="d-flex align-items-center gap-2 mb-2" style="color: #D4C3B5; font-size: 13.5px;">
@@ -178,11 +178,11 @@
                     <i class="ri-calendar-schedule-line fs-18"></i>
                   </div>
                   <span class="badge badge-earth px-2 py-0.5 rounded-pill" style="font-size: 10.5px;">
-                    5 Cabang
+                    5 Wilayah
                   </span>
                 </div>
                 <h5 class="fw-bold mb-1" style="color: var(--earth-dark); font-size: 16px;">Jadwal Ibadah</h5>
-                <p class="small mb-0" style="color: var(--earth-text-muted); font-size: 12.5px;">Waktu ibadah raya minggu dan sesi doa di setiap cabang.</p>
+                <p class="small mb-0" style="color: var(--earth-text-muted); font-size: 12.5px;">Waktu ibadah raya minggu dan sesi doa di setiap wilayah.</p>
               </div>
               <div class="mt-3 pt-2 border-top d-flex align-items-center justify-content-between small fw-bold" style="border-color: var(--earth-border) !important; color: var(--earth-primary);">
                 <span>Lihat Jadwal</span>
@@ -281,7 +281,7 @@
                 </div>
                 <div>
                   <h4 class="font-serif fw-bold mb-0" style="color: var(--earth-dark); font-size: 20px;">{{ $churchProfile->nama_gereja ?: 'Gereja Isa Almasih' }}</h4>
-                  <small style="color: var(--earth-accent); font-weight: 600;">Jemaat Surabaya · 5 Cabang</small>
+                  <small style="color: var(--earth-accent); font-weight: 600;">Jemaat Surabaya · 5 Wilayah</small>
                 </div>
               </div>
 
@@ -398,7 +398,7 @@
   </section>
 
   <!-- ========================================== -->
-  <!-- 4. JADWAL IBADAH (5 CABANG & HIGHLIGHT)    -->
+  <!-- 4. JADWAL IBADAH (5 WILAYAH & HIGHLIGHT)   -->
   <!-- ========================================== -->
   <section id="jadwal" class="py-5" style="background-color: var(--earth-surface-warm); padding-top: 75px !important; padding-bottom: 75px !important;">
     <div class="container">
@@ -407,14 +407,14 @@
         <span class="badge badge-earth px-3 py-1.5 rounded-pill text-uppercase" style="font-size: 11px; letter-spacing: 0.8px;">
           <i class="ri-calendar-schedule-line me-1"></i> Ibadah Mingguan & Sesi
         </span>
-        <h2 class="display-6 font-serif fw-bold mt-2" style="color: var(--earth-dark);">Jadwal Ibadah 5 Cabang</h2>
+        <h2 class="display-6 font-serif fw-bold mt-2" style="color: var(--earth-dark);">Jadwal Ibadah 5 Wilayah</h2>
         <div class="mx-auto" style="width: 50px; height: 3px; background: var(--earth-primary); border-radius: 2px; margin-top: 10px; margin-bottom: 12px;"></div>
         <p class="small max-w-xl mx-auto" style="color: var(--earth-text-muted);">
-          Informasi waktu ibadah raya umum, persekutuan doa, dan ibadah pemuda/remaja di seluruh cabang GIA Surabaya.
+          Informasi waktu ibadah raya umum, persekutuan doa, dan ibadah pemuda/remaja di seluruh wilayah GIA Surabaya.
         </p>
       </div>
 
-      <!-- KARTU JADWAL PER CABANG (DYNAMIC DENGAN GOOGLE MAPS) -->
+      <!-- KARTU JADWAL PER WILAYAH (DYNAMIC DENGAN GOOGLE MAPS) -->
       <div class="row g-4 justify-content-center mb-4">
         @forelse($cabangs as $index => $cs)
           <div class="col-lg-4 col-md-6">
@@ -422,7 +422,7 @@
               <div>
                 <div class="d-flex align-items-center justify-content-between mb-2">
                   <span class="badge badge-earth px-2.5 py-0.5 rounded-pill" style="font-size: 10.5px;">
-                    Cabang {{ $index + 1 }}
+                    Wilayah {{ $index + 1 }}
                   </span>
                   <a href="{{ $cs->google_maps_link }}" target="_blank" class="text-decoration-none small d-inline-flex align-items-center gap-1 text-primary fw-semibold" title="Buka di Google Maps" style="font-size: 11.5px;">
                     <i class="ri-map-pin-2-fill text-danger"></i>
@@ -431,7 +431,7 @@
                   </a>
                 </div>
 
-                <h5 class="fw-bold mb-1 font-serif" style="color: var(--earth-dark); font-size: 18px;">Cabang {{ $cs->nama_cabang }}</h5>
+                <h5 class="fw-bold mb-1 font-serif" style="color: var(--earth-dark); font-size: 18px;">Wilayah {{ $cs->nama_cabang }}</h5>
                 <p class="small mb-2.5" style="color: var(--earth-text-muted); font-size: 12.5px; min-height: 36px;">
                   <i class="ri-direction-line me-1 text-primary"></i>{{ $cs->lokasi ?: 'Surabaya' }}
                 </p>
@@ -458,7 +458,7 @@
                   </a>
                 </div>
 
-                <!-- WAKTU & JADWAL IBADAH CABANG -->
+                <!-- WAKTU & JADWAL IBADAH WILAYAH -->
                 <div class="p-3 rounded-3 mb-2" style="background: var(--earth-surface-warm); border: 1px solid var(--earth-border); font-size: 13px;">
                   <div class="fw-bold mb-1.5" style="color: var(--earth-primary);"><i class="ri-time-line me-1"></i> Waktu Ibadah:</div>
                   @foreach($cs->jadwal_lines as $line)
@@ -479,7 +479,7 @@
           </div>
         @empty
           <div class="col-12 text-center text-muted small py-4">
-            Informasi cabang sedang diperbarui oleh sekretariat gereja.
+            Informasi wilayah sedang diperbarui oleh sekretariat gereja.
           </div>
         @endforelse
       </div>
@@ -608,7 +608,7 @@
 
             <h4 class="font-serif fw-bold mb-2" style="color: var(--earth-dark); font-size: 20px;">Saat Ini Tidak Ada Siaran Langsung (Offline)</h4>
             <p class="small leading-relaxed mb-4" style="color: var(--earth-text-muted); max-width: 520px; margin-left: auto; margin-right: auto; font-size: 13.5px;">
-              Siaran langsung ibadah raya ditayangkan setiap hari Minggu sesuai jam ibadah masing-masing cabang. Anda tetap dapat menyaksikan tayangan ulang ibadah sebelumnya atau mengunjungi kanal YouTube resmi kami di bawah ini.
+              Siaran langsung ibadah raya ditayangkan setiap hari Minggu sesuai jam ibadah masing-masing wilayah. Anda tetap dapat menyaksikan tayangan ulang ibadah sebelumnya atau mengunjungi kanal YouTube resmi kami di bawah ini.
             </p>
 
             <div class="d-inline-flex align-items-center gap-2 p-2 px-3 rounded-pill" style="background: var(--earth-surface-warm); border: 1px solid var(--earth-border);">
@@ -619,12 +619,12 @@
         </div>
       @endif
 
-      <!-- DAFTAR KANAL DAN ARSIP STREAMING 5 CABANG -->
+      <!-- DAFTAR KANAL DAN ARSIP STREAMING 5 WILAYAH -->
       <div class="mt-4">
         <div class="d-flex align-items-center justify-content-between mb-4">
           <div>
-            <h5 class="font-serif fw-bold mb-0" style="color: var(--earth-dark); font-size: 18px;">Kanal Siaran 5 Cabang Gereja</h5>
-            <small style="color: var(--earth-text-muted); font-size: 12.5px;">Pilih cabang untuk menyaksikan rekaman atau siaran ibadah</small>
+            <h5 class="font-serif fw-bold mb-0" style="color: var(--earth-dark); font-size: 18px;">Kanal Siaran 5 Wilayah Gereja</h5>
+            <small style="color: var(--earth-text-muted); font-size: 12.5px;">Pilih wilayah untuk menyaksikan rekaman atau siaran ibadah</small>
           </div>
           @if($churchProfile->youtube_channel_url)
             <a href="{{ $churchProfile->youtube_channel_url }}" target="_blank" class="btn btn-earth-outline btn-sm px-3 py-1.5 rounded-pill d-inline-flex align-items-center gap-1.5" style="font-size: 12px;">

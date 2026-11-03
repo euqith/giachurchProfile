@@ -9,7 +9,7 @@
         <i class="ri-calendar-event-line me-1"></i> Agenda & Kegiatan
       </span>
       <h1 class="text-white fw-bold font-serif mb-2" style="font-size: 38px;">Event & Kegiatan Gereja</h1>
-      <p class="text-white-50 small mb-0">Kalender seminar, retret, persekutuan doa, dan ibadah gabungan di seluruh cabang GIA Surabaya.</p>
+      <p class="text-white-50 small mb-0">Kalender seminar, retret, persekutuan doa, dan ibadah gabungan di seluruh wilayah GIA Surabaya.</p>
     </div>
   </section>
 
@@ -32,9 +32,9 @@
               <div class="row g-2 justify-content-end">
 
                 <div class="col-md-4">
-                  <label class="small fw-bold mb-1" style="color: var(--earth-text-muted);">Filter Cabang</label>
+                  <label class="small fw-bold mb-1" style="color: var(--earth-text-muted);">Filter Wilayah</label>
                   <select name="cabang_id" class="form-select form-select-md" style="border-radius: 10px; border-color: var(--earth-border); background-color: var(--earth-surface-warm); font-size: 13.5px;">
-                    <option value="Semua" {{ request('cabang_id') == 'Semua' ? 'selected' : '' }}>Semua Cabang Gereja</option>
+                    <option value="Semua" {{ request('cabang_id') == 'Semua' ? 'selected' : '' }}>Semua Wilayah Gereja</option>
                     @foreach ($cabangs ?? [] as $cabang)
                       <option value="{{ $cabang->id }}" {{ request('cabang_id') == $cabang->id ? 'selected' : '' }}>
                         {{ $cabang->nama_cabang }}
@@ -108,10 +108,10 @@
                     </span>
                   @endif
 
-                  <!-- CABANG BADGE -->
+                  <!-- WILAYAH BADGE -->
                   <span class="position-absolute badge badge-earth rounded-pill"
                     style="bottom: 14px; left: 14px; z-index: 5; font-size: 11px; background: rgba(255,255,255,0.92) !important;">
-                    <i class="ri-map-pin-line me-1"></i> {{ $event->cabang ? $event->cabang->nama_cabang : 'Semua Cabang' }}
+                    <i class="ri-map-pin-line me-1"></i> {{ $event->cabang ? $event->cabang->nama_cabang : 'Semua Wilayah' }}
                   </span>
                 </div>
 

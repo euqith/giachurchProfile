@@ -171,11 +171,11 @@
 
             <ul
               class="sub-menu {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.cabang.*') || request()->routeIs('admin.ibadah.*') ? '' : 'hidden' }}">
-              <!-- 🏬 1. Kelola Cabang -->
+              <!-- 🏬 1. Kelola Wilayah -->
               <li class="menu-item">
                 <a href="{{ route('admin.cabang.index') }}"
                   class="menu-link {{ request()->routeIs('admin.cabang.*') ? 'active' : '' }}">
-                  <span class="menu-text"> Kelola Cabang </span>
+                  <span class="menu-text"> Kelola Wilayah </span>
                 </a>
               </li>
 

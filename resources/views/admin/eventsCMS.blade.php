@@ -28,7 +28,7 @@
         <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
             <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Nama Event</th>
-            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Cabang</th>
+            <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Wilayah</th>
             <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Event Start</th>
             <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Event Finish</th>
             <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
@@ -49,7 +49,7 @@
               </td>
 
               <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                {{ $event->cabang ? $event->cabang->nama_cabang : 'Pusat / Semua Cabang' }}</td>
+                {{ $event->cabang ? $event->cabang->nama_cabang : 'Pusat / Semua Wilayah' }}</td>
 
               <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
                 <div class="font-medium text-slate-800 dark:text-slate-200">
@@ -135,10 +135,10 @@
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0">
             </div>
             <div>
-              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Cabang Pelaksana</label>
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Wilayah Pelaksana</label>
               <select name="cabang_id" required
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0">
-                <option value="" disabled selected>-- Pilih Cabang --</option>
+                <option value="" disabled selected>-- Pilih Wilayah --</option>
                 @foreach ($cabangs as $cabang)
                   <option value="{{ $cabang->id }}">{{ $cabang->nama_cabang }}</option>
                 @endforeach
@@ -209,7 +209,7 @@
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0">
             </div>
             <div>
-              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Cabang Pelaksana</label>
+              <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Wilayah Pelaksana</label>
               <select id="edit_cabang_id" name="cabang_id" required
                 class="w-full rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm p-2.5 focus:border-primary focus:ring-0">
                 @foreach ($cabangs as $cabang)

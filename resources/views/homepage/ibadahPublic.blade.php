@@ -134,11 +134,11 @@
             <i class="ri-arrow-down-s-line absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
           </div>
 
-          <!-- Filter Cabang / Lokasi -->
+          <!-- Filter Wilayah / Lokasi -->
           <div class="relative">
             <select x-model="filterLokasi" @change="applyFilters()"
               class="appearance-none bg-white border border-slate-200 rounded-xl px-3.5 py-2 pr-8 text-xs font-semibold text-slate-700 hover:border-slate-300 focus:outline-none focus:border-blue-500 shadow-2xs">
-              <option value="">Semua Lokasi</option>
+              <option value="">Semua Wilayah</option>
               @foreach($cabangs as $c)
                 <option value="{{ $c->nama_cabang }}" {{ $lokasiFilter === $c->nama_cabang ? 'selected' : '' }}>
                   {{ $c->nama_cabang }}
@@ -230,7 +230,7 @@
           <h3 class="text-base font-bold text-slate-800"
             x-text="activeTab === 'mendatang' ? 'Belum ada jadwal ibadah mendatang.' : 'Belum ada arsip jadwal ibadah.'"></h3>
           <p class="text-xs text-slate-500 max-w-sm mx-auto">
-            Jadwal dan liturgi ibadah untuk cabang ini akan segera diperbarui oleh tim pelayanan dan majelis gereja.
+            Jadwal dan liturgi ibadah untuk wilayah ini akan segera diperbarui oleh tim pelayanan dan majelis gereja.
           </p>
         </div>
       </template>

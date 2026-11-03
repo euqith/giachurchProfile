@@ -33,16 +33,16 @@
     <!-- Header & Action Button -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
-        <h1 class="text-xl font-bold text-slate-800">Master Data Cabang</h1>
-        <p class="text-xs text-slate-500 mt-1">Kelola daftar cabang dan lokasi operasional gereja.</p>
+        <h1 class="text-xl font-bold text-slate-800">Master Data Wilayah</h1>
+        <p class="text-xs text-slate-500 mt-1">Kelola daftar wilayah dan lokasi operasional gereja.</p>
       </div>
       <button onclick="document.getElementById('addCabangModal').style.display='flex'"
         class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-sm transition">
-        <i class="ri-add-line text-base"></i> Tambah Cabang
+        <i class="ri-add-line text-base"></i> Tambah Wilayah
       </button>
     </div>
 
-    <!-- Tabel Data Cabang -->
+    <!-- Tabel Data Wilayah -->
     <div class="bg-white rounded-xl border border-slate-200/80 shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
@@ -50,7 +50,7 @@
             <tr
               class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">
               <th class="p-4">No</th>
-              <th class="p-4">Nama Cabang</th>
+              <th class="p-4">Nama Wilayah</th>
               <th class="p-4">Alamat & Lokasi</th>
               <th class="p-4">Google Maps</th>
               <th class="p-4">Waktu Ibadah</th>
@@ -104,7 +104,7 @@
 
                     <!-- Delete Button (Red Color) -->
                     <form action="{{ route('admin.cabang.destroy', $item->id) }}" method="POST"
-                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus cabang ini?')" class="inline">
+                      onsubmit="return confirm('Apakah Anda yakin ingin menghapus wilayah ini?')" class="inline">
                       @csrf @method('DELETE')
                       <button type="submit" class="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition"
                         title="Hapus">
@@ -116,7 +116,7 @@
               </tr>
             @empty
               <tr>
-                <td colspan="7" class="p-8 text-center text-slate-400 text-xs">Belum ada data cabang terdaftar.</td>
+                <td colspan="7" class="p-8 text-center text-slate-400 text-xs">Belum ada data wilayah terdaftar.</td>
               </tr>
             @endforelse
           </tbody>
@@ -126,13 +126,13 @@
 
   </div>
 
-  <!-- MODAL TAMBAH CABANG -->
+  <!-- MODAL TAMBAH WILAYAH -->
   <div id="addCabangModal"
     style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: none; align-items: center; justify-content: center;">
     <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-2xl mx-4 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
         <h5 class="font-bold text-slate-900 flex items-center gap-2">
-          <i class="ri-building-line text-primary"></i> Tambah Cabang Baru
+          <i class="ri-building-line text-primary"></i> Tambah Wilayah Baru
         </h5>
         <button type="button" onclick="document.getElementById('addCabangModal').style.display='none'"
           class="text-gray-400 hover:text-gray-600 font-bold">✕</button>
@@ -141,7 +141,7 @@
       <form action="{{ route('admin.cabang.store') }}" method="POST" class="space-y-4">
         @csrf
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Cabang <span class="text-red-500">*</span></label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Wilayah <span class="text-red-500">*</span></label>
           <input type="text" name="nama_cabang" placeholder="Contoh: Darmo / Bromo / Gateway" required
             class="w-full text-sm border border-slate-300 rounded-lg px-3 py-2 outline-none focus:border-primary">
         </div>
@@ -164,11 +164,11 @@
           </label>
           <textarea name="maps_embed" rows="2" placeholder="Tempel URL embed (https://www.google.com/maps/embed?...) atau tag <iframe> dari Google Maps"
             class="w-full text-xs font-mono border border-slate-300 rounded-lg px-3 py-2 outline-none focus:border-primary"></textarea>
-          <p class="text-[11px] text-slate-400 mt-1">Opsional. Jika dikosongkan, sistem otomatis membuat peta embed interaktif berdasarkan alamat cabang.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Opsional. Jika dikosongkan, sistem otomatis membuat peta embed interaktif berdasarkan alamat wilayah.</p>
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-            <i class="ri-time-line text-amber-600"></i> Waktu / Jadwal Ibadah Cabang
+            <i class="ri-time-line text-amber-600"></i> Waktu / Jadwal Ibadah Wilayah
           </label>
           <textarea name="jadwal_ibadah" rows="3" placeholder="Tulis 1 baris per jadwal. Contoh:
 Ibadah 1: Minggu 06.00 WIB
@@ -180,32 +180,32 @@ Doa Tengah Minggu: Rabu 18.30 WIB"
           <button type="button" onclick="document.getElementById('addCabangModal').style.display='none'"
             class="px-4 py-2 rounded-lg bg-slate-100 text-slate-600 text-xs font-semibold hover:bg-slate-200">Batal</button>
           <button type="submit"
-            class="px-4 py-2 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark">Simpan Cabang</button>
+            class="px-4 py-2 rounded-lg bg-primary text-white text-xs font-semibold hover:bg-primary-dark">Simpan Wilayah</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL EDIT CABANG -->
+  <!-- MODAL EDIT WILAYAH -->
   <div id="editCabangModal"
     style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; display: none; align-items: center; justify-content: center;">
     <div class="bg-white p-6 rounded-2xl w-full max-w-lg shadow-2xl mx-4 max-h-[90vh] overflow-y-auto">
       <!-- Header Modal -->
       <div class="flex justify-between items-center mb-5 border-b border-slate-100 pb-3">
         <h5 class="font-bold text-slate-800 text-base flex items-center gap-2">
-          <i class="ri-pencil-line text-primary"></i> Edit Data & Maps Cabang
+          <i class="ri-pencil-line text-primary"></i> Edit Data & Maps Wilayah
         </h5>
         <button type="button" onclick="document.getElementById('editCabangModal').style.display='none'"
           class="text-slate-400 hover:text-slate-600 transition font-bold text-lg">✕</button>
       </div>
 
-      <!-- Form Edit Cabang -->
+      <!-- Form Edit Wilayah -->
       <form id="editCabangForm" method="POST" class="space-y-4">
         @csrf
         @method('PUT')
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Cabang <span class="text-red-500">*</span></label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Nama Wilayah <span class="text-red-500">*</span></label>
           <input type="text" id="edit_nama_cabang" name="nama_cabang" required
             class="w-full text-sm border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
         </div>
@@ -231,19 +231,19 @@ Doa Tengah Minggu: Rabu 18.30 WIB"
           </label>
           <textarea id="edit_maps_embed" name="maps_embed" rows="2" placeholder="Tempel URL embed (https://www.google.com/maps/embed?...) atau tag <iframe> dari Google Maps"
             class="w-full text-xs font-mono border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"></textarea>
-          <p class="text-[11px] text-slate-400 mt-1">Opsional. Jika dikosongkan, sistem otomatis membuat peta embed interaktif berdasarkan alamat cabang.</p>
+          <p class="text-[11px] text-slate-400 mt-1">Opsional. Jika dikosongkan, sistem otomatis membuat peta embed interaktif berdasarkan alamat wilayah.</p>
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
-            <i class="ri-time-line text-amber-600"></i> Waktu / Jadwal Ibadah Cabang
+            <i class="ri-time-line text-amber-600"></i> Waktu / Jadwal Ibadah Wilayah
           </label>
           <textarea id="edit_jadwal_ibadah" name="jadwal_ibadah" rows="3" placeholder="Tulis 1 baris per sesi ibadah"
             class="w-full text-xs border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition"></textarea>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Status Cabang</label>
+          <label class="block text-xs font-semibold text-slate-700 mb-1.5">Status Wilayah</label>
           <select id="edit_isActive" name="isActive"
             class="w-full text-sm border border-slate-300 rounded-lg px-3.5 py-2 text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary transition bg-white">
             <option value="1">Aktif</option>

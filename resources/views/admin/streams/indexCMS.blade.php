@@ -10,12 +10,12 @@
         <i class="ri-broadcast-line"></i> Kanal Ibadah Online & Auto-Detect
       </div>
       <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Kelola Live Streaming</h1>
-      <p class="text-xs text-slate-500 mt-0.5">Atur akun YouTube dan otomatisasi deteksi siaran langsung untuk setiap cabang gereja.</p>
+      <p class="text-xs text-slate-500 mt-0.5">Atur akun YouTube dan otomatisasi deteksi siaran langsung untuk setiap wilayah gereja.</p>
     </div>
 
     <!-- Action Buttons & Global Indicator -->
     <div class="flex flex-wrap items-center gap-2.5">
-      <!-- TOMBOL AUTO-DETECT SEMUA CABANG -->
+      <!-- TOMBOL AUTO-DETECT SEMUA WILAYAH -->
       <form action="{{ route('admin.stream.auto-detect') }}" method="POST">
         @csrf
         <button type="submit"
@@ -32,7 +32,7 @@
       @else
         <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-semibold border border-slate-200">
           <span class="w-2.5 h-2.5 rounded-full bg-slate-400"></span>
-          <span>SEMUA CABANG OFF AIR</span>
+          <span>SEMUA WILAYAH OFF AIR</span>
         </span>
       @endif
     </div>
@@ -57,7 +57,7 @@
         </div>
         <div>
           <h2 class="text-sm font-bold text-slate-900">Koneksi YouTube Data API v3 (Opsional)</h2>
-          <p class="text-[11px] text-slate-500">API Key resmi dari Google Cloud Console untuk mendeteksi status live streaming setiap cabang secara instan dan akurat.</p>
+          <p class="text-[11px] text-slate-500">API Key resmi dari Google Cloud Console untuk mendeteksi status live streaming setiap wilayah secara instan dan akurat.</p>
         </div>
       </div>
       <span class="text-[10px] px-2.5 py-1 rounded-full font-bold {{ !empty($profile->youtube_api_key) ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-500' }}">
@@ -73,7 +73,7 @@
           <input type="password" name="youtube_api_key" value="{{ old('youtube_api_key', $profile->youtube_api_key) }}" placeholder="AIzaSy..."
             class="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-mono text-slate-800 focus:outline-none focus:border-blue-600 bg-white">
           <p class="text-[10px] text-slate-500 mt-1.5 leading-relaxed">
-            <span class="font-bold text-slate-700">💡 Cukup 1 API Key untuk semua cabang:</span> 1 API Key Google berfungsi sebagai pembaca data publik dan dapat memeriksa kelima akun YouTube cabang yang berbeda sekaligus. Yang membedakan tiap cabang adalah kolom <strong>"Akun / Channel YouTube Cabang"</strong> pada kartu masing-masing di bawah. Jika dikosongkan, sistem tetap berjalan otomatis menggunakan mode <strong>Web Probe URL</strong>.
+            <span class="font-bold text-slate-700">💡 Cukup 1 API Key untuk semua wilayah:</span> 1 API Key Google berfungsi sebagai pembaca data publik dan dapat memeriksa kelima akun YouTube wilayah yang berbeda sekaligus. Yang membedakan tiap wilayah adalah kolom <strong>"Akun / Channel YouTube Wilayah"</strong> pada kartu masing-masing di bawah. Jika dikosongkan, sistem tetap berjalan otomatis menggunakan mode <strong>Web Probe URL</strong>.
           </p>
         </div>
         <div class="flex items-end">
@@ -97,20 +97,20 @@
     </div>
   </div>
 
-  <!-- Streams Grid per Cabang -->
+  <!-- Streams Grid per Wilayah -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     @foreach ($streams as $stream)
       <div class="bg-white rounded-2xl border {{ $stream->is_live ? 'border-red-400 ring-2 ring-red-100 shadow-md' : 'border-slate-200 shadow-sm' }} p-5 space-y-4 flex flex-col justify-between transition">
         
         <div>
-          <!-- Cabang Title & Fast Actions -->
+          <!-- Wilayah Title & Fast Actions -->
           <div class="flex items-center justify-between pb-3 border-b border-slate-100">
             <div class="flex items-center gap-2">
               <div class="w-8 h-8 rounded-xl {{ $stream->is_live ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-700' }} flex items-center justify-center font-bold text-xs">
-                {{ substr($stream->cabang->nama_cabang ?? 'C', 0, 1) }}
+                {{ substr($stream->cabang->nama_cabang ?? 'W', 0, 1) }}
               </div>
               <div>
-                <h3 class="font-bold text-slate-900 text-sm">Cabang {{ $stream->cabang->nama_cabang ?? 'Cabang' }}</h3>
+                <h3 class="font-bold text-slate-900 text-sm">Wilayah {{ $stream->cabang->nama_cabang ?? 'Wilayah' }}</h3>
                 <span class="text-[10px] text-slate-400">{{ $stream->cabang->lokasi ?? 'Surabaya' }}</span>
               </div>
             </div>
@@ -119,7 +119,7 @@
               <!-- Single Branch Auto-Detect -->
               <form action="{{ route('admin.stream.auto-detect.single', $stream->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs transition" title="Cek status live cabang ini sekarang">
+                <button type="submit" class="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs transition" title="Cek status live wilayah ini sekarang">
                   <i class="ri-refresh-line"></i>
                 </button>
               </form>
@@ -147,13 +147,13 @@
             @csrf
             @method('PUT')
 
-            <!-- Target Akun / Channel YouTube Cabang -->
+            <!-- Target Akun / Channel YouTube Wilayah -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1">
-                <i class="ri-youtube-line text-red-600"></i> Akun / Channel YouTube Cabang *
+                <i class="ri-youtube-line text-red-600"></i> Akun / Channel YouTube Wilayah *
               </label>
               <input type="text" name="channel_id" value="{{ old('channel_id', $stream->channel_id ?: '@giasurabaya') }}" required
-                placeholder="@namacabang atau UCxxxx..."
+                placeholder="@namawilayah atau UCxxxx..."
                 class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-blue-600 bg-white">
               <span class="text-[10px] text-slate-400">Handle YouTube (contoh: <code>@giasurabaya</code>) atau Channel ID.</span>
             </div>
@@ -212,7 +212,7 @@
 
           <button type="submit" form="streamForm-{{ $stream->id }}"
             class="px-4 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-xs">
-            Simpan Cabang
+            Simpan Wilayah
           </button>
         </div>
 

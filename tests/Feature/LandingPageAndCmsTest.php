@@ -18,7 +18,7 @@ test('landing page loads with soft earth tone layout, church profile, and sectio
     $response->assertSee('Tentang Gereja');
     $response->assertSee('Visi Pelayanan');
     $response->assertSee('Misi Pelayanan');
-    $response->assertSee('Jadwal Ibadah 5 Cabang');
+    $response->assertSee('Jadwal Ibadah 5 Wilayah');
     $response->assertSee('Ibadah Online Gereja');
 
     // Menu "Jadwal Ibadah (Liturgi)" is removed from the navbar
