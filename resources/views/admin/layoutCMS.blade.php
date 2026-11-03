@@ -594,7 +594,7 @@
               @endif
 
               <!-- 🛡️ 7. Role Setting -->
-              @if(Auth::user()->canAccess('roles'))
+              @if(Route::has('admin.roles.index') && Auth::user()->canAccess('roles'))
               <li class="menu-item">
                 <a href="{{ route('admin.roles.index') }}"
                   class="menu-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">

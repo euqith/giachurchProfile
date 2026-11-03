@@ -10,10 +10,12 @@
       <p class="text-xs text-slate-500 mt-0.5">Kelola hak akses admin, fulltimer, dan pembagian tugas situs.</p>
     </div>
     <div class="flex items-center gap-2">
+      @if(Route::has('admin.roles.index'))
       <a href="{{ route('admin.roles.index') }}"
         class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold border border-slate-200 shadow-2xs transition">
         <i class="ri-shield-keyhole-line text-blue-600"></i> Role Setting
       </a>
+      @endif
       {{-- Tombol Utama Tambah User --}}
       <button type="button" onclick="document.getElementById('createUserModal').style.display='flex'"
         class="btn-cms-primary">

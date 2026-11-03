@@ -36,7 +36,11 @@ class User extends Authenticatable
      */
     public function roleModel(): ?Role
     {
-        return Role::where('name', $this->role)->first();
+        try {
+            return Role::where('name', $this->role)->first();
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     /**
@@ -44,9 +48,13 @@ class User extends Authenticatable
      */
     public function getRoleDisplayName(): string
     {
-        $roleObj = $this->roleModel();
+        try {
+            $roleObj = $this->roleModel();
 
-        return $roleObj ? $roleObj->display_name : ucfirst($this->role ?? 'User');
+            return $roleObj ? $roleObj->display_name : ucfirst((string) ($this->role ?? 'User'));
+        } catch (\Throwable $e) {
+            return ucfirst((string) ($this->role ?? 'User'));
+        }
     }
 
     /**
@@ -54,18 +62,24 @@ class User extends Authenticatable
      */
     public function canAccess(string $permissionKey): bool
     {
+        $roleName = strtolower(trim((string) ($this->role ?? '')));
+
         // Role 'admin' selalu memiliki hak akses penuh
-        if ($this->role === 'admin') {
+        if ($roleName === 'admin') {
             return true;
         }
 
-        $roleObj = $this->roleModel();
-        if (! $roleObj) {
-            // Default fallback
-            return $this->role === 'fulltimer';
-        }
+        try {
+            $roleObj = $this->roleModel();
+            if (! $roleObj) {
+                // Default fallback jika role belum terkonfigurasi di tabel
+                return in_array($roleName, ['fulltimer', 'pendeta'], true);
+            }
 
-        return $roleObj->hasPermission($permissionKey);
+            return $roleObj->hasPermission($permissionKey);
+        } catch (\Throwable $e) {
+            return true;
+        }
     }
 
     /**
@@ -75,16 +89,20 @@ class User extends Authenticatable
      */
     public function canAccessGroup(array $permissionKeys): bool
     {
-        if ($this->role === 'admin') {
+        if (strtolower(trim((string) ($this->role ?? ''))) === 'admin') {
             return true;
         }
 
-        foreach ($permissionKeys as $key) {
-            if ($this->canAccess($key)) {
-                return true;
+        try {
+            foreach ($permissionKeys as $key) {
+                if ($this->canAccess($key)) {
+                    return true;
+                }
             }
-        }
 
-        return false;
+            return false;
+        } catch (\Throwable $e) {
+            return true;
+        }
     }
 }

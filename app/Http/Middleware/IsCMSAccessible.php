@@ -21,21 +21,26 @@ class IsCMSAccessible
         }
 
         $user = Auth::user();
-        $roleName = $user->role;
+        $roleName = strtolower(trim((string) ($user->role ?? '')));
 
-        // 2. Cek apakah role terdaftar sebagai pengelola CMS
-        $validRoles = Role::pluck('name')->toArray();
+        // 2. Admin selalu lolos langsung tanpa query tambahan
+        if ($roleName === 'admin') {
+            return $next($request);
+        }
+
+        // 3. Cek apakah role terdaftar sebagai pengelola CMS
+        try {
+            $validRoles = Role::pluck('name')->map(fn ($r) => strtolower(trim((string) $r)))->toArray();
+        } catch (\Throwable $e) {
+            $validRoles = [];
+        }
+
         if (empty($validRoles)) {
             $validRoles = ['admin', 'fulltimer', 'pendeta'];
         }
 
-        if (! in_array($roleName, $validRoles, true) && $roleName !== 'admin') {
+        if (! in_array($roleName, $validRoles, true)) {
             return redirect('/')->with('error', 'Akses ditolak! Anda tidak memiliki izin untuk mengakses CMS.');
-        }
-
-        // 3. Admin selalu lolos tanpa batasan
-        if ($roleName === 'admin') {
-            return $next($request);
         }
 
         // 4. Cek permission spesifik untuk rute aktif

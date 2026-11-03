@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,11 +14,22 @@ class AdminAuthController extends Controller
     // Tampilkan Form Login
     public function showLogin()
     {
-        // 💡 Ambil slug role user jika sedang login (Handling Object Role / String)
+        // 💡 Ambil role user jika sedang login
         if (auth()->check()) {
-            $userRole = auth()->user()->role->slug ?? auth()->user()->role;
+            $user = auth()->user();
+            $userRole = is_object($user->role) ? ($user->role->slug ?? $user->role->name ?? '') : (string) $user->role;
+            $userRole = strtolower(trim($userRole));
 
-            if (in_array($userRole, ['admin', 'fulltimer', 'pendeta'])) {
+            try {
+                $cmsRoles = Role::pluck('name')->map(fn ($r) => strtolower(trim((string) $r)))->toArray();
+            } catch (\Throwable $e) {
+                $cmsRoles = [];
+            }
+            if (empty($cmsRoles)) {
+                $cmsRoles = ['admin', 'fulltimer', 'pendeta'];
+            }
+
+            if (in_array($userRole, $cmsRoles, true) || $userRole === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
         }
@@ -39,11 +51,20 @@ class AdminAuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
-            // 💡 Cek slug role dari relasi Role model
-            $userRole = $user->role->slug ?? $user->role;
+            $userRole = is_object($user->role) ? ($user->role->slug ?? $user->role->name ?? '') : (string) $user->role;
+            $userRole = strtolower(trim($userRole));
 
             // Cek apakah user memiliki hak akses CMS
-            if (in_array($userRole, ['admin', 'fulltimer', 'pendeta'])) {
+            try {
+                $cmsRoles = Role::pluck('name')->map(fn ($r) => strtolower(trim((string) $r)))->toArray();
+            } catch (\Throwable $e) {
+                $cmsRoles = [];
+            }
+            if (empty($cmsRoles)) {
+                $cmsRoles = ['admin', 'fulltimer', 'pendeta'];
+            }
+
+            if (in_array($userRole, $cmsRoles, true) || $userRole === 'admin') {
                 // Paksa redirect langsung ke route nama tanpa membawa jejak session intended lama
                 return redirect()->route('admin.dashboard');
             }
