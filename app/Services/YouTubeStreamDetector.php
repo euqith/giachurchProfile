@@ -148,6 +148,54 @@ class YouTubeStreamDetector
     }
 
     /**
+     * Evaluasi akurat apakah response HTML YouTube benar-benar sedang live atau sudah berakhir (ended / post-live).
+     */
+    public function evaluateLiveFromHtml(string $html): bool
+    {
+        // 1. Ekstrak dan decode ytInitialPlayerResponse jika tersedia
+        if (preg_match('/ytInitialPlayerResponse\s*=\s*({.+?});/s', $html, $matches)) {
+            $json = json_decode($matches[1], true);
+            if ($json) {
+                $videoDetails = $json['videoDetails'] ?? [];
+                $microformat = $json['microformat']['playerMicroformatRenderer'] ?? [];
+                $liveDetails = $microformat['liveBroadcastDetails'] ?? [];
+
+                // Jika sudah ada endTimestamp atau ditandai isPostLiveDvr = true -> stream sudah berakhir (OFFLINE)!
+                if (! empty($liveDetails['endTimestamp']) || ! empty($videoDetails['isPostLiveDvr'])) {
+                    return false;
+                }
+
+                // Jika isLiveNow bernilai false -> bukan live aktif
+                if (isset($liveDetails['isLiveNow']) && $liveDetails['isLiveNow'] === false) {
+                    return false;
+                }
+
+                // Jika isLiveNow true atau videoDetails.isLive true -> SEDANG LIVE!
+                if (! empty($liveDetails['isLiveNow']) || ! empty($videoDetails['isLive'])) {
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        // 2. Fallback deteksi teks jika JSON tidak lengkap
+        if (str_contains($html, '"isPostLiveDvr":true') || str_contains($html, '"endTimestamp":')) {
+            return false;
+        }
+
+        if (str_contains($html, '"isLiveNow":false')) {
+            return false;
+        }
+
+        if (str_contains($html, '"isLiveNow":true') || str_contains($html, '"isLive":true')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Periksa apakah satu video YouTube spesifik sedang LIVE aktif.
      */
     public function checkVideoIsLive(string $videoIdOrUrl, ?string $apiKey = null): array
@@ -171,6 +219,7 @@ class YouTubeStreamDetector
                     if (! empty($items)) {
                         $snippet = $items[0]['snippet'] ?? [];
                         $liveBroadcastContent = $snippet['liveBroadcastContent'] ?? 'none';
+                        // Hanya 'live' yang menandakan sedang siaran aktif. 'completed', 'none', 'upcoming' = false
                         $isLive = ($liveBroadcastContent === 'live');
                         $title = $snippet['title'] ?? null;
 
@@ -205,42 +254,22 @@ class YouTubeStreamDetector
 
                 if ($response->successful()) {
                     $html = $response->body();
-
-                    // Cek indikator live stream aktif
-                    $isLive = str_contains($html, '"isLive":true')
-                        || str_contains($html, '"status":"LIVE"')
-                        || str_contains($html, '{"label":"LIVE"}')
-                        || (str_contains($html, '"isLiveContent":true') && str_contains($html, 'liveStreamabilityRenderer'));
-
-                    // Pastikan bukan VOD atau siaran yang sudah usai
-                    if (str_contains($html, '"isLive":false') && ! str_contains($html, '"isLive":true')) {
-                        $isLive = false;
-                    }
+                    $isLive = $this->evaluateLiveFromHtml($html);
 
                     $title = null;
                     if (preg_match('/<title>(.*?) - YouTube<\/title>/', $html, $titleMatches)) {
                         $title = html_entity_decode(trim($titleMatches[1]));
                     }
 
-                    if ($isLive) {
-                        return [
-                            'checked' => true,
-                            'is_live' => true,
-                            'video_id' => $cleanId,
-                            'title' => $title,
-                            'method' => 'web_probe_video',
-                        ];
-                    }
+                    return [
+                        'checked' => true,
+                        'is_live' => $isLive,
+                        'video_id' => $cleanId,
+                        'title' => $title,
+                        'method' => 'web_probe_video',
+                    ];
                 }
             }
-
-            return [
-                'checked' => true,
-                'is_live' => false,
-                'video_id' => $cleanId,
-                'title' => null,
-                'method' => 'web_probe_video',
-            ];
         } catch (Exception $e) {
             Log::info('Probe video check error: '.$e->getMessage());
         }
@@ -399,12 +428,7 @@ class YouTubeStreamDetector
 
             if ($response->successful()) {
                 $html = $response->body();
-
-                // YouTube menyematkan "isLive":true atau "status":"LIVE" jika sedang siaran langsung
-                $hasLiveStatus = str_contains($html, '"isLive":true')
-                    || str_contains($html, '"status":"LIVE"')
-                    || str_contains($html, '{"label":"LIVE"}')
-                    || (str_contains($html, 'LIVE NOW') && str_contains($html, 'watch?v='));
+                $hasLiveStatus = $this->evaluateLiveFromHtml($html);
 
                 if ($hasLiveStatus) {
                     // Cari video ID dari canonical link atau watch?v=

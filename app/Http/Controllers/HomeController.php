@@ -31,11 +31,14 @@ class HomeController extends Controller
             ->orderBy('waktu_mulai', 'asc')
             ->get();
 
-        // 📡 Auto-detect real-time live streaming berkala (cache 5 menit agar cepat & hemat kuota)
+        // 📡 Auto-detect real-time live streaming berkala
         if (! Cache::has('streams_auto_checked_recently')) {
             try {
-                app(YouTubeStreamDetector::class)->checkAllStreams();
-                Cache::put('streams_auto_checked_recently', true, now()->addMinutes(5));
+                $checkResult = app(YouTubeStreamDetector::class)->checkAllStreams();
+                // Jika sedang ada yang live, periksa lebih cepat (60 detik) agar saat end-stream langsung offline.
+                // Jika semua offline, cache 3 menit agar hemat kuota & performa kencang.
+                $cacheTtl = ($checkResult['live_count'] > 0) ? now()->addSeconds(60) : now()->addMinutes(3);
+                Cache::put('streams_auto_checked_recently', true, $cacheTtl);
             } catch (Throwable $e) {
                 // Jangan gagalkan load homepage jika koneksi eksternal timeout
             }

@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\Stream;
 use App\Models\User;
 use App\Models\Warta;
+use App\Services\YouTubeStreamDetector;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 
@@ -345,4 +346,20 @@ test('stream model extracts clean video id from various youtube urls and builds 
         ->and($stream->youtube_embed_url)->toBe('https://www.youtube.com/embed/jH_p2yxUcQ4')
         ->and($stream->youtube_url)->toBe('https://www.youtube.com/watch?v=jH_p2yxUcQ4')
         ->and($stream->youtube_embed_url)->not->toContain('https:/www.youtube.com');
+});
+
+test('detector correctly evaluates active live stream vs ended stream and vod', function () {
+    $detector = app(YouTubeStreamDetector::class);
+
+    // Mock HTML 1: Ended stream (has endTimestamp and isPostLiveDvr)
+    $endedHtml = 'ytInitialPlayerResponse = {"videoDetails":{"isLiveContent":true,"isPostLiveDvr":true},"microformat":{"playerMicroformatRenderer":{"liveBroadcastDetails":{"isLiveNow":false,"endTimestamp":"2026-11-12T08:05:51+00:00"}}}};';
+    expect($detector->evaluateLiveFromHtml($endedHtml))->toBeFalse();
+
+    // Mock HTML 2: Active live stream (isLiveNow true, no endTimestamp)
+    $activeHtml = 'ytInitialPlayerResponse = {"videoDetails":{"isLive":true,"isLiveContent":true},"microformat":{"playerMicroformatRenderer":{"liveBroadcastDetails":{"isLiveNow":true}}}};';
+    expect($detector->evaluateLiveFromHtml($activeHtml))->toBeTrue();
+
+    // Mock HTML 3: Regular VOD
+    $vodHtml = 'ytInitialPlayerResponse = {"videoDetails":{"isLiveContent":false},"microformat":{"playerMicroformatRenderer":{}}};';
+    expect($detector->evaluateLiveFromHtml($vodHtml))->toBeFalse();
 });
