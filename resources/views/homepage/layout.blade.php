@@ -190,24 +190,30 @@
       box-shadow: 0 6px 20px rgba(140, 94, 60, 0.35);
     }
 
-    .btn-earth-outline,
-    .btn-earth-outline span {
+    .btn-earth-outline {
       background: transparent !important;
       color: var(--earth-primary) !important;
       border: 1.5px solid var(--earth-primary) !important;
       font-weight: 600;
       transition: all 0.25s ease;
     }
-    .btn-earth-outline:hover,
-    .btn-earth-outline:hover span,
-    .btn-earth-outline:hover i {
+    .btn-earth-outline span {
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      color: inherit !important;
+    }
+    .btn-earth-outline:hover {
       background: var(--earth-primary) !important;
       color: #FFFFFF !important;
       transform: translateY(-1px);
     }
+    .btn-earth-outline:hover span,
+    .btn-earth-outline:hover i {
+      color: #FFFFFF !important;
+    }
 
-    .btn-earth-light,
-    .btn-earth-light span {
+    .btn-earth-light {
       background: #FFFFFF !important;
       color: var(--earth-dark) !important;
       border: 1px solid rgba(255, 255, 255, 0.7) !important;
@@ -215,11 +221,112 @@
       transition: all 0.25s ease;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     }
-    .btn-earth-light:hover,
-    .btn-earth-light:hover span {
+    .btn-earth-light span {
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      color: inherit !important;
+    }
+    .btn-earth-light:hover {
       background: var(--earth-surface-warm) !important;
       color: var(--earth-dark) !important;
       transform: translateY(-1px);
+    }
+    .btn-earth-light:hover span {
+      color: var(--earth-dark) !important;
+    }
+
+    /* 🌟 Premium Jemaat Navbar Button */
+    .btn-jemaat-nav {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 7px 18px 7px 10px !important;
+      border-radius: 9999px !important;
+      background: linear-gradient(135deg, #8C5E3C 0%, #6E4426 100%) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
+      font-size: 13px !important;
+      letter-spacing: -0.01em;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      box-shadow: 0 3px 12px rgba(140, 94, 60, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      text-decoration: none !important;
+      line-height: 1.2 !important;
+    }
+    .btn-jemaat-nav .jemaat-icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.22);
+      color: #FFFFFF;
+      font-size: 13.5px;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .btn-jemaat-nav span {
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      color: #FFFFFF !important;
+    }
+    .btn-jemaat-nav:hover {
+      background: linear-gradient(135deg, #784E2F 0%, #59351C 100%) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 18px rgba(140, 94, 60, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    }
+    .btn-jemaat-nav:hover .jemaat-icon-badge {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.08);
+    }
+    .btn-jemaat-nav:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(140, 94, 60, 0.25) !important;
+    }
+
+    /* 👤 Logged-in Jemaat Avatar Pill */
+    .btn-jemaat-nav-logged {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      padding: 5px 14px 5px 6px !important;
+      border-radius: 9999px !important;
+      background: #FFFFFF !important;
+      color: var(--earth-dark) !important;
+      font-weight: 600 !important;
+      font-size: 12.5px !important;
+      border: 1.5px solid rgba(140, 94, 60, 0.25) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      text-decoration: none !important;
+      line-height: 1.2 !important;
+    }
+    .btn-jemaat-nav-logged span {
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      color: var(--earth-dark) !important;
+    }
+    .btn-jemaat-nav-logged img {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--earth-primary);
+    }
+    .btn-jemaat-nav-logged:hover {
+      background: var(--earth-surface-warm) !important;
+      border-color: var(--earth-primary) !important;
+      transform: translateY(-1.5px);
+      box-shadow: 0 4px 14px rgba(140, 94, 60, 0.2) !important;
+      color: var(--earth-primary) !important;
+    }
+    .btn-jemaat-nav-logged:hover span {
+      color: var(--earth-primary) !important;
     }
 
     /* High-contrast Hero Live Streaming Button */
@@ -584,13 +691,16 @@
         <!-- RIGHT BALANCER / JEMAAT AUTH / MOBILE TOGGLE (KANAN) -->
         <div class="header-col-right d-flex align-items-center justify-content-end gap-2.5">
           @auth
-            <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn btn-earth-light px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-2" style="font-size: 12px; font-weight: 600;">
-              <img src="{{ Auth::user()->avatar_url }}" class="rounded-circle" style="width: 22px; height: 22px; object-fit: cover;" alt="Avatar">
+            <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn-jemaat-nav-logged d-none d-lg-inline-flex" title="Buka Profil Jemaat">
+              <img src="{{ Auth::user()->avatar_url }}" alt="Avatar">
               <span>{{ Str::limit(Auth::user()->name ?: Auth::user()->username, 14) }}</span>
+              <i class="ri-arrow-right-s-line" style="font-size: 14px; color: var(--earth-primary);"></i>
             </a>
           @else
-            <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn btn-earth-outline px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-1.5" style="font-size: 12px; font-weight: 600;">
-              <i class="ri-user-3-line"></i>
+            <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn-jemaat-nav d-none d-lg-inline-flex" title="Masuk atau Daftar Jemaat">
+              <span class="jemaat-icon-badge">
+                <i class="ri-user-3-line"></i>
+              </span>
               <span>Masuk Jemaat</span>
             </a>
           @endauth
@@ -697,13 +807,13 @@
       <!-- Drawer Bottom: Jemaat & CMS Login -->
       <div class="pt-3 mt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
         @auth
-          <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
-            <i class="ri-user-smile-line"></i>
+          <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn w-100 py-2.5 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold shadow-sm" style="background: linear-gradient(135deg, #8C5E3C 0%, #6E4426 100%); border-radius: 9999px; font-size: 13px; border: 1px solid rgba(255,255,255,0.18);">
+            <img src="{{ Auth::user()->avatar_url }}" class="rounded-circle" style="width: 22px; height: 22px; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.8);" alt="Avatar">
             <span>Profil Saya ({{ Str::limit(Auth::user()->name ?: Auth::user()->username, 15) }})</span>
           </a>
         @else
-          <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
-            <i class="ri-login-box-line"></i>
+          <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn w-100 py-2.5 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold shadow-sm" style="background: linear-gradient(135deg, #8C5E3C 0%, #6E4426 100%); border-radius: 9999px; font-size: 13px; border: 1px solid rgba(255,255,255,0.18);">
+            <i class="ri-user-3-line"></i>
             <span>Masuk / Daftar Jemaat</span>
           </a>
         @endauth
