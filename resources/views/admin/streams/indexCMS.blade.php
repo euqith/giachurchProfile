@@ -167,16 +167,31 @@
 
             <!-- Video ID / Embed URL Fallback -->
             <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">ID Video YouTube / URL Siaran</label>
+              <div class="flex items-center justify-between mb-1">
+                <label class="block text-xs font-bold text-slate-700">ID Video YouTube / URL Siaran</label>
+                @if($stream->clean_youtube_id)
+                  <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-mono">
+                    ID: {{ $stream->clean_youtube_id }}
+                  </span>
+                @endif
+              </div>
               <input type="text" name="youtube_id" value="{{ old('youtube_id', $stream->youtube_id) }}"
-                placeholder="Contoh: dQw4w9WgXcQ atau https://youtu.be/..."
+                placeholder="Contoh: jH_p2yxUcQ4 atau https://www.youtube.com/live/..."
                 class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-blue-600 bg-white font-mono">
-              <span class="text-[10px] text-slate-400">Otomatis terisi saat siaran live terdeteksi atau masukkan manual jika offline.</span>
+              <span class="text-[10px] text-slate-400">Mendukung ID saja atau URL lengkap siaran YouTube (live/watch). Sistem otomatis mengekstrak ID secara bersih.</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Jadwal Tayang Ibadah</label>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Status Siaran</label>
+                <select name="is_live" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-blue-600 bg-white {{ $stream->is_live ? 'text-red-600' : 'text-slate-700' }}">
+                  <option value="1" {{ $stream->is_live ? 'selected' : '' }}>🔴 LIVE (ON AIR)</option>
+                  <option value="0" {{ !$stream->is_live ? 'selected' : '' }}>⚪ Offline (OFF)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Jadwal Tayang</label>
                 <input type="text" name="waktu_tayang" value="{{ old('waktu_tayang', $stream->waktu_tayang) }}"
                   placeholder="Minggu, 09:00 WIB"
                   class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-800 focus:outline-none focus:border-blue-600 bg-white">
@@ -203,8 +218,8 @@
         <div class="pt-3 border-t border-slate-100 flex items-center justify-between mt-2">
           @if ($stream->youtube_embed_url)
             <a href="{{ $stream->youtube_embed_url }}" target="_blank"
-              class="text-xs text-red-600 hover:underline inline-flex items-center gap-1 font-semibold">
-              <i class="ri-youtube-line"></i> Test Player
+              class="text-xs text-red-600 hover:text-red-700 inline-flex items-center gap-1.5 font-bold px-2.5 py-1 rounded-lg bg-red-50 border border-red-200 transition">
+              <i class="ri-play-circle-line text-sm"></i> Test Player
             </a>
           @else
             <span class="text-xs text-slate-400">Player belum disetel</span>

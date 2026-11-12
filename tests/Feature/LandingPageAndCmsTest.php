@@ -318,3 +318,31 @@ test('admin can access and manage role settings and permissions', function () {
     $blockedResponse->assertRedirect(route('admin.dashboard'));
     $blockedResponse->assertSessionHas('error');
 });
+
+test('stream model extracts clean video id from various youtube urls and builds clean embed url', function () {
+    $inputs = [
+        'jH_p2yxUcQ4' => 'jH_p2yxUcQ4',
+        'https://www.youtube.com/live/jH_p2yxUcQ4?si=fLkdOP3_k2CH2b4U' => 'jH_p2yxUcQ4',
+        'https://www.youtube.com/watch?v=jH_p2yxUcQ4' => 'jH_p2yxUcQ4',
+        'https://youtu.be/jH_p2yxUcQ4?si=abc' => 'jH_p2yxUcQ4',
+        'https://www.youtube.com/embed/jH_p2yxUcQ4' => 'jH_p2yxUcQ4',
+        'https://www.youtube.com/shorts/jH_p2yxUcQ4' => 'jH_p2yxUcQ4',
+        'https://m.youtube.com/live/jH_p2yxUcQ4' => 'jH_p2yxUcQ4',
+    ];
+
+    foreach ($inputs as $input => $expectedId) {
+        expect(Stream::extractVideoId($input))->toBe($expectedId);
+    }
+
+    $stream = new Stream([
+        'judul_streaming' => 'Ibadah Live Test',
+        'youtube_id' => 'https://www.youtube.com/live/jH_p2yxUcQ4?si=fLkdOP3_k2CH2b4U',
+        'channel_id' => '@giasurabaya',
+    ]);
+
+    expect($stream->youtube_id)->toBe('jH_p2yxUcQ4')
+        ->and($stream->clean_youtube_id)->toBe('jH_p2yxUcQ4')
+        ->and($stream->youtube_embed_url)->toBe('https://www.youtube.com/embed/jH_p2yxUcQ4')
+        ->and($stream->youtube_url)->toBe('https://www.youtube.com/watch?v=jH_p2yxUcQ4')
+        ->and($stream->youtube_embed_url)->not->toContain('https:/www.youtube.com');
+});
