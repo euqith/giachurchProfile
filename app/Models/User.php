@@ -7,11 +7,11 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// 🛡️ SUNTIKKAN 'role' KE DALAM ATTRIBUTE FILLABLE DI SINI ✅
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'username', 'email', 'avatar', 'google_id', 'telepon', 'bio', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -29,6 +29,64 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relasi ke artikel yang ditulis oleh user ini
+     */
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class, 'author_id');
+    }
+
+    /**
+     * Relasi ke likes yang diberikan user
+     */
+    public function likes(): HasMany
+    {
+        return $this->hasMany(ArticleLike::class, 'user_id');
+    }
+
+    /**
+     * Relasi ke komentar yang ditulis user
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ArticleComment::class, 'user_id');
+    }
+
+    /**
+     * Cek apakah user adalah jemaat
+     */
+    public function isJemaat(): bool
+    {
+        return strtolower(trim((string) ($this->role ?? ''))) === 'jemaat';
+    }
+
+    /**
+     * Cek apakah user sudah me-like artikel tertentu
+     */
+    public function hasLikedArticle(int $articleId): bool
+    {
+        return $this->likes()->where('article_id', $articleId)->exists();
+    }
+
+    /**
+     * Accessor Avatar URL
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (! empty($this->avatar)) {
+            if (str_starts_with($this->avatar, 'http')) {
+                return $this->avatar;
+            }
+
+            return asset('storage/avatars/'.$this->avatar);
+        }
+
+        $name = urlencode($this->name ?: $this->username ?: 'Jemaat');
+
+        return "https://ui-avatars.com/api/?name={$name}&background=8C5E3C&color=fff&rounded=true&bold=true";
     }
 
     /**

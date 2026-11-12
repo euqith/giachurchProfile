@@ -90,6 +90,12 @@ class Role extends Model
                         'route' => 'admin.stream.*',
                         'icon' => 'ri-live-line',
                     ],
+                    'article' => [
+                        'name' => 'Kelola Artikel',
+                        'description' => 'Menulis, mengedit, dan mempublikasikan artikel atau renungan gereja.',
+                        'route' => 'admin.article.*',
+                        'icon' => 'ri-newspaper-line',
+                    ],
                 ],
             ],
             'attendance' => [
@@ -221,6 +227,7 @@ class Role extends Model
                     'event',
                     'warta',
                     'stream',
+                    'article',
                     'attendance.persiapan',
                     'attendance.input',
                     'attendance.history',

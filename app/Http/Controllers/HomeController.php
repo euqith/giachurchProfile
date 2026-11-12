@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use App\Models\Cabang;
 use App\Models\ChurchProfile;
 use App\Models\Event;
@@ -71,6 +72,15 @@ class HomeController extends Controller
             ->latest('tanggal_rilis')
             ->first();
 
+        // 📰 Artikel & Renungan Rohani Terbaru
+        $latestArticles = Article::with(['author', 'likes', 'comments'])
+            ->where('isDelete', false)
+            ->where('isActive', true)
+            ->where('status', 'published')
+            ->orderBy('published_at', 'desc')
+            ->take(3)
+            ->get();
+
         return view('homepage.home', compact(
             'churchProfile',
             'sliderEvents',
@@ -78,7 +88,8 @@ class HomeController extends Controller
             'activeLiveStreams',
             'upcomingSchedules',
             'cabangs',
-            'latestWarta'
+            'latestWarta',
+            'latestArticles'
         ));
     }
 }

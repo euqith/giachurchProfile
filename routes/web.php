@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminEventController;
 use App\Http\Controllers\Admin\AdminRoleController;
@@ -15,8 +16,11 @@ use App\Http\Controllers\Admin\JemaatController;
 use App\Http\Controllers\Admin\JenisIbadahController;
 use App\Http\Controllers\Admin\SesiController;
 use App\Http\Controllers\Admin\WorshipPreparationController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\JemaatAuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WartaController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +41,28 @@ Route::get('/warta', [WartaController::class, 'index'])->name('warta.index');
 // Jalur Halaman Publik Jadwal & Persiapan Ibadah
 Route::get('/ibadah', [WorshipPreparationController::class, 'publicIndex'])->name('ibadah.public');
 Route::get('/ibadah/{id}', [WorshipPreparationController::class, 'publicDetail'])->name('ibadah.public.detail');
+
+// 📖 Jalur Halaman Artikel Publik & Interaksi
+Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+Route::post('/artikel/{id}/like', [ArticleController::class, 'toggleLike'])->name('articles.like');
+Route::post('/artikel/{id}/comment', [ArticleController::class, 'storeComment'])->name('articles.comment');
+
+// 👥 Jalur Autentikasi Khusus Jemaat (Terpisah dengan CMS)
+Route::get('/jemaat/login', [JemaatAuthController::class, 'showLogin'])->name('jemaat.login');
+Route::post('/jemaat/login', [JemaatAuthController::class, 'login'])->name('jemaat.login.submit');
+Route::get('/jemaat/register', [JemaatAuthController::class, 'showRegister'])->name('jemaat.register');
+Route::post('/jemaat/register', [JemaatAuthController::class, 'register'])->name('jemaat.register.submit');
+Route::get('/jemaat/check-username', [JemaatAuthController::class, 'checkUsername'])->name('jemaat.check-username');
+Route::get('/jemaat/auth/google', [JemaatAuthController::class, 'redirectToGoogle'])->name('jemaat.google');
+Route::get('/jemaat/auth/google/callback', [JemaatAuthController::class, 'handleGoogleCallback'])->name('jemaat.google.callback');
+
+// Halaman Profil & Pengaturan Jemaat (Hanya Jemaat yang Login)
+Route::middleware('auth')->group(function () {
+    Route::get('/jemaat/profil', [JemaatAuthController::class, 'profile'])->name('jemaat.profil');
+    Route::post('/jemaat/profil', [JemaatAuthController::class, 'updateProfile'])->name('jemaat.profil.update');
+    Route::post('/jemaat/logout', [JemaatAuthController::class, 'logout'])->name('jemaat.logout');
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -144,11 +170,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'cms.access'])->grou
     Route::post('/streams/{id}/auto-detect', [AdminStreamController::class, 'autoDetectSingle'])->name('stream.auto-detect.single');
     Route::post('/streams/api-key', [AdminStreamController::class, 'updateApiKey'])->name('stream.api-key');
 
+    // 📰 M. Manajemen Kelola Artikel & Postingan
+    Route::resource('article', AdminArticleController::class);
+    Route::post('/article/{id}/toggle-status', [AdminArticleController::class, 'toggleStatus'])->name('article.toggle-status');
+    Route::delete('/article/{article_id}/comment/{comment_id}', [AdminArticleController::class, 'destroyComment'])->name('article.comment.destroy');
+
 });
 
 /*
 |--------------------------------------------------------------------------
-| ⛵ 4. AUTENTIKASI BAWAAN LARAVEL BREEZE
+| ⛵ 4. AUTENTIKASI BAWAAN LARAVEL BREEZE & PROFILE
 |--------------------------------------------------------------------------
 */
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 require __DIR__.'/auth.php';

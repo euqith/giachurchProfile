@@ -422,7 +422,7 @@
           </li>
           @endif
 
-          @if(Auth::user()->canAccessGroup(['event', 'warta', 'stream']))
+          @if(Auth::user()->canAccessGroup(['event', 'warta', 'stream', 'article']))
           <li class="menu-title">Apps</li>
 
           @if(Auth::user()->canAccess('event'))
@@ -452,6 +452,17 @@
               class="menu-link {{ request()->routeIs('admin.stream.*') ? 'active' : '' }}">
               <span class="menu-icon"><i class="ri-live-line"></i></span>
               <span class="menu-text"> Kelola Streaming </span>
+            </a>
+          </li>
+          @endif
+
+          {{-- 📰 KELOLA ARTIKEL & POSTINGAN --}}
+          @if(Auth::user()->canAccess('article'))
+          <li class="menu-item">
+            <a href="{{ route('admin.article.index') }}"
+              class="menu-link {{ request()->routeIs('admin.article.*') ? 'active' : '' }}">
+              <span class="menu-icon"><i class="ri-newspaper-line"></i></span>
+              <span class="menu-text"> Kelola Artikel </span>
             </a>
           </li>
           @endif

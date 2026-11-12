@@ -69,6 +69,9 @@ class IsCMSAccessible
         if (str_starts_with($routeName, 'admin.stream.')) {
             return 'stream';
         }
+        if (str_starts_with($routeName, 'admin.article.')) {
+            return 'article';
+        }
         if (
             str_starts_with($routeName, 'admin.attendance.persiapan') ||
             str_starts_with($routeName, 'admin.attendance.createSchedule') ||

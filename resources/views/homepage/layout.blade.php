@@ -576,12 +576,25 @@
               </li>
               <li><a href="{{ url('/warta') }}" class="{{ request()->is('warta*') ? 'active' : '' }}">Warta Jemaat</a></li>
               <li><a href="{{ url('/event') }}" class="{{ request()->is('event*') ? 'active' : '' }}">Event</a></li>
+              <li><a href="{{ url('/artikel') }}" class="{{ request()->is('artikel*') ? 'active' : '' }}">Artikel</a></li>
             </ul>
           </nav>
         </div>
 
-        <!-- RIGHT BALANCER / MOBILE TOGGLE (KANAN) -->
-        <div class="header-col-right d-flex align-items-center justify-content-end">
+        <!-- RIGHT BALANCER / JEMAAT AUTH / MOBILE TOGGLE (KANAN) -->
+        <div class="header-col-right d-flex align-items-center justify-content-end gap-2.5">
+          @auth
+            <a href="{{ route('jemaat.profil') }}" class="btn btn-earth-light px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-2" style="font-size: 12px; font-weight: 600;">
+              <img src="{{ Auth::user()->avatar_url }}" class="rounded-circle" style="width: 22px; height: 22px; object-fit: cover;" alt="Avatar">
+              <span>{{ Str::limit(Auth::user()->name ?: Auth::user()->username, 14) }}</span>
+            </a>
+          @else
+            <a href="{{ route('jemaat.login') }}" class="btn btn-earth-outline px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-1.5" style="font-size: 12px; font-weight: 600;">
+              <i class="ri-user-3-line"></i>
+              <span>Masuk Jemaat</span>
+            </a>
+          @endauth
+
           <!-- MOBILE HAMBURGER TOGGLE -->
           <div class="bars d-block d-lg-none">
             <button id="openButton" type="button" class="btn p-1.5 border-0 shadow-none d-flex align-items-center justify-content-center" aria-label="Buka Menu" style="background: transparent; color: var(--earth-dark);">
@@ -661,6 +674,15 @@
             </a>
           </li>
           <li>
+            <a href="{{ url('/artikel') }}" class="drawer-nav-item {{ request()->is('artikel*') ? 'active' : '' }}">
+              <span class="d-flex align-items-center gap-2.5">
+                <i class="ri-newspaper-line text-white-50" style="font-size: 18px;"></i>
+                <span>Artikel & Renungan</span>
+              </span>
+              <i class="ri-arrow-right-s-line text-white-50" style="font-size: 16px;"></i>
+            </a>
+          </li>
+          <li>
             <a href="{{ url('/#tentang') }}" class="drawer-nav-item">
               <span class="d-flex align-items-center gap-2.5">
                 <i class="ri-information-line text-white-50" style="font-size: 18px;"></i>
@@ -672,13 +694,25 @@
         </ul>
       </div>
 
-      <!-- Drawer Bottom: CMS Login & Info -->
+      <!-- Drawer Bottom: Jemaat & CMS Login -->
       <div class="pt-3 mt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
-        <div class="d-flex align-items-center justify-content-between mb-3 text-white-50" style="font-size: 11.5px;">
+        @auth
+          <a href="{{ route('jemaat.profil') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
+            <i class="ri-user-smile-line"></i>
+            <span>Profil Saya ({{ Str::limit(Auth::user()->name ?: Auth::user()->username, 15) }})</span>
+          </a>
+        @else
+          <a href="{{ route('jemaat.login') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
+            <i class="ri-login-box-line"></i>
+            <span>Masuk / Daftar Jemaat</span>
+          </a>
+        @endauth
+
+        <div class="d-flex align-items-center justify-content-between mb-2 text-white-50" style="font-size: 11px;">
           <span>Gereja Isa Almasih Surabaya</span>
           <span class="badge" style="background: rgba(255,255,255,0.08); color: var(--earth-accent);">GIAS</span>
         </div>
-        <a href="{{ route('admin.login') }}" class="btn btn-sm w-100 py-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #E6DDD4; border-radius: 10px; font-size: 13px; transition: all 0.2s ease;">
+        <a href="{{ route('admin.login') }}" class="btn btn-sm w-100 py-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #E6DDD4; border-radius: 10px; font-size: 12px; transition: all 0.2s ease;">
           <i class="ri-lock-line" style="color: var(--earth-accent);"></i>
           <span>CMS Admin Login</span>
         </a>

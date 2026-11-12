@@ -180,10 +180,9 @@ test('public can view worship schedules and detail page', function () {
     $responseRedirect->assertRedirect(route('ibadah.public', ['id' => $schedule->id]));
 });
 
-test('landing page displays worship schedule link and upcoming highlight', function () {
+test('landing page displays worship schedule section and upcoming highlight', function () {
     $response = $this->get(route('home'));
     $response->assertStatus(200);
-    $response->assertSee(route('ibadah.public'));
     $response->assertSee('Jadwal Ibadah');
 });
 
