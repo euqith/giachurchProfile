@@ -28,8 +28,20 @@ return new class extends Migration
             if (! Schema::hasColumn('users', 'bio')) {
                 $table->text('bio')->nullable()->after('telepon');
             }
-            $table->string('email')->nullable()->change();
         });
+
+        // Jadikan email nullable secara aman (jika belum nullable)
+        try {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('email')->nullable()->change();
+            });
+        } catch (Throwable $e) {
+            try {
+                DB::statement('ALTER TABLE users MODIFY email VARCHAR(255) NULL');
+            } catch (Throwable $ex) {
+                // Abaikan jika database driver tidak mengizinkan modifikasi langsung
+            }
+        }
 
         // Berikan username default untuk user yang sudah ada
         try {

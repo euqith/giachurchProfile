@@ -584,12 +584,12 @@
         <!-- RIGHT BALANCER / JEMAAT AUTH / MOBILE TOGGLE (KANAN) -->
         <div class="header-col-right d-flex align-items-center justify-content-end gap-2.5">
           @auth
-            <a href="{{ route('jemaat.profil') }}" class="btn btn-earth-light px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-2" style="font-size: 12px; font-weight: 600;">
+            <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn btn-earth-light px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-2" style="font-size: 12px; font-weight: 600;">
               <img src="{{ Auth::user()->avatar_url }}" class="rounded-circle" style="width: 22px; height: 22px; object-fit: cover;" alt="Avatar">
               <span>{{ Str::limit(Auth::user()->name ?: Auth::user()->username, 14) }}</span>
             </a>
           @else
-            <a href="{{ route('jemaat.login') }}" class="btn btn-earth-outline px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-1.5" style="font-size: 12px; font-weight: 600;">
+            <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn btn-earth-outline px-3 py-1.5 rounded-pill d-none d-lg-inline-flex align-items-center gap-1.5" style="font-size: 12px; font-weight: 600;">
               <i class="ri-user-3-line"></i>
               <span>Masuk Jemaat</span>
             </a>
@@ -697,12 +697,12 @@
       <!-- Drawer Bottom: Jemaat & CMS Login -->
       <div class="pt-3 mt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
         @auth
-          <a href="{{ route('jemaat.profil') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
+          <a href="{{ Route::has('jemaat.profil') ? route('jemaat.profil') : url('/jemaat/profil') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
             <i class="ri-user-smile-line"></i>
             <span>Profil Saya ({{ Str::limit(Auth::user()->name ?: Auth::user()->username, 15) }})</span>
           </a>
         @else
-          <a href="{{ route('jemaat.login') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
+          <a href="{{ Route::has('jemaat.login') ? route('jemaat.login') : url('/jemaat/login') }}" class="btn btn-sm w-100 py-2 mb-2 d-flex align-items-center justify-content-center gap-2 text-decoration-none text-white fw-bold" style="background: var(--earth-primary); border-radius: 10px; font-size: 13px;">
             <i class="ri-login-box-line"></i>
             <span>Masuk / Daftar Jemaat</span>
           </a>

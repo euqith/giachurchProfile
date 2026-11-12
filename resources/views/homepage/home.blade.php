@@ -701,7 +701,7 @@
           </p>
         </div>
 
-        <a href="{{ route('articles.index') }}" class="btn btn-earth-light px-4 py-2 rounded-pill d-inline-flex align-items-center gap-2 fw-bold" style="font-size: 13px;">
+        <a href="{{ Route::has('articles.index') ? route('articles.index') : url('/artikel') }}" class="btn btn-earth-light px-4 py-2 rounded-pill d-inline-flex align-items-center gap-2 fw-bold" style="font-size: 13px;">
           <span>Lihat Semua Artikel</span>
           <i class="ri-arrow-right-line"></i>
         </a>
@@ -733,7 +733,7 @@
 
                   <!-- Judul -->
                   <h4 class="font-serif fw-bold mb-2.5 line-clamp-2" style="font-size: 18px; line-height: 1.35;">
-                    <a href="{{ route('articles.show', $article->slug) }}" class="text-decoration-none" style="color: var(--earth-dark);">
+                    <a href="{{ Route::has('articles.show') ? route('articles.show', $article->slug) : url('/artikel/'.$article->slug) }}" class="text-decoration-none" style="color: var(--earth-dark);">
                       {{ $article->judul }}
                     </a>
                   </h4>
@@ -752,7 +752,7 @@
                   <span title="{{ $article->comments->count() }} komentar"><i class="ri-chat-3-line text-primary me-1"></i> {{ $article->comments->count() }}</span>
                 </div>
 
-                <a href="{{ route('articles.show', $article->slug) }}" class="fw-bold small text-decoration-none d-inline-flex align-items-center gap-1" style="color: var(--earth-primary); font-size: 13px;">
+                <a href="{{ Route::has('articles.show') ? route('articles.show', $article->slug) : url('/artikel/'.$article->slug) }}" class="fw-bold small text-decoration-none d-inline-flex align-items-center gap-1" style="color: var(--earth-primary); font-size: 13px;">
                   <span>Baca</span>
                   <i class="ri-arrow-right-s-line"></i>
                 </a>

@@ -12,6 +12,7 @@ use App\Models\WorshipSchedule;
 use App\Services\YouTubeStreamDetector;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Throwable;
 
 class HomeController extends Controller
@@ -72,14 +73,21 @@ class HomeController extends Controller
             ->latest('tanggal_rilis')
             ->first();
 
-        // 📰 Artikel & Renungan Rohani Terbaru
-        $latestArticles = Article::with(['author', 'likes', 'comments'])
-            ->where('isDelete', false)
-            ->where('isActive', true)
-            ->where('status', 'published')
-            ->orderBy('published_at', 'desc')
-            ->take(3)
-            ->get();
+        // 📰 Artikel & Renungan Rohani Terbaru (dengan defensive query)
+        $latestArticles = collect();
+        try {
+            if (Schema::hasTable('articles')) {
+                $latestArticles = Article::with(['author', 'likes', 'comments'])
+                    ->where('isDelete', false)
+                    ->where('isActive', true)
+                    ->where('status', 'published')
+                    ->orderBy('published_at', 'desc')
+                    ->take(3)
+                    ->get();
+            }
+        } catch (Throwable $e) {
+            $latestArticles = collect();
+        }
 
         return view('homepage.home', compact(
             'churchProfile',

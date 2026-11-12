@@ -457,7 +457,7 @@
           @endif
 
           {{-- 📰 KELOLA ARTIKEL & POSTINGAN --}}
-          @if(Auth::user()->canAccess('article'))
+          @if(Route::has('admin.article.index') && Auth::user()->canAccess('article'))
           <li class="menu-item">
             <a href="{{ route('admin.article.index') }}"
               class="menu-link {{ request()->routeIs('admin.article.*') ? 'active' : '' }}">
