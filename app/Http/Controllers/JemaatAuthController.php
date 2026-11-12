@@ -163,19 +163,13 @@ class JemaatAuthController extends Controller
             session(['jemaat_oauth_redirect' => $request->redirect]);
         }
 
-        // Jika Google API credentials belum di-setup di .env, sediakan instruksi / fallback test
+        // Jika Google API credentials belum di-setup di .env, sediakan instruksi
         if (empty($clientId) || empty($clientSecret)) {
-            // Mode fallback dev test jika di local
-            if (app()->environment('local', 'testing')) {
-                return redirect()->route('jemaat.login')
-                    ->with('warning', 'Google Client ID belum dikonfigurasi pada .env (GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET). Anda dapat menggunakan form pendaftaran Username & Password di bawah ini.');
-            }
-
             return redirect()->route('jemaat.login')
-                ->with('error', 'Layanan Google Sign-In sedang dalam penyiapan. Silakan masuk menggunakan Username & Password.');
+                ->with('error', 'Google Sign-In membutuhkan konfigurasi GOOGLE_CLIENT_ID & GOOGLE_CLIENT_SECRET di file .env server. Anda tetap dapat masuk atau daftar dengan Username & Password di bawah.');
         }
 
-        $redirectUri = route('jemaat.google.callback');
+        $redirectUri = config('services.google.redirect') ?: route('jemaat.google.callback');
         $state = Str::random(40);
         session(['oauth_state' => $state]);
 
@@ -205,7 +199,7 @@ class JemaatAuthController extends Controller
 
         $clientId = config('services.google.client_id', env('GOOGLE_CLIENT_ID'));
         $clientSecret = config('services.google.client_secret', env('GOOGLE_CLIENT_SECRET'));
-        $redirectUri = route('jemaat.google.callback');
+        $redirectUri = config('services.google.redirect') ?: route('jemaat.google.callback');
 
         try {
             // Tukar code dengan access token
@@ -242,7 +236,7 @@ class JemaatAuthController extends Controller
 
             // Cari user berdasarkan google_id atau email
             $user = User::where('google_id', $googleId)
-                ->orWhere(fn ($q) => $email ? $q->where('email', $email) : null)
+                ->when($email, fn ($q) => $q->orWhere('email', $email))
                 ->first();
 
             if (! $user) {
